@@ -8,6 +8,10 @@ An API map for DSH (DeepSeek Harness) plugin authors: 43 Slot demos in their rea
 
 > 会在 43 处真实位置插入入口，建议装在测试 profile。找具体 Slot 直接 Ctrl+F 下面的 slot key 索引。
 
+![DSH 插件接口图鉴：红框为插件在真实 UI 位置上的入口](assets/hero.png)
+
+*红框里就是长在真实位置上的入口（不是总览页）：左侧栏 `sidebar.panellist` 的 tooltip、输入框上方 `conversation.input.dock`、composer 头部按钮、输入行左右两个「图」按钮、左下角 `sidebar.footer.action`，以及原生右侧栏里的图鉴 tab（`key: api-gallery:right-tab`）。*
+
 ---
 
 ## 43 个 Slot 都长在哪
