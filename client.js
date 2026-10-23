@@ -1198,7 +1198,7 @@ window.__ModuleLoader__.load({
       return { data, error };
     }
 
-    function NonUiRow({ item }) {
+    function NonUiRow({ item, regionInfo }) {
       return h(
         'details',
         { className: 'sl-nonui-row' },
@@ -1206,13 +1206,16 @@ window.__ModuleLoader__.load({
           'summary',
           null,
           h('code', { className: 'sl-nonui-name' }, item.name),
+          h('span', { className: 'sl-nonui-region' }, item.regionLabel ?? item.region ?? '—'),
           h('span', { className: 'sl-tag' }, `${item.kind}/${item.scope}`),
           h('span', { className: 'sl-nonui-reason', title: item.reason }, item.reason),
         ),
         h(
           'div',
           { className: 'sl-nonui-body' },
+          h('p', { className: 'sl-nonui-where' }, regionInfo ? `${regionInfo.title}：${regionInfo.where}` : ''),
           h('p', { className: 'sl-note' }, item.purpose || '（无 purpose）'),
+          h('p', { className: 'sl-nonui-breadcrumb' }, item.breadcrumb ?? '—'),
           h(
             'dl',
             { className: 'sl-kv' },
@@ -1233,17 +1236,63 @@ window.__ModuleLoader__.load({
       );
     }
 
+    const UI_MAP_COLUMNS = [
+      { title: '左栏', ids: ['sidebar', 'sessions', 'settings'] },
+      { title: '中央', ids: ['main', 'header', 'chat', 'composer', 'hero', 'plugins'] },
+      { title: '右侧', ids: ['rightbar'] },
+    ];
+
+    function UiMap({ regions, active, onSelect }) {
+      const byId = Object.fromEntries(regions.map((region) => [region.id, region]));
+      const button = (id) => {
+        const region = byId[id];
+        if (region === undefined) return null;
+        return h(
+          'button',
+          {
+            key: id,
+            type: 'button',
+            className: `sl-map-region${active === id ? ' is-active' : ''}`,
+            title: region.where,
+            onClick: () => onSelect(active === id ? 'all' : id),
+          },
+          h('span', { className: 'sl-map-title' }, region.title),
+          h('span', { className: 'sl-map-count' }, region.count),
+        );
+      };
+      return h(
+        'div',
+        { className: 'sl-map' },
+        h('div', { className: 'sl-map-caption' }, 'UI 位置示意图（点击区域过滤，再点一次取消；不是精确布局）'),
+        h('div', { className: 'sl-map-row' }, button('frame')),
+        h('div', { className: 'sl-map-columns' },
+          UI_MAP_COLUMNS.map((column) => h(
+            'div',
+            { key: column.title, className: 'sl-map-col' },
+            h('div', { className: 'sl-map-col-title' }, column.title),
+            column.ids.map((id) => button(id)),
+          )),
+        ),
+        h('div', { className: 'sl-map-row' }, button('overlay')),
+        active !== 'all' && byId[active] ? h('div', { className: 'sl-map-where' }, `${byId[active].title}：${byId[active].where}`) : null,
+      );
+    }
+
     function NonUiReference() {
       const { data, error } = useNonUiReference();
       const [query, setQuery] = useState('');
+      const [regionFilter, setRegionFilter] = useState('all');
       if (error) return h('div', { className: 'sl-error' }, `读取 /plugin-api-gallery/non-ui 失败：${error}`);
       if (data === null) return h('div', { className: 'sl-muted' }, '读取不可见 Slot 清单…');
       const q = query.trim().toLowerCase();
+      const regions = Array.isArray(data.regions) ? data.regions : [];
+      const regionById = Object.fromEntries(regions.map((region) => [region.id, region]));
       const groups = data.groups
         .map((group) => ({
           ...group,
-          items: group.items.filter((item) => q === ''
-            || `${item.name} ${item.purpose} ${item.reason}`.toLowerCase().includes(q)),
+          totalCount: group.items.length,
+          items: group.items.filter((item) => (regionFilter === 'all' || item.region === regionFilter)
+            && (q === '' || `${item.name} ${item.purpose} ${item.reason}`.toLowerCase().includes(q))),
         }))
         .filter((group) => group.items.length > 0);
       const shown = groups.reduce((total, group) => total + group.items.length, 0);
@@ -1257,6 +1306,7 @@ window.__ModuleLoader__.load({
           h('div', { className: 'sl-nonui-summary-sub' }, `数据来自 /plugin-api-gallery/non-ui（DSH ${data.dshVersion}，${data.generatedAt}）。这些不是 demo 注册，只是“为什么不做 UI”的逐项参考。`),
           h('div', { className: 'sl-nonui-badges' }, data.groups.map((group) => h('span', { key: group.id, className: 'sl-tag' }, group.title))),
         ),
+        h(UiMap, { regions, active: regionFilter, onSelect: setRegionFilter }),
         h(
           'div',
           { className: 'sl-search' },
@@ -1277,7 +1327,11 @@ window.__ModuleLoader__.load({
             h('h2', null, group.title),
             h('p', null, group.reason),
           ),
-          h('div', { className: 'sl-nonui-list' }, group.items.map((item) => h(NonUiRow, { key: item.name, item }))),
+          h('div', { className: 'sl-nonui-list' }, group.items.map((item) => h(NonUiRow, {
+            key: item.name,
+            item,
+            regionInfo: regionById[item.region],
+          }))),
         )),
       );
     }
@@ -1667,6 +1721,29 @@ window.__ModuleLoader__.load({
 .sl-nonui-reason { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--dsw-alias-label-secondary); font-size: 11px; }
 .sl-nonui-body { padding: 2px 12px 12px; background: var(--dsw-alias-bg-base); }
 .sl-nonui-reason-full { margin: 8px 0 0; color: var(--dsw-alias-label-secondary); font-size: 12px; line-height: 1.6; }
+.sl-nonui-region { flex: none; font-size: 10px; color: var(--dsw-alias-brand-primary); border: 1px solid color-mix(in srgb, var(--dsw-alias-brand-primary) 35%, transparent); border-radius: 999px; padding: 1px 7px; }
+.sl-nonui-breadcrumb { margin: 8px 0 0; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 10px; color: var(--dsw-alias-label-secondary); overflow-wrap: anywhere; }
+.sl-nonui-where { margin: 0 0 8px; padding: 6px 8px; border-left: 2px solid var(--dsw-alias-brand-primary); background: var(--dsw-alias-bg-layer-2); color: var(--dsw-alias-label-secondary); font-size: 11px; line-height: 1.6; }
+.sl-map { margin: 14px 0 4px; padding: 12px; border: 1px solid var(--dsw-alias-border-l1); border-radius: 10px; background: var(--dsw-alias-bg-layer-1); }
+.sl-map-caption { margin-bottom: 8px; color: var(--dsw-alias-label-secondary); font-size: 11px; }
+.sl-map-row { display: flex; gap: 6px; margin: 6px 0; }
+.sl-map-columns { display: grid; grid-template-columns: 1fr 1.4fr 1fr; gap: 8px; margin: 6px 0; }
+.sl-map-col { display: flex; flex-direction: column; gap: 6px; padding: 8px; border: 1px dashed var(--dsw-alias-border-l1); border-radius: 8px; }
+.sl-map-col-title { color: var(--dsw-alias-label-secondary); font-size: 10px; letter-spacing: .04em; }
+.sl-map-region {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  width: 100%; padding: 6px 8px; border: 1px solid var(--dsw-alias-border-l1);
+  border-radius: 6px; background: var(--dsw-alias-bg-layer-2);
+  color: var(--dsw-alias-label-secondary); font: inherit; font-size: 11px; cursor: pointer;
+}
+.sl-map-region:hover { color: var(--dsw-alias-label-primary); border-color: var(--dsw-alias-border-l2); }
+.sl-map-region.is-active { color: var(--dsw-alias-label-primary); border-color: var(--dsw-alias-brand-primary); background: color-mix(in srgb, var(--dsw-alias-brand-primary) 12%, var(--dsw-alias-bg-layer-2)); }
+.sl-map-title { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sl-map-count { flex: none; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 10px; color: var(--dsw-alias-label-secondary); }
+.sl-map-where { margin-top: 8px; color: var(--dsw-alias-label-secondary); font-size: 11px; line-height: 1.6; }
+@media (max-width: 760px) {
+  .sl-map-columns { grid-template-columns: 1fr; }
+}
 .sl-backdrop { position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center; padding: 24px; background: rgba(0,0,0,.38); pointer-events: auto; }.sl-modal { width: min(700px, 100%); max-height: 86vh; overflow: auto; border-radius: 12px; padding: 20px 22px; background: var(--dsw-alias-bg-layer-1); border: 1px solid var(--dsw-alias-border-l2); box-shadow: 0 20px 60px rgba(0,0,0,.28); }
 .sl-modal-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; }
 .sl-modal-title { margin: 4px 0 2px; font-size: 16px; font-weight: 650; letter-spacing: -.01em; }

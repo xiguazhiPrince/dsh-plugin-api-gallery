@@ -10,16 +10,25 @@
  *   ctx.get('agents'|'sessions'|'workingDirectory'|'goals'|'schedule'|'tools')
  *                            optional-service reads
  *
- * It deliberately registers no tool, no command and no prompt section: this
- * iteration is about Slot placement, not model-facing extension points.
+ * This half serves the read-only state/non-ui JSON and registers the two
+ * demo capabilities (`api_gallery_demo` tool, `/api-gallery` command) that
+ * make the keyed tool/command view Slots dispatchable.
  */
 import { readFileSync } from 'node:fs';
 
 const PLUGIN_ID = 'dsh-plugin-api-gallery';
 const ROUTE_PREFIX = '/plugin-api-gallery';
 const STATE_CACHE_MS = 1500;
+let nonUiCache = null;
+let nonUiCacheAt = 0;
 
-const nonUiText = readFileSync(new URL('./non-ui-slots.json', import.meta.url), 'utf8');
+function readNonUiText() {
+  const now = Date.now();
+  if (nonUiCache !== null && now - nonUiCacheAt < 1000) return nonUiCache;
+  nonUiCache = readFileSync(new URL('./non-ui-slots.json', import.meta.url), 'utf8');
+  nonUiCacheAt = now;
+  return nonUiCache;
+}
 
 const startedAt = Date.now();
 let cachedState = null;
@@ -259,12 +268,13 @@ export function apply(ctx, config) {
       return;
     }
     if (url.pathname === `${ROUTE_PREFIX}/non-ui`) {
+      const text = readNonUiText();
       response.writeHead(200, {
         'content-type': 'application/json; charset=utf-8',
         'cache-control': 'public, max-age=60',
-        'content-length': Buffer.byteLength(nonUiText),
+        'content-length': Buffer.byteLength(text),
       });
-      response.end(nonUiText);
+      response.end(text);
       return;
     }
     sendJson(response, 404, { error: 'not found', path: url.pathname });

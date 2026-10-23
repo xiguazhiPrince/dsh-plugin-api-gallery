@@ -106,18 +106,79 @@ const groups = [
   },
 ];
 
+/** Coarse UI regions used by the page's layout map. */
+const REGIONS = [
+  { id: 'frame', title: '框架 / Chrome', where: '整个应用外框：根渲染树、左上角 chrome、三列下方通栏。' },
+  { id: 'sidebar', title: '左栏 / 侧栏', where: '整个左列：品牌行、折叠徽标、侧栏底部 Settings 触发位。' },
+  { id: 'sessions', title: '左栏 / 会话列表', where: '侧栏 Workspace / Session 浏览区：行前装饰、行尾按钮、“...” 菜单。' },
+  { id: 'settings', title: 'Settings 面板', where: '侧栏底部 Settings 打开的面板：标题、关闭、General、Plugins tab、Models、onboarding。' },
+  { id: 'main', title: '中央主面板', where: '三列中间的主面板：Conversation 外壳或 Plugins / Schedules 等面板。' },
+  { id: 'header', title: '会话 Header', where: '会话标题行：标题、面包屑、右上角工具区、View 标签栏。' },
+  { id: 'chat', title: '聊天正文', where: '消息流：Chat rows、reasoning、Tool call 卡、用户文本/图片、Turn 尾部。' },
+  { id: 'composer', title: '输入框 / Composer', where: '底部输入区：composer 卡、工具行左右、附件、浮层菜单、plan review。' },
+  { id: 'hero', title: 'New Session Hero', where: '空白新会话的中央 Hero：workspace / preset / brand / options。' },
+  { id: 'rightbar', title: '原生右侧栏', where: '右侧栏：文件、终端、文档预览、Plan、Schedule、chat 等 tab 及其工具栏/菜单。' },
+  { id: 'overlay', title: '全屏浮层', where: '所有列之上、滚动容器之外的 frame-wide 层：Toast、quota notice、详情弹层。' },
+  { id: 'plugins', title: 'Plugins 页面', where: '中央主面板的 Plugins 页面：Official 列表、bundle/row 详情、配置区、add 菜单。' },
+];
+
+const REGION_LABEL = Object.fromEntries(REGIONS.map((region) => [region.id, region.title]));
+
+function regionOfName(name) {
+  if (name === 'root' || name === 'shell.leading' || name === 'shell.bottom') return 'frame';
+  if (name === 'shell.overlay' || name === 'shell.quota-notice' || name === 'workspace.toast' || name === 'workspace.toast.content') return 'overlay';
+  if (name.startsWith('plugins.')) return 'plugins';
+  if (name.startsWith('settings.models') || name.startsWith('settings.')) return 'settings';
+  if (name === 'sidebar.settings' || name.startsWith('sidebar.brand') || name === 'sidebar.toggle.badge' || name === 'sidebar' || name === 'settings.launcher' || name === 'settings.trigger') return 'sidebar';
+  if (name.startsWith('sidebar.workspaces') || name.startsWith('sidebar.session.row.')) return 'sessions';
+  if (name.startsWith('sidebar.right') || name.startsWith('rightbar') || name === 'sidebar.chat.conversation') return 'rightbar';
+  if (name.startsWith('conversation.hero')) return 'hero';
+  if (name === 'conversation.header' || name.startsWith('conversation.session.header')) return 'header';
+  if (name === 'conversation.composer' || name.startsWith('conversation.composer.') || name.startsWith('conversation.input.')) return 'composer';
+  if (name.startsWith('conversation.chat') || name.startsWith('tool.') || name.startsWith('conversation.user.text') || name === 'conversation.images.content') return 'chat';
+  if (name === 'main' || name === 'main.conversation' || name === 'conversation.content') return 'main';
+  return null;
+}
+
+function regionFor(slot) {
+  const direct = regionOfName(slot.name);
+  if (direct !== null) return direct;
+  const parent = slot.parent ? slotsByName.get(slot.parent) : undefined;
+  if (parent !== undefined) {
+    const inherited = regionFor(parent);
+    if (inherited !== null) return inherited;
+  }
+  return 'main';
+}
+
+const slotsByName = new Map(slots.map((slot) => [slot.name, slot]));
+
+function breadcrumbOf(name) {
+  const parts = [];
+  let current = slotsByName.get(name);
+  while (current !== undefined) {
+    parts.unshift(current.name);
+    current = current.parent ? slotsByName.get(current.parent) : undefined;
+  }
+  return parts.join(' › ');
+}
+
 const buckets = Object.fromEntries(groups.map((group) => [group.id, []]));
 
 for (const slot of slots) {
   const group = groupOf(slot);
   if (group === null) continue;
   const reason = NOTES[slot.name] ?? groups.find((entry) => entry.id === group).reason;
+  const region = regionFor(slot);
   buckets[group].push({
     name: slot.name,
     type: slot.type,
     kind: slot.kind ?? 'factory',
     scope: slot.scope,
     parent: slot.parent ?? null,
+    breadcrumb: breadcrumbOf(slot.name),
+    region,
+    regionLabel: REGION_LABEL[region],
     purpose: slot.purpose ?? '',
     replaceRisk: slot.replaceRisk ?? null,
     registration: slot.registration ?? [],
@@ -129,11 +190,19 @@ for (const slot of slots) {
 
 const counts = Object.fromEntries(groups.map((group) => [group.id, buckets[group.id].length]));
 const total = Object.values(counts).reduce((sum, value) => sum + value, 0);
+const regionCounts = {};
+for (const region of REGIONS) {
+  const count = buckets.single.concat(buckets.chain, buckets.fixed, buckets.owner, buckets.factory)
+    .filter((item) => item.region === region.id).length;
+  regionCounts[region.id] = count;
+}
 
 const output = {
   generatedAt: '2026-10-23',
   dshVersion: catalog.meta.dshVersion,
   counts,
+  regionCounts,
+  regions: REGIONS.map((region) => ({ ...region, count: regionCounts[region.id] })),
   total,
   groups: groups.map((group) => ({
     ...group,

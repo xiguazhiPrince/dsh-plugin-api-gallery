@@ -110,9 +110,12 @@
 - 数据：`non-ui-slots.json`（由 `scripts/build-non-ui.cjs` 从 `catalog.json` 生成）；
 - Host 路由：`GET /plugin-api-gallery/non-ui`；
 - 页面分组：`single（43）`、`chain（3）`、`fixed-key keyed（4）`、`owner-dispatch-only keyed（7）`、`Factory（6）`；
-- 每行展开显示：purpose、parent、replaceRisk、keyDomain、registration、以及“为什么不能做可见 UI”的具体原因；
-- 顶部有搜索框，可以按 slot 名 / 用途 / 原因过滤；
+- 页面顶部有 **UI 位置示意图**：左栏 / 中央 / 右侧三列 + frame / overlay，点击区域可过滤（再点一次取消）；每个区域显示该区域下的不可见项数量；
+- 每行折叠时显示 slot 名、所在区域标签、kind/scope 和简短原因；展开后显示 region 说明、breadcrumb（如 `root › sidebar › sidebar.settings › settings.trigger`）、purpose、parent、replaceRisk、keyDomain、registration 和逐项原因；
+- 顶部搜索框可以按 slot 名 / 用途 / 原因过滤；
 - 这一页本身也是 `main` + `sidebar.panellist` 的 demo，页面底部可以展开这两个 Slot 的注册代码和 Host 快照。
+
+> UI 位置示意图是**概念布局**，不是像素级截图；它用来回答“这个 Slot 管的是哪一栏/哪一块”，精确位置仍需在实际界面里对照。当前环境没有浏览器控制入口，无法生成带标注的真实截图。
 
 它不是 43 个可交互 Slot 的总览页；43 个入口仍然分布在各自的真实位置。
 

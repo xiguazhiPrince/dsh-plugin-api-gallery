@@ -130,9 +130,12 @@ for (const entry of GENERIC_SLOTS) {
 - 数据：`non-ui-slots.json`，由 `node scripts/build-non-ui.cjs` 从 `catalog.json` 生成；
 - Host：`GET /plugin-api-gallery/non-ui`（只读 JSON，缓存 60s）；
 - 页面：侧栏 3×3 图标 → `main` 页面，分组展示 `single 43 / chain 3 / fixed-key 4 / owner-dispatch 7 / Factory 6`，共 63 项；
-- 每行可展开：purpose、parent、replaceRisk、keyDomain、registration、逐项“为什么不能做可见 UI”；
+- 页面顶部有 **UI 位置示意图**（左栏 / 中央 / 右侧 + frame / overlay）：每个区域带该区域不可见项数量，点击过滤，再点取消；
+- 每行折叠显示 slot 名 + 区域标签 + kind/scope + 简短原因；展开显示 region 说明、breadcrumb（`root › … › slot`）、purpose、parent、replaceRisk、keyDomain、registration、原因；
 - 顶部搜索按 slot 名 / 用途 / 原因过滤；
 - 页面底部可展开 `main` + `sidebar.panellist` 注册代码和 Host 快照。
+
+> UI 位置示意图是**概念布局**，不是像素级截图；精确位置仍需对照实际界面。数据里的 `regionCounts` / `regions` 是页面地图的来源，`breadcrumb` 由 `parent` 链生成。
 
 > 这一页只收录 57 个不可见 Slot + 6 Factory；43 个可交互 Slot 仍在各自位置，不在这页重复。`/non-ui` 已 live 验证：200、total 63、counts 43/3/4/7/6。
 
