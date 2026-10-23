@@ -39,6 +39,7 @@
     "locale/*.json",
     "icon.svg",
     "assets",
+    "docs",
     "README.md"
   ],
   "dsh": {

@@ -1,4 +1,4 @@
-﻿# DSH Plugin API Gallery · 插件接口图鉴
+# DSH Plugin API Gallery · 插件接口图鉴
 
 **你想给 DSH 加个功能，但说不清它该长在页面哪个位置？** 这个插件把 43 个可插入位置全部实装了一遍：每个入口都长在真实位置上、都带注册代码，点开就是“这里该怎么注册”。另有全量接口图鉴：100 个 Slot（其中 57 个不可注册，逐个写明为什么）、98 个 Host Service、76 个 Host Event、6 个 Factory。
 
@@ -220,6 +220,7 @@ ctx.inject(['commandUi'], (scope) => {
 ├─ package.json                 bundle manifest（dsh.bundle + dsh.client）
 ├─ locale/{en,zh}.json          插件标题/描述
 ├─ icon.svg                     插件图标
+├─ assets/hero.png              README 首屏截图（43 处入口 + 红框标注）
 ├─ docs/interface-catalog.md    98 Services / 76 Events / 100 Slots 全量目录
 ├─ docs/slot-classification.md  task-2 分类：A 33 / B 57 / C 10（最终 C 10 全部实现）
 ├─ docs/all-slots.md            task-1 全量 Slot census
@@ -259,15 +260,58 @@ ctx.slots.inject(entry.slot, () => ctx.slots.register({
 
 ## 安装、更新、卸载
 
-本项目已通过 Plugin Manager 安装到 profile `web`。源码安装：
+**要求**：DSH ≥ `0.2.1-rc.2`（本插件的接口快照版本）。仓库里是构建好的纯 JS（无 TypeScript、无 `scripts`、无 `prepare`），所以从 git 安装不需要任何构建授权。
 
-```text
-plugin_manager { action: "install_bundle", target: "C:/Users/54647/Developer/myProjects/dsh-plugin-example" }
+### 从 GitHub 安装（推荐）
+
+```sh
+dsh plugin --profile web add github:xiguazhiPrince/dsh-plugin-api-gallery
 ```
 
-- **Client 改动**（`client.js`）：`patchReload: live` 时 HMR 自动替换；没生效就硬刷新页面（`Ctrl+Shift+R`）。
-- **Host 改动**（`index.js`）：需要重启 DSH，或禁用/重新启用 `api-gallery` 这一行让 Loader 重新导入。
-- **卸载**：Plugin Manager 移除 `dsh-plugin-api-gallery`。
+要锁死版本、不让上游后续推送悄悄改变运行内容，就带上 commit：
+
+```sh
+dsh plugin --profile web add github:xiguazhiPrince/dsh-plugin-api-gallery#cf7c7f1
+```
+
+- `dsh plugin add` 会自动把包写进该 profile 的 `dsh.profile.bundles`，不用手写 manifest；装完重启 DSH。
+- 应用内也可以装：Settings → Plugins 的插件管理器里用同一个 spec（`github:xiguazhiPrince/dsh-plugin-api-gallery`）。
+- 在 Agent 里同样可以：
+
+  ```text
+  plugin_manager { action: "install_bundle", target: "github:xiguazhiPrince/dsh-plugin-api-gallery" }
+  ```
+
+### 本地源码（改代码时用）
+
+```sh
+git clone git@github.com:xiguazhiPrince/dsh-plugin-api-gallery.git
+dsh plugin --profile web add ./dsh-plugin-api-gallery
+```
+
+本地 checkout 装的是 `link:` 依赖（本仓库作者的 profile `web` 目前就是这种状态）。**目录改名或移动会断链**，需要重新 `add`。
+
+### 更新
+
+- GitHub 装法：重新执行一次 `add`（同 spec，或改成新的 commit sha）；钉了 sha 的不会自动跟新。
+- 本地源码：改 `client.js` 在 `patchReload: live` 下 HMR 自动替换，没生效就硬刷新（`Ctrl+Shift+R`）；改 `index.js` 需要重启 DSH，或在插件管理器里禁用/重新启用 `dsh-plugin-api-gallery`。
+
+### 卸载
+
+```sh
+dsh plugin --profile web remove dsh-plugin-api-gallery
+```
+
+会同时移除依赖和对应的 bundle 层；应用内也可以在插件管理器里移除。
+
+### 装完 30 秒验证
+
+1. Settings → Plugins 里出现 `dsh-plugin-api-gallery`，开关为开；
+2. 新会话：输入框上方有 `图鉴demo · conversation.input.dock`，输入行左右各一个「图」按钮；
+3. 侧栏底部多一个 3×3 点阵图标，点开是四 tab 的非 UI 接口参考页；
+4. 输入 `/api-gallery` 能触发命令视图（`api_gallery_demo` 工具要模型调用才可见）。
+
+> 它会在 43 处真实位置插入入口。想隔离测试就先建一个独立 profile（`dsh --profile demo --from-default-profile <template>`），再往里装；不要在主力 profile 上试。
 
 ---
 
