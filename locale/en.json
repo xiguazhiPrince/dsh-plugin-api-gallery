@@ -1,0 +1,10 @@
+{
+  "meta": {
+    "title": "Plugin API Gallery",
+    "description": "15 distributed Slot demos: each entry lives in its real UI slot and is titled 图鉴demo · <slot-key>."
+  },
+  "panel": {
+    "title": "Plugin API Gallery",
+    "subtitle": "Distributed Slot demos"
+  }
+}

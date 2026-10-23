@@ -1,0 +1,108 @@
+{
+  "platform": "client",
+  "provider": "Theme",
+  "method": "listTokens",
+  "data": {
+    "tokens": [
+      {
+        "name": "--dsw-alias-bg-base",
+        "description": "Application base background.",
+        "valueType": "CSS color",
+        "requiresLightAndDark": true,
+        "cssVariable": "--dsw-alias-bg-base"
+      },
+      {
+        "name": "--dsw-alias-bg-layer-1",
+        "description": "Primary raised surface background.",
+        "valueType": "CSS color",
+        "requiresLightAndDark": true,
+        "cssVariable": "--dsw-alias-bg-layer-1"
+      },
+      {
+        "name": "--dsw-alias-bg-layer-2",
+        "description": "Secondary nested surface background.",
+        "valueType": "CSS color",
+        "requiresLightAndDark": true,
+        "cssVariable": "--dsw-alias-bg-layer-2"
+      },
+      {
+        "name": "--dsw-alias-bg-overlay",
+        "description": "Overlay and popover background.",
+        "valueType": "CSS color",
+        "requiresLightAndDark": true,
+        "cssVariable": "--dsw-alias-bg-overlay"
+      },
+      {
+        "name": "--dsw-alias-border-l1",
+        "description": "Primary subtle border.",
+        "valueType": "CSS color",
+        "requiresLightAndDark": true,
+        "cssVariable": "--dsw-alias-border-l1"
+      },
+      {
+        "name": "--dsw-alias-border-l2",
+        "description": "Secondary stronger border.",
+        "valueType": "CSS color",
+        "requiresLightAndDark": true,
+        "cssVariable": "--dsw-alias-border-l2"
+      },
+      {
+        "name": "--dsw-alias-brand-primary",
+        "description": "Primary brand accent.",
+        "valueType": "CSS color",
+        "requiresLightAndDark": true,
+        "cssVariable": "--dsw-alias-brand-primary"
+      },
+      {
+        "name": "--dsw-alias-label-primary",
+        "description": "Primary text color.",
+        "valueType": "CSS color",
+        "requiresLightAndDark": true,
+        "cssVariable": "--dsw-alias-label-primary"
+      },
+      {
+        "name": "--dsw-alias-label-secondary",
+        "description": "Secondary text color.",
+        "valueType": "CSS color",
+        "requiresLightAndDark": true,
+        "cssVariable": "--dsw-alias-label-secondary"
+      },
+      {
+        "name": "--dsw-alias-state-error-primary",
+        "description": "Primary error state color.",
+        "valueType": "CSS color",
+        "requiresLightAndDark": true,
+        "cssVariable": "--dsw-alias-state-error-primary"
+      },
+      {
+        "name": "--dsw-alias-state-idle-primary",
+        "description": "Primary inactive state color.",
+        "valueType": "CSS color",
+        "requiresLightAndDark": true,
+        "cssVariable": "--dsw-alias-state-idle-primary"
+      },
+      {
+        "name": "--dsw-alias-state-success-primary",
+        "description": "Primary success state color.",
+        "valueType": "CSS color",
+        "requiresLightAndDark": true,
+        "cssVariable": "--dsw-alias-state-success-primary"
+      },
+      {
+        "name": "--dsw-alias-state-warn-primary",
+        "description": "Primary warning state color.",
+        "valueType": "CSS color",
+        "requiresLightAndDark": true,
+        "cssVariable": "--dsw-alias-state-warn-primary"
+      },
+      {
+        "name": "--dsw-specific-sidebar-fill",
+        "description": "Sidebar column and title-row background.",
+        "valueType": "CSS color",
+        "requiresLightAndDark": true,
+        "cssVariable": "--dsw-specific-sidebar-fill"
+      }
+    ],
+    "referencedTypes": []
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "name": "dsh-plugin-api-gallery",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "15 distributed Slot demos for DSH plugin authors: every demo lives in its real UI slot and is titled 图鉴demo · <slot-key>.",
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "catalog.json",
+    "non-ui-slots.json",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "icon.svg",
+    "README.md"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true
+    }
+  }
+}

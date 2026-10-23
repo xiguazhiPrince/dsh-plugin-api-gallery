@@ -1,0 +1,106 @@
+﻿single	root	shadows-shipped-ui	root		-		
+list	root	none	shell.overlay	root	id*,order,label		
+chain	root	none	shell.quota-notice	shell.overlay	select*		
+keyed	root	shadows-shipped-ui	workspace.toast	shell.overlay	key*	"fixed by the owner\u0027s key table { [K in ToastKind]: ToastNotice\u003cK\u003e }, already taken: archived, archivedNotOpenable, createFailed, defaultWorkspaceFailed, forkRequiresOpen, pinFailed, sessionIdCopied, sessionIdCopyFailed, shortcutForkFailed, stoppedAndArchived, unpinFailed"	
+single	root	shadows-shipped-ui	sidebar	root	-		
+single	root	shadows-shipped-ui	sidebar.brand.mark	sidebar	-		
+single	root	shadows-shipped-ui	sidebar.toggle.badge	sidebar	-		
+single	root	shadows-shipped-ui	sidebar.settings	sidebar	-		
+list	root	none	settings.section	sidebar.settings	id*,order,label		
+list	root	none	settings.general.item	settings.section	id*,order,label		
+list	root	none	settings.plugins.tab	settings.section	id*,order,label		
+keyed	root	none	settings.models.provider-card	settings.section	key*	"open: any string the owner dispatches (no compile-time key set), none are taken yet"	
+list	root	none	settings.models.footer	settings.section	id*,order,label		
+single	root	shadows-shipped-ui	settings.trigger	sidebar.settings	-		
+single	root	shadows-shipped-ui	settings.header	sidebar.settings	-		
+list	root	none	settings.action	sidebar.settings	id*,order,label		
+single	root	shadows-shipped-ui	settings.close	sidebar.settings	-		
+list	root	none	settings.onboarding	sidebar.settings	id*,order,label		
+single	root	shadows-shipped-ui	settings.models.sign-in	settings.onboarding	-		
+single	root	shadows-shipped-ui	settings.launcher	sidebar.settings	-		
+list	root	none	sidebar.footer.action	sidebar	id*,order,label		
+list	root	none	sidebar.panellist	sidebar	id*,order,label		
+single	root	shadows-shipped-ui	sidebar.workspaces	sidebar	-		
+list	root	none	sidebar.workspaces.session.menu.item	sidebar.workspaces	id*,order,label		
+list	root	none	sidebar.workspaces.session.row.action	sidebar.workspaces	id*,order,label		
+single	root	shadows-shipped-ui	sidebar.workspaces.directoryFlow	sidebar.workspaces	-		
+list	root	none	sidebar.session.row.leading	sidebar.workspaces	id*,order,label		
+list	root	none	sidebar.session.row.hover	sidebar.workspaces	id*,order,label		
+single	root	shadows-shipped-ui	sidebar.brand.name	sidebar	-		
+keyed	root	shadows-shipped-ui	main	root	key*	"open: any string the owner dispatches (no compile-time key set), already taken: conversation"	
+keyed	root	shadows-shipped-ui	plugins.bundle.config	main	key*	"open: any string the owner dispatches (no compile-time key set), already taken: @deepseek-ai/dsh-experimental-cot-translation-bundle, @deepseek-ai/dsh-experimental-voice-input-bundle"	
+list	root	none	plugins.add.actions	main	id*,order,label		
+list	root	none	plugins.tab	main	id*,order,label		
+list	root	none	plugins.item	main	id*,order,label		
+keyed	root	shadows-shipped-ui	plugins.bundle.activation	main	key*	"open: any string the owner dispatches (no compile-time key set), already taken: @deepseek-ai/dsh-experimental-voice-input-bundle"	
+keyed	root	none	plugins.row.config	main	key*	"open: any string the owner dispatches (no compile-time key set), none are taken yet"	
+list	root	none	plugins.detail.actions	main	id*,order,label		
+list	root	none	plugins.detail.badge	main	id*,order,label		
+list	root	none	plugins.detail.section	main	id*,order,label		
+single	session-maybe	shadows-shipped-ui	main.conversation	main	-		
+single	session-maybe	shadows-shipped-ui	conversation.header	main.conversation	-		
+single	root	none	conversation.header.leading	conversation.header	-		
+single	session	shadows-shipped-ui	conversation.session.header	conversation.header	-		
+list	session	none	conversation.session.header.utilities	conversation.session.header	id*,order,label		
+single	session	shadows-shipped-ui	conversation.session.header.corner	conversation.session.header	-		
+list	session	none	conversation.session.header.actions	conversation.session.header	id*,order,label		
+single	session	shadows-shipped-ui	conversation.session.header.lineage	conversation.session.header	-		
+single	root	shadows-shipped-ui	rightbar	root	-		
+single	session	shadows-shipped-ui	rightbar.session	rightbar	-		
+keyed	session	none	sidebar.right.pane.tab	rightbar.session	key*	"open: any string the owner dispatches (no compile-time key set), none are taken yet"	
+list	session	none	sidebar.right.tab.files.actions	sidebar.right.pane.tab	id*,order,label		
+list	session	none	sidebar.right.tab.document.actions	sidebar.right.pane.tab	id*,order,label		
+list	session	none	sidebar.right.tab.document.unpreviewable	sidebar.right.pane.tab	id*,order,label		
+list	session	none	deliverables.review.file.actions	sidebar.right.pane.tab	id*,order,label		
+keyed	session	none	sidebar.right.tab.guide.entry	sidebar.right.pane.tab	key*	"open: any string the owner dispatches (no compile-time key set), none are taken yet"	
+chain	session	none	sidebar.right.tab.guide	sidebar.right.pane.tab	select*		
+single	session	shadows-shipped-ui	sidebar.chat.conversation	sidebar.right.pane.tab	-		
+keyed	session	none	sidebar.right.tab.document	sidebar.right.pane.tab	key*	"open: any string the owner dispatches (no compile-time key set), none are taken yet"	
+keyed	session	none	sidebar.right.tab.document.office.pdf	sidebar.right.tab.document	key*	"open: any string the owner dispatches (no compile-time key set), none are taken yet"	
+keyed	session	none	sidebar.right.tab.document.action	sidebar.right.pane.tab	key*	"open: any string the owner dispatches (no compile-time key set), none are taken yet"	
+keyed	session	none	sidebar.right.pane.tab.title	rightbar.session	key*	"open: any string the owner dispatches (no compile-time key set), none are taken yet"	
+list	session	none	sidebar.right.tab.menu.item	rightbar.session	id*,order,label		
+single	root	shadows-shipped-ui	shell.bottom	root	-		
+single	root	shadows-shipped-ui	shell.leading	root	-		
+factory	root		conversation.images.content		-		
+factory	root		workspace.toast.content		-		
+factory	session		conversation.user.text		-		
+keyed	session	shadows-shipped-ui	conversation.user.text.node	conversation.user.text	key*	"fixed by the owner\u0027s key table { [Id in UserTextId]: { node: UserTextNode\u003cId\u003e } }, already taken: command, file, folder, secret, session, skill, text"	
+factory	session-maybe		conversation.content		-		
+chain	session	none	conversation.composer	conversation.content	select*		
+single	session	shadows-shipped-ui	conversation.approval.detail	conversation.composer	-		
+list	session	none	conversation.plan-review.actions	conversation.composer	id*,order,label		
+single	root	shadows-shipped-ui	conversation.hero.workspace	conversation.content	-		
+single	root	shadows-shipped-ui	conversation.hero.workspace.directoryFlow	conversation.hero.workspace	-		
+single	session	shadows-shipped-ui	conversation.session	conversation.content	-		
+list	session	none	conversation.view	conversation.session	id*,order,label		
+single	session	shadows-shipped-ui	conversation.trajectory.images	conversation.view	-		
+single	session	shadows-shipped-ui	conversation.chat.flow	conversation.view	-		
+keyed	session	shadows-shipped-ui	conversation.chat.node	conversation.chat.flow	key*	"fixed by the owner\u0027s key table { [Kind in ChatNodeKind]: { node: ChatNode\u003cKind\u003e } }, already taken: assistant-step, command, command-input, compaction, context, manual-compaction, model-retry, question-reply, steering, system-prompt, tool-call, turn-error, turn-max-tokens, turn-process, turn-tail, turn-trigger, unknown, user, workflow-run"	
+keyed	session	shadows-shipped-ui	tool.call.toolview	conversation.chat.node	key*	"open: any string the owner dispatches (no compile-time key set), already taken: ask_user_question, bash, cordis_define, cordis_inspect_list, cordis_inspect_query, cordis_inspect_self, cordis_run, cordis_stop, cordis_undefine, create_goal, edit, get_goal, glob, grep, interrupt_agent, job_kill, job_list, job_output, list_agents, list_subagent_models, lsp, present, ralph, read, read_image, schedule_create, schedule_delete, schedule_list, schedule_update, send_message, session_event_read, session_event_search, session_event_trace, session_search, session_trace, skill, spawn_teammate, subagent, team_task_create, team_task_get, team_task_list, team_task_update, terminal_close, terminal_list, terminal_open, terminal_read, terminal_signal, todo_write, update_goal, wait_agent, web_fetch, web_search, workflow, write"	
+single	session	shadows-shipped-ui	tool.call.images	tool.call.toolview	-		
+keyed	session	none	tool.view.cordis	tool.call.toolview	key*	"fixed by the dynamic Client Guard"	
+single	session	shadows-shipped-ui	conversation.chat.message.images	conversation.chat.node	-		
+list	session	none	conversation.chat.assistant-actions	conversation.chat.node	id*,order,label		
+single	session	shadows-shipped-ui	conversation.chat.reasoning.body	conversation.chat.node	-		
+keyed	session	none	conversation.chat.commandview	conversation.chat.node	key*	"open: any string the owner dispatches (no compile-time key set), none are taken yet"	
+list	session	none	conversation.chat.turnTail	conversation.chat.node	id*,order,label		
+list	session	none	deliverables.file.actions	conversation.chat.turnTail	id*,order,label		
+single	session-maybe	shadows-shipped-ui	conversation.composer.bar	conversation.content	-		
+single	session-maybe	shadows-shipped-ui	conversation.input.attachments	conversation.composer.bar	-		
+list	session	none	conversation.input.overlay	conversation.composer.bar	id*,order,label		
+single	session	shadows-shipped-ui	conversation.input.permission	conversation.composer.bar	-		
+single	session	shadows-shipped-ui	conversation.input.model	conversation.composer.bar	-		
+single	session	shadows-shipped-ui	conversation.input.model.label	conversation.input.model	-		
+list	session	none	conversation.input.left	conversation.composer.bar	id*,order,label		
+single	session	shadows-shipped-ui	conversation.input.plan	conversation.composer.bar	-		
+list	session	none	conversation.input.right	conversation.composer.bar	id*,order,label		
+single	session	shadows-shipped-ui	conversation.input.activity	conversation.composer.bar	-		
+list	session	none	conversation.composer.dock	conversation.composer.bar	id*,order,label		
+list	session	none	conversation.input.dock	conversation.content	id*,order,label		
+single	root	none	conversation.hero.brand.mark	conversation.content	-		
+single	session-maybe	shadows-shipped-ui	conversation.hero.agentPreset	conversation.content	-		
+list	session	none	conversation.hero.options	conversation.content	id*,order,label		
+factory	root		conversation.chat.reasoning.content		-		
+factory	session		conversation.chat.user.content		-		
+single	session	shadows-shipped-ui	conversation.chat.user.images	conversation.chat.user.content	-		

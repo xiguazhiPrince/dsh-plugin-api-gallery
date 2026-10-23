@@ -1,0 +1,10 @@
+{
+  "meta": {
+    "title": "插件接口图鉴",
+    "description": "15 个分布式 Slot Demo：每个入口都长在真实位置，标题为 图鉴demo · <slot-key>。"
+  },
+  "panel": {
+    "title": "插件接口图鉴",
+    "subtitle": "分布式 Slot Demo"
+  }
+}

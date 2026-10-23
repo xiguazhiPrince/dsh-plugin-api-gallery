@@ -1,0 +1,214 @@
+{
+  "platform": "client",
+  "provider": "Service",
+  "method": "listService",
+  "data": {
+    "mode": "catalog",
+    "services": [
+      {
+        "key": "layout",
+        "description": "Panel navigation and geometry actions exposed through ctx.layout.",
+        "methods": [
+          {
+            "signature": "selectPanel(panelId: MainPanelId | null): void"
+          },
+          {
+            "signature": "beginNavigation(): AbortSignal"
+          },
+          {
+            "signature": "toggleSidebar(): void"
+          },
+          {
+            "signature": "openRightbar(track: boolean, fullscreen: boolean): void"
+          },
+          {
+            "signature": "closeRightbar(): void"
+          }
+        ]
+      },
+      {
+        "key": "locale",
+        "description": "Dictionary registry plus locale preference.",
+        "methods": [
+          {
+            "signature": "getLocale(): LocaleSnapshot"
+          },
+          {
+            "signature": "getSnapshot(): LocaleSnapshot"
+          },
+          {
+            "signature": "subscribe(fn: () => void): () => void"
+          },
+          {
+            "signature": "setLocale(id: string): void"
+          },
+          {
+            "signature": "addLanguage(input: LanguageRegistration): () => void"
+          },
+          {
+            "signature": "register<N extends Extract<keyof LocaleNamespaceMap, string>>(ns: N, dicts: Record<BuiltInLocaleId, LocaleDictOf<N>>): () => void"
+          },
+          {
+            "signature": "register(ns: string, locale: string, dict: LocaleDict): () => void"
+          },
+          {
+            "signature": "bind<N extends Extract<keyof LocaleNamespaceMap, string>>(ns: N): TranslateNS<N>"
+          },
+          {
+            "signature": "bind(ns: string): Translate"
+          }
+        ]
+      },
+      {
+        "key": "sessions",
+        "description": "The sessions-service face injected as `ctx.sessions`.",
+        "methods": [
+          {
+            "signature": "retain(target: SessionTarget, options: SessionRetainOptions): SessionReference"
+          },
+          {
+            "signature": "using<T>(target: SessionTarget, options: SessionRetainOptions, operation: (reference: SessionReference) => T | Promise<T>): Promise<T>"
+          },
+          {
+            "signature": "retainInfo(id: SessionId): ObservableSnapshot<SessionRetainInfo>"
+          },
+          {
+            "signature": "refreshProjections(sessionId: SessionId): Promise<void>"
+          },
+          {
+            "signature": "search( query: string, signal: AbortSignal, ): Promise<RemoteResult<{ items: SessionSearchResultItem[]; hasMore: boolean }>>"
+          },
+          {
+            "signature": "fork(opts: { sessionId: SessionId atSeq?: number increaseTitle?: boolean onCreated?: (childId: SessionId) => void /** False refuses source migration; omission preserves the Host default. */ allowMigration?: boolean }): Promise<SessionId>"
+          },
+          {
+            "signature": "scope(id: SessionId): AgentContext | undefined"
+          },
+          {
+            "signature": "binding(id: SessionId): SessionBinding | undefined"
+          }
+        ]
+      },
+      {
+        "key": "slots",
+        "description": "cordis Service layer of the slot system; see the module doc for the split with SlotCore.",
+        "methods": [
+          {
+            "signature": "declare readonly register: SlotCore['register']"
+          },
+          {
+            "signature": "declare readonly registerFactory: RegisterFactory"
+          },
+          {
+            "signature": "inject(key: keyof SlotMap & string, callback: () => SlotInjectionEffect): () => void"
+          }
+        ]
+      },
+      {
+        "key": "theme",
+        "description": "Theme registry and preference owner.",
+        "methods": [
+          {
+            "signature": "getTheme(): ThemeSnapshot"
+          },
+          {
+            "signature": "setTheme(id: string): void"
+          },
+          {
+            "signature": "setFontSize(role: FontRole, px: number): void"
+          },
+          {
+            "signature": "register(definition: ThemeDefinition): () => void"
+          },
+          {
+            "signature": "overrideTokens(source: string, tokens: ThemeTokenOverrides): () => void"
+          }
+        ]
+      },
+      {
+        "key": "timer",
+        "description": "Disposable timer helpers mixed into Cordis contexts.",
+        "methods": [
+          {
+            "signature": "timeout(callback: () => void, delay: number): () => void"
+          },
+          {
+            "signature": "timeout(delay: number): Promise<void>"
+          },
+          {
+            "signature": "interval(callback: () => void, delay: number): () => void"
+          },
+          {
+            "signature": "interval<R = any>(delay: number): AsyncIterableIterator<void, R, void>"
+          },
+          {
+            "signature": "throttle<F extends (...args: any[]) => void>(callback: F, delay: number, noTrailing?: boolean): F & { dispose: () => void }"
+          },
+          {
+            "signature": "debounce<F extends (...args: any[]) => void>(callback: F, delay: number): F & { dispose: () => void }"
+          }
+        ]
+      },
+      {
+        "key": "uiWorkspace",
+        "description": "Workspace archive and directory operations consumed by Client UI domains.",
+        "methods": [
+          {
+            "signature": "openSession(target: SessionTarget): void"
+          },
+          {
+            "signature": "openWorkspace( workspaceId: WorkspaceId, beforeOpen?: (sessionId: SessionId) => void, options?: Pick<StartSessionOptions, 'agentPreset'>, ): Promise<void>"
+          },
+          {
+            "signature": "forkSession( sessionId: SessionId, onCreated?: (childId: SessionId) => void, options?: Pick<Parameters<ISessions['fork']>[0], 'allowMigration'>, ): Promise<SessionId>"
+          },
+          {
+            "signature": "connectWorkspace(workspaceId: WorkspaceId, options?: Pick<StartSessionOptions, 'agentPreset'>): Promise<SessionId>"
+          },
+          {
+            "signature": "startSession(workspaceId?: WorkspaceId, options?: StartSessionOptions): void"
+          },
+          {
+            "signature": "archiveSession(sessionId: SessionId, options?: { readonly stopActivity?: boolean }): Promise<void>"
+          },
+          {
+            "signature": "unarchiveSession(sessionId: SessionId): Promise<void>"
+          },
+          {
+            "signature": "pickDirectory(): Promise<string | null>"
+          },
+          {
+            "signature": "listDirectory(path?: string, signal?: AbortSignal): Promise<DirectoryListing>"
+          },
+          {
+            "signature": "createDirectory(path: string, name: string): Promise<string>"
+          }
+        ]
+      },
+      {
+        "key": "workspaces",
+        "description": "Workspace Controller's Client service face.",
+        "methods": [
+          {
+            "signature": "create(input: { path: string }): Promise<WorkspaceView>"
+          },
+          {
+            "signature": "rename(workspaceId: WorkspaceId, title: string): Promise<WorkspaceView>"
+          },
+          {
+            "signature": "delete(workspaceId: WorkspaceId): Promise<void>"
+          },
+          {
+            "signature": "archiveSession(sessionId: SessionId, options?: { readonly stopActivity?: boolean }): Promise<void>"
+          },
+          {
+            "signature": "unarchiveSession(sessionId: SessionId): Promise<void>"
+          },
+          {
+            "signature": "insertSessionBefore( workspaceId: WorkspaceId, sessionId: SessionId, beforeSessionId?: SessionId, ): Promise<WorkspaceView>"
+          }
+        ]
+      }
+    ]
+  }
+}

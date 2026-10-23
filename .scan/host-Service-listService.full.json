@@ -1,0 +1,2200 @@
+{
+  "platform": "host",
+  "provider": "Service",
+  "method": "listService",
+  "data": {
+    "mode": "catalog",
+    "services": [
+      {
+        "key": "agentDefaultModel",
+        "description": "Owns the default model selection independently of any Host or transport.",
+        "methods": [
+          {
+            "signature": "currentSelection(): ModelSelection"
+          },
+          {
+            "signature": "async saveSelection(next: ModelSelection): Promise<void>"
+          }
+        ]
+      },
+      {
+        "key": "agentLoop",
+        "description": "Concrete agent factory and driver service.",
+        "methods": [
+          {
+            "signature": "readonly config: Config"
+          },
+          {
+            "signature": "async create(id: SessionId, options: AgentOptions = {}, meta: Pick<SessionHeader, 'cwd'> = {}): Promise<Agent>"
+          },
+          {
+            "signature": "async createAgent(ownerCtx: Context, options: CreateAgentOptions): Promise<AgentHandle>"
+          },
+          {
+            "signature": "async resume(ownerCtx: Context, options: ResumeAgentOptions): Promise<AgentHandle>"
+          }
+        ]
+      },
+      {
+        "key": "agentPresets",
+        "description": "Registry of YAML-declared presets and the revisions live Agents retain.",
+        "methods": [
+          {
+            "signature": "async register(definition: PresetDefinition): Promise<() => Promise<void>>"
+          },
+          {
+            "signature": "inspectCompositions(ctx?: Context): AgentPresetInspection[]"
+          },
+          {
+            "signature": "async list(): Promise<AgentPreset[]>"
+          },
+          {
+            "signature": "@Remote('list') async remoteExportList(): Promise<AgentPresetRoster>"
+          },
+          {
+            "signature": "async resolve(id?: string): Promise<AgentPreset>"
+          },
+          {
+            "signature": "@Remote('read') readDocument(agentPreset: string): Promise<AgentPresetDocument>"
+          },
+          {
+            "signature": "async mount(ctx: Context, id?: string): Promise<AgentPreset>"
+          },
+          {
+            "signature": "composeFrom(ctx: Context, parent: Context): string | undefined"
+          },
+          {
+            "signature": "composedPreset(ctx: Context): string | undefined"
+          },
+          {
+            "signature": "serviceFor<K extends string & keyof Context>(agent: { ctx: Context }, name: K): Context[K] | undefined"
+          },
+          {
+            "signature": "async recompose(ctx: Context, id: string): Promise<AgentPreset>"
+          },
+          {
+            "signature": "@Remote('select') async select(agent: Agent, agentPreset: string): Promise<string>"
+          },
+          {
+            "signature": "async acquireScope(id?: string): Promise<{ key: ScopeKey } & AsyncDisposable>"
+          },
+          {
+            "signature": "compositionInventory(): Promise<AgentPresetComposition[]>"
+          }
+        ]
+      },
+      {
+        "key": "agents",
+        "description": "Agent service (`ctx.agents`): tracks live agents and carries the initiating Agent through one process-local asynchronous driver chain.",
+        "methods": [
+          {
+            "signature": "currentInitiator(): Agent | undefined"
+          },
+          {
+            "signature": "requireInitiator(): Agent"
+          },
+          {
+            "signature": "withInitiator<T>(agent: Agent, operation: () => T): T"
+          },
+          {
+            "signature": "withoutInitiator<T>(operation: () => T): T"
+          },
+          {
+            "signature": "setFactory(factory: AgentFactory): () => void"
+          },
+          {
+            "signature": "async create(options: CreateAgentOptions): Promise<AgentHandle>"
+          },
+          {
+            "signature": "async resume(options: ResumeAgentOptions): Promise<AgentHandle>"
+          },
+          {
+            "signature": "register(agent: Agent): ReturnType<Context['effect']>"
+          },
+          {
+            "signature": "enter(agent: Agent, owner: Agent | undefined): () => void"
+          },
+          {
+            "signature": "async announce(agent: Agent, source: SessionStartSource, signal?: AbortSignal): Promise<void>"
+          },
+          {
+            "signature": "get(id: SessionId): Agent | undefined"
+          },
+          {
+            "signature": "isOwnedBy(id: SessionId, owner: Agent): boolean"
+          },
+          {
+            "signature": "list(): Agent[]"
+          },
+          {
+            "signature": "roots(): Agent[]"
+          }
+        ]
+      },
+      {
+        "key": "agentTeams",
+        "description": "Agent Teams service backed by the exact live Lead Session log.",
+        "methods": [
+          {
+            "signature": "membership(agent: Agent): TeamMembership"
+          },
+          {
+            "signature": "listMembers(agent: Agent): TeamMemberView[]"
+          },
+          {
+            "signature": "async spawnTeammate(caller: Agent, request: SpawnTeammateRequest): Promise<SpawnTeammateResult>"
+          },
+          {
+            "signature": "async sendMessage(caller: Agent, request: SendTeamMessageRequest): Promise<SendTeamMessageResult>"
+          },
+          {
+            "signature": "async createTask(caller: Agent, request: CreateTeamTaskRequest): Promise<TeamTaskView>"
+          },
+          {
+            "signature": "getTask(caller: Agent, id: TeamTaskId): TeamTaskView"
+          },
+          {
+            "signature": "listTasks(caller: Agent): TeamTaskView[]"
+          },
+          {
+            "signature": "async updateTask(caller: Agent, request: UpdateTeamTaskRequest): Promise<TeamTaskView>"
+          },
+          {
+            "signature": "async waitForChange(caller: Agent, timeoutMs: number, signal: AbortSignal): Promise<TeamWaitResult>"
+          },
+          {
+            "signature": "interrupt(caller: Agent, targetName: string): { previousStatus: 'running' | 'inactive' }"
+          },
+          {
+            "signature": "tryMembership(agent: Agent): TeamMembership | undefined"
+          }
+        ]
+      },
+      {
+        "key": "approval",
+        "description": "Approval service that applies session policy before answerers and logs every ask/outcome pair to the requesting session.",
+        "methods": [
+          {
+            "signature": "setPolicy(agent: Agent, policy: ApprovalPolicy): void"
+          },
+          {
+            "signature": "async request(req: ApprovalRequest): Promise<ApprovalOutcome>"
+          },
+          {
+            "signature": "overrideOf(session: Session): ApprovalPolicy | undefined"
+          }
+        ]
+      },
+      {
+        "key": "attachments",
+        "description": "Immutable binary attachment service.",
+        "methods": [
+          {
+            "signature": "abstract readonly imageLimits: ImageAttachmentLimits"
+          },
+          {
+            "signature": "abstract validateImage(input: SaveImageAttachment): Promise<void>"
+          },
+          {
+            "signature": "async saveImages(inputs: readonly SaveImageAttachment[]): Promise<readonly ImageAttachmentRef[]>"
+          },
+          {
+            "signature": "async admitPromptContent( content: readonly AttachmentAdmissionPart[], ): Promise<AdmittedPromptContentPart[]>"
+          },
+          {
+            "signature": "admitEncodedFile(input: EncodedFileAttachment): Promise<FileAttachmentRef>"
+          },
+          {
+            "signature": "isAttachmentError(error: unknown): error is AttachmentError"
+          },
+          {
+            "signature": "abstract saveImage(input: SaveImageAttachment): Promise<ImageAttachmentRef>"
+          },
+          {
+            "signature": "abstract readImage(ref: ImageAttachmentRef, signal?: AbortSignal): Promise<StoredImageAttachment>"
+          },
+          {
+            "signature": "imageHostPath(ref: ImageAttachmentRef): string | undefined"
+          },
+          {
+            "signature": "saveFile(input: SaveFileAttachment): Promise<FileAttachmentRef>"
+          },
+          {
+            "signature": "saveFileStream(input: SaveFileStreamAttachment): Promise<FileAttachmentRef>"
+          },
+          {
+            "signature": "async *readFileStream( ref: FileAttachmentRef, signal?: AbortSignal, ): AsyncIterable<Uint8Array>"
+          },
+          {
+            "signature": "fileHostPath(ref: FileAttachmentRef): string | undefined"
+          },
+          {
+            "signature": "readImageRequest( ref: ImageAttachmentRef, target: ImageRequestTarget, signal?: AbortSignal, ): Promise<RequestImageAttachment>"
+          }
+        ]
+      },
+      {
+        "key": "authorization",
+        "description": "`ctx.authorization`: a registry of credential-obtaining flows, one attempt at a time per key.",
+        "methods": [
+          {
+            "signature": "registerFlow(flow: AuthorizationFlow): () => void"
+          },
+          {
+            "signature": "list(): readonly AuthorizationEntry[]"
+          },
+          {
+            "signature": "describe(key: CredentialKey): AuthorizationEntry | undefined"
+          },
+          {
+            "signature": "cancel(key: CredentialKey): void"
+          },
+          {
+            "signature": "async begin(request: AuthorizationRequest): Promise<AuthorizationOutcome>"
+          }
+        ]
+      },
+      {
+        "key": "browserUse",
+        "description": "Owns one optional provider registration in the shared browser-use service.",
+        "methods": [
+          {
+            "signature": "register(name: BrowserUseProviderName): () => Promise<void>"
+          }
+        ]
+      },
+      {
+        "key": "claudeCodeMods",
+        "description": "The bridge service: loaded mods, their hooks, and the harness listeners that raise their events.",
+        "methods": [
+          {
+            "signature": "@Remote({ mode: 'stream' }) watchBand(agent: Agent, signal: AbortSignal): AsyncIterable<SurfaceSnapshot>"
+          },
+          {
+            "signature": "@Remote pressBand(agent: Agent, generation: number, actionId: string): Promise<SurfaceSnapshot>"
+          },
+          {
+            "signature": "async add(definition: ModDefinition): Promise<() => Promise<void>>"
+          }
+        ]
+      },
+      {
+        "key": "clientModules",
+        "description": "The web plugin table service: incremental `dsh.client` scan + wire composition + bundle route + index injection rows.",
+        "methods": [
+          {
+            "signature": "graph(): WebBootGraph"
+          },
+          {
+            "signature": "clientPath(id: string): string | undefined"
+          },
+          {
+            "signature": "async fetchBundle(request: Request): Promise<Response>"
+          },
+          {
+            "signature": "artifactBaseline(id: string): ClientArtifactBaseline | undefined"
+          },
+          {
+            "signature": "rebuilt(id: string): string | undefined"
+          },
+          {
+            "signature": "onRebuilt(listener: (id: string, rev: string) => void): () => void"
+          },
+          {
+            "signature": "onGraphChanged(listener: () => void): () => void"
+          }
+        ]
+      },
+      {
+        "key": "commands",
+        "description": "Human-command registry.",
+        "methods": [
+          {
+            "signature": "register(definition: CommandDefinition): () => void"
+          },
+          {
+            "signature": "registerFileReceiptResolver(resolver: CommandFileReceiptResolver): () => void"
+          },
+          {
+            "signature": "@Remote list(agent: Agent): readonly CommandDescriptor[]"
+          },
+          {
+            "signature": "find(agent: Agent, name: string): CommandDefinition | undefined"
+          },
+          {
+            "signature": "@Remote async execute( agent: Agent, line: string, submittedAttachments: readonly CommandSubmitAttachment[], signal: AbortSignal, ): Promise<CommandExecution | undefined>"
+          }
+        ]
+      },
+      {
+        "key": "compaction",
+        "description": "Abstract compaction service.",
+        "methods": [
+          {
+            "signature": "abstract compactIfNeeded( agent: CompactionAgentContext, trigger: CompactionTrigger, signal: AbortSignal, ): Promise<CompactionResult | null>"
+          },
+          {
+            "signature": "abstract compactNow( agent: ManualCompactAgentContext, signal: AbortSignal, sourceCommandId?: CommandId, ): Promise<CompactionResult | null>"
+          },
+          {
+            "signature": "abstract compactRegion( start: SessionSeq, end: SessionSeq, agent: CompactionAgentContext, signal?: AbortSignal, ): Promise<CompactionResult>"
+          }
+        ]
+      },
+      {
+        "key": "computerUse",
+        "description": "Owns one optional provider registration in the shared computer-use service.",
+        "methods": [
+          {
+            "signature": "register(name: ComputerUseProviderName): () => Promise<void>"
+          }
+        ]
+      },
+      {
+        "key": "configEditor",
+        "description": "Persist complete raw configs and apply them through the normal Loader path.",
+        "methods": [
+          {
+            "signature": "entries(): Entry[]"
+          },
+          {
+            "signature": "configuration(): Array<{ entry: Entry; inherited: Record<string, unknown>; override: Record<string, unknown> }>"
+          },
+          {
+            "signature": "async edit( entry: Entry, change: (current: Record<string, unknown>, inherited: Record<string, unknown>) => Record<string, unknown>, ): Promise<void>"
+          }
+        ]
+      },
+      {
+        "key": "connection",
+        "description": "Host `ctx.connection` members consumed by transport-independent adapters.",
+        "methods": [
+          {
+            "signature": "readonly rpc: HostConnectionRpc"
+          },
+          {
+            "signature": "readonly fetch: HostConnectionFetch"
+          },
+          {
+            "signature": "readonly browserPeer: PeerScope"
+          },
+          {
+            "signature": "readonly allowsRemoteAuthorities: boolean"
+          },
+          {
+            "signature": "createSharedFetchHandler(channel: '/api'): ConnectionFetchHandler"
+          },
+          {
+            "signature": "requestRejection(request: ConnectionTrustRequest): ConnectionRequestRejection"
+          },
+          {
+            "signature": "admit(request: ConnectionTrustRequest): PeerAdmission"
+          },
+          {
+            "signature": "createPeer(options: { readonly principal: Principal; readonly interactions?: 'answer' | 'none' }): PeerScope"
+          },
+          {
+            "signature": "admitConnection(request: ConnectionTrustRequest): ConnectionAdmission"
+          },
+          {
+            "signature": "authorizeIndex(request: ConnectionIndexRequest, response: ConnectionIndexResponse): boolean"
+          },
+          {
+            "signature": "authenticatedUrl(baseUrl: string): string"
+          }
+        ]
+      },
+      {
+        "key": "cotTranslation",
+        "description": "Optional reasoning translation delegates Session-bound storage to the translator.",
+        "methods": [
+          {
+            "signature": "@Remote async limits(signal: AbortSignal): Promise<CotTranslationSnapshot>"
+          },
+          {
+            "signature": "@Remote async translate(request: TranslationRequest, signal: AbortSignal): Promise<string>"
+          }
+        ]
+      },
+      {
+        "key": "credentials",
+        "description": "Abstract credential service over two key spaces that answer two questions.",
+        "methods": [
+          {
+            "signature": "abstract resolve(ref: CredentialRef): Promise<ResolvedCredential | undefined>"
+          },
+          {
+            "signature": "abstract describe(ref: CredentialRef): Promise<CredentialInfo>"
+          },
+          {
+            "signature": "abstract set(ref: CredentialRef, value: string): Promise<void>"
+          },
+          {
+            "signature": "abstract unset(ref: CredentialRef): Promise<void>"
+          },
+          {
+            "signature": "abstract readRecord(key: CredentialKey): Promise<CredentialRecord | undefined>"
+          },
+          {
+            "signature": "abstract describeRecord(key: CredentialKey): Promise<CredentialRecordInfo>"
+          },
+          {
+            "signature": "abstract listRecords(): Promise<readonly CredentialRecordEntry[]>"
+          },
+          {
+            "signature": "abstract modifyRecord( key: CredentialKey, mutate: (current: CredentialRecord | undefined) => Promise<CredentialRecord | undefined>, ): Promise<CredentialRecord | undefined>"
+          },
+          {
+            "signature": "abstract deleteRecord(key: CredentialKey): Promise<void>"
+          }
+        ]
+      },
+      {
+        "key": "credentialsController",
+        "description": "Host service backing the generated `ctx.remote.credentials` namespace.",
+        "methods": [
+          {
+            "signature": "@Remote async describe(refs: string[]): Promise<Record<string, CredentialInfo>>"
+          },
+          {
+            "signature": "@Remote async set(ref: string, value: string): Promise<void>"
+          },
+          {
+            "signature": "@Remote async unset(ref: string): Promise<void>"
+          }
+        ]
+      },
+      {
+        "key": "deepseekAccount",
+        "description": "Account operations; only Host consumers can obtain a request credential.",
+        "methods": [
+          {
+            "signature": "abstract getState(): Promise<AccountView>"
+          },
+          {
+            "signature": "abstract getProfile(client: AccountClientMetadata): Promise<AccountDetails['profile'] | null>"
+          },
+          {
+            "signature": "abstract getBalance(client: AccountClientMetadata): Promise<AccountDetails['balance'] | null>"
+          },
+          {
+            "signature": "abstract getUnnotifiedBonuses(client: AccountClientMetadata): Promise<AccountBonusBatch | null>"
+          },
+          {
+            "signature": "abstract ackBonusNotified(accountId: AccountUserId, orderId: AccountBonusOrderId, client: AccountClientMetadata): Promise<boolean>"
+          },
+          {
+            "signature": "abstract startSignIn(client: AccountClientMetadata, callbackOrigin: string, loginSource: 'web' | 'desktop'): Promise<AccountView>"
+          },
+          {
+            "signature": "abstract cancelSignIn(id: SignInAttemptId): Promise<AccountView>"
+          },
+          {
+            "signature": "abstract signOut(client: AccountClientMetadata): Promise<AccountView>"
+          },
+          {
+            "signature": "abstract watch(signal: AbortSignal, includeIdentityChanges?: boolean): AsyncIterable<AccountView>"
+          },
+          {
+            "signature": "abstract resolveToken(url: string): Promise<string | undefined>"
+          },
+          {
+            "signature": "abstract rejectToken(token: string): Promise<void>"
+          },
+          {
+            "signature": "abstract getPlatformSession(): Promise<PlatformSession | null>"
+          },
+          {
+            "signature": "abstract getDeviceIdentity(): Promise<{ deviceId?: string; userId?: AccountUserId; osVersion: string }>"
+          }
+        ]
+      },
+      {
+        "key": "deepseekLlmApiExtensions",
+        "description": "Registry of independently owned top-level fields for official DeepSeek requests.",
+        "methods": [
+          {
+            "signature": "register<K extends keyof DeepSeekLlmApiExtensionMap>( field: K, provider: DeepSeekLlmApiExtensionProvider<DeepSeekLlmApiExtensionMap[K]>, ): () => Promise<void>"
+          },
+          {
+            "signature": "async prepare(request: DeepSeekLlmApiExtensionRequest): Promise<PreparedDeepSeekLlmApiExtensions>"
+          }
+        ]
+      },
+      {
+        "key": "directoryPicker",
+        "description": "Abstract directory-picking service.",
+        "methods": [
+          {
+            "signature": "abstract capability(): DirectoryPickerCapability"
+          }
+        ]
+      },
+      {
+        "key": "directoryPickerController",
+        "description": "Host service backing the generated `ctx.remote.directoryPicker` namespace.",
+        "methods": [
+          {
+            "signature": "@Remote('pick') async pick(signal: AbortSignal): Promise<string | null>"
+          },
+          {
+            "signature": "@Remote('list') async list(path: string | undefined, signal: AbortSignal): Promise<DirectoryListing>"
+          },
+          {
+            "signature": "@Remote('createDirectory') async createDirectory(path: string, name: string): Promise<string>"
+          }
+        ]
+      },
+      {
+        "key": "fileReferences",
+        "description": "Host capability for cancellable file-reference discovery.",
+        "methods": [
+          {
+            "signature": "abstract list( agent: Agent, query: string, signal: AbortSignal, ): Promise<FileReferenceCandidate[]>"
+          }
+        ]
+      },
+      {
+        "key": "fileUploads",
+        "description": "Host service owning upload storage and receipts keyed by each receiving Agent's exact Session.",
+        "methods": [
+          {
+            "signature": "registerAgentResolver(resolve: AgentResolver): () => void"
+          },
+          {
+            "signature": "@Remote('upload') upload(agent: Agent, request: EncodedFileUploadRequest, signal: AbortSignal): Promise<FileUploadValue>"
+          },
+          {
+            "signature": "async uploadStream(request: { readonly sessionId: SessionId readonly data: AsyncIterable<Uint8Array> readonly signal?: AbortSignal readonly name?: string }): Promise<FileUploadValue>"
+          },
+          {
+            "signature": "resolve(agent: Agent, receiptId: FileUploadReceiptId): FileAttachmentRef | undefined"
+          },
+          {
+            "signature": "bindPrompt( agent: Agent, receiptIds: readonly FileUploadReceiptId[], requestId: string, ): PromptFileBinding"
+          },
+          {
+            "signature": "retirePrompt(agent: Agent, requestId: string): void"
+          }
+        ]
+      },
+      {
+        "key": "fs",
+        "description": "Abstract filesystem provider.",
+        "methods": [
+          {
+            "signature": "watch(target: FsTarget, changed: (error?: Error) => void, signal: AbortSignal): Promise<() => Promise<void>>"
+          },
+          {
+            "signature": "abstract resolve(path: string, opts?: { cwd?: string; signal?: AbortSignal }): Promise<FsTarget>"
+          },
+          {
+            "signature": "abstract processPath(target: FsTarget): string"
+          },
+          {
+            "signature": "processPathFromHostPath(hostPath: string): string | undefined"
+          },
+          {
+            "signature": "abstract fileUrl(target: FsTarget): string"
+          },
+          {
+            "signature": "abstract contains(parent: FsTarget, child: FsTarget): boolean"
+          },
+          {
+            "signature": "abstract stat(target: FsTarget, signal?: AbortSignal): Promise<FsInfo | undefined>"
+          },
+          {
+            "signature": "abstract lstat(path: string, opts?: { cwd?: string }, signal?: AbortSignal): Promise<FsPathInfo | undefined>"
+          },
+          {
+            "signature": "abstract readText(target: FsTarget, signal?: AbortSignal): Promise<string>"
+          },
+          {
+            "signature": "abstract streamText(target: FsTarget, signal?: AbortSignal): Promise<AsyncIterable<string>>"
+          },
+          {
+            "signature": "abstract readBytes(target: FsTarget, signal: AbortSignal | undefined, maxBytes: number): Promise<Uint8Array>"
+          },
+          {
+            "signature": "abstract readByteRange(target: FsTarget, range: { offset: number; length: number }, signal?: AbortSignal): Promise<Uint8Array>"
+          },
+          {
+            "signature": "abstract listDir(target: FsTarget, signal?: AbortSignal): Promise<FsDirEntry[]>"
+          },
+          {
+            "signature": "abstract writeText( target: FsTarget, content: string, expected?: FsWriteIntent, signal?: AbortSignal, sandboxPolicy?: SandboxExecutionPolicy, ): Promise<FsWriteOutcome>"
+          },
+          {
+            "signature": "abstract editText( target: FsTarget, edit: FsEditRequest, expected?: { version: FsVersion }, signal?: AbortSignal, sandboxPolicy?: SandboxExecutionPolicy, ): Promise<FsEditOutcome>"
+          }
+        ]
+      },
+      {
+        "key": "goals",
+        "description": "Goal service (`ctx.goals`) backed exclusively by the owning session log.",
+        "methods": [
+          {
+            "signature": "@Remote('get') get(agent: Agent): GoalView | undefined"
+          },
+          {
+            "signature": "disarm(agent: Agent): GoalView | undefined"
+          },
+          {
+            "signature": "create(agent: Agent, request: CreateGoalRequest): GoalView"
+          },
+          {
+            "signature": "@Remote('edit') edit(agent: Agent, ref: GoalRef, request: EditGoalRequest): GoalView"
+          },
+          {
+            "signature": "@Remote('pause') pause(agent: Agent, ref: GoalRef): GoalView"
+          },
+          {
+            "signature": "@Remote('resume') resume(agent: Agent, ref: GoalRef): GoalView"
+          },
+          {
+            "signature": "@Remote('complete') complete(agent: Agent, ref: GoalRef): GoalView"
+          },
+          {
+            "signature": "block(agent: Agent, ref: GoalRef, reason: GoalBlockReason): GoalView"
+          },
+          {
+            "signature": "@Remote('clear') clear(agent: Agent, ref: GoalRef): GoalRef"
+          },
+          {
+            "signature": "@Remote('create') remoteExportCreate(agent: Agent, request: CreateGoalRequest): CreateGoalResult"
+          }
+        ]
+      },
+      {
+        "key": "hmr",
+        "description": "Hot reload service with Cordis-compatible module configuration and events.",
+        "methods": [
+          {
+            "signature": "public baseDir: string"
+          },
+          {
+            "signature": "runExclusive<T>(operation: () => Promise<T>): Promise<T>"
+          },
+          {
+            "signature": "async watchConfig(filename: string, refresh: () => Promise<void>): Promise<() => Promise<void>>"
+          },
+          {
+            "signature": "getOuterStack: () => string[] = () => []"
+          },
+          {
+            "signature": "async getLinked(url: string): Promise<string[]>"
+          },
+          {
+            "signature": "async reconcileProfile(requiredIds: readonly string[] = []): Promise<ProfileReconciliation>"
+          }
+        ]
+      },
+      {
+        "key": "inspector",
+        "description": "Shared Host/Client service façade over the realm's source publisher.",
+        "methods": [
+          {
+            "signature": "publish(topic: string, payload: InspectorJsonValue, monotonicMs?: number): void"
+          },
+          {
+            "signature": "readonly cordis: CordisRuntimeTreeReader"
+          }
+        ]
+      },
+      {
+        "key": "jobController",
+        "description": "Host service backing the generated `ctx.remote.job` namespace.",
+        "methods": [
+          {
+            "signature": "@Remote({ mode: 'stream' }) list(request: JobListRequest, signal: AbortSignal): AsyncIterable<JobListFrame>"
+          },
+          {
+            "signature": "@Remote({ mode: 'stream' }) follow(request: JobFollowRequest, signal: AbortSignal): AsyncIterable<JobFollowFrame>"
+          },
+          {
+            "signature": "@Remote('kill') kill(request: JobKillRequest): JobKillValue"
+          }
+        ]
+      },
+      {
+        "key": "jobs",
+        "description": "Abstract background job registry.",
+        "methods": [
+          {
+            "signature": "abstract readonly events: JobEvents"
+          },
+          {
+            "signature": "abstract start(spec: JobSpec): JobId"
+          },
+          {
+            "signature": "abstract list(caller?: SessionId): JobView[]"
+          },
+          {
+            "signature": "abstract get(id: JobId, caller?: SessionId): JobView"
+          },
+          {
+            "signature": "abstract read(id: JobId, caller?: SessionId): JobRead"
+          },
+          {
+            "signature": "abstract readAt(id: JobId, from: number, caller?: SessionId): JobOutputRead"
+          },
+          {
+            "signature": "abstract kill(id: JobId, caller?: SessionId, reason?: string): 'requested' | 'already-finished'"
+          },
+          {
+            "signature": "abstract wait(id: JobId, timeoutMs: number, caller?: SessionId, signal?: AbortSignal): Promise<JobView>"
+          },
+          {
+            "signature": "abstract remove(id: JobId, caller?: SessionId): void"
+          },
+          {
+            "signature": "abstract attachController(name: string): () => void"
+          }
+        ]
+      },
+      {
+        "key": "llm",
+        "description": "The abstract `llm` service: an adapter registry plus a streaming model-call API, interceptable via the `llm/stream` waterfall.",
+        "methods": [
+          {
+            "signature": "registerAdapter(providers: string[], adapter: LlmAdapter): AdapterRegistrationHandle"
+          },
+          {
+            "signature": "@Remote listProviders(): LlmProviderInfo[]"
+          },
+          {
+            "signature": "registerConfigurableProviders(entries: readonly LlmConfigurableProvider[]): DirectoryRegistrationHandle"
+          },
+          {
+            "signature": "@Remote listConfigurableProviders(): LlmConfigurableProvider[]"
+          },
+          {
+            "signature": "registerModelDiscovery( settingsNs: string, discover: ( request: LlmModelDiscoveryRequest, signal?: AbortSignal, ) => Promise<readonly LlmDiscoveredModel[]>, ): () => void"
+          },
+          {
+            "signature": "async discoverModels( settingsNs: string, request: LlmModelDiscoveryRequest, signal?: AbortSignal, ): Promise<LlmDiscoveredModel[]>"
+          },
+          {
+            "signature": "@Remote('discoverModels') async remoteDiscoverModels( settingsNs: string, request: LlmModelDiscoveryRequest, signal: AbortSignal, ): Promise<LlmDiscoveredModel[]>"
+          },
+          {
+            "signature": "providerRetryPolicy(provider: string): ResolvedRetryPolicy"
+          },
+          {
+            "signature": "imageRequestPricing(provider: string, model: string): LlmImageRequestPricing | undefined"
+          },
+          {
+            "signature": "imageRequestTarget(provider: string, model: string, image: ImageAttachmentRef): ImageRequestTarget"
+          },
+          {
+            "signature": "fileRequestText(ref: FileAttachmentRef): string"
+          },
+          {
+            "signature": "async listModels(provider: string): Promise<LlmModelInfo[]>"
+          },
+          {
+            "signature": "async resolveModelInfo( provider: string, model: string, signal?: AbortSignal, ): Promise<LlmResolvedModelInfo>"
+          },
+          {
+            "signature": "async resolveCallConfig(config: LlmCallConfig, signal?: AbortSignal): Promise<LlmCallConfig>"
+          },
+          {
+            "signature": "async prepareCall( config: LlmCallConfig, signal?: AbortSignal, configure?: ConfigureCall, ): Promise<PreparedLlmCall>"
+          },
+          {
+            "signature": "stream(options: GenerateOptions): AsyncIterable<StreamChunk>"
+          }
+        ]
+      },
+      {
+        "key": "lsp",
+        "description": "The LSP capability seam (`ctx.lsp`).",
+        "methods": [
+          {
+            "signature": "registerProvider(provider: LspProvider): () => void"
+          },
+          {
+            "signature": "query(request: LspQueryRequest, signal?: AbortSignal): Promise<LspQueryResult>"
+          }
+        ]
+      },
+      {
+        "key": "mcpResources",
+        "description": "Scoped resource access plus three tools shared by configured MCP servers.",
+        "methods": [
+          {
+            "signature": "register(server: string, provider: McpResourceProvider): () => void"
+          }
+        ]
+      },
+      {
+        "key": "messageFeedback",
+        "description": "Session-log service; cold operations never construct a Session or Agent.",
+        "methods": [
+          {
+            "signature": "@Remote('list') list(request: MessageFeedbackListRequest): Promise<MessageFeedbackListResult>"
+          },
+          {
+            "signature": "@Remote('put') put(request: MessageFeedbackPutRequest): Promise<MessageFeedbackPutResult>"
+          },
+          {
+            "signature": "@Remote('delete') delete(request: MessageFeedbackDeleteRequest): Promise<MessageFeedbackDeleteResult>"
+          }
+        ]
+      },
+      {
+        "key": "officeToPdf",
+        "description": "A provider lifetime owns all converters, queued calls, and temporary files.",
+        "methods": [
+          {
+            "signature": "readonly generation: OfficeToPdfGeneration = OfficeToPdfGeneration(randomUUID())"
+          },
+          {
+            "signature": "convert(request: OfficeToPdfRequest, signal?: AbortSignal): Promise<OfficeToPdfResult>"
+          },
+          {
+            "signature": "@Remote async render( workspaceFileScope: WorkspaceFileScope, path: string, priority: OfficeToPdfPriority, signal: AbortSignal, ): Promise<RenderedDocumentBytes>"
+          },
+          {
+            "signature": "@Remote('generation') getGeneration(signal: AbortSignal): OfficeToPdfGeneration"
+          }
+        ]
+      },
+      {
+        "key": "otel",
+        "description": "Shared transport provider.",
+        "methods": [
+          {
+            "signature": "createEventReporter(options: EventLogOptions): EventLogReporter"
+          },
+          {
+            "signature": "createSessionLogReporter(options: SessionLogOptions): SessionLogReporter"
+          }
+        ]
+      },
+      {
+        "key": "permissionPresets",
+        "description": "Owns the deployment's configured permission presets, the fixed Auto integration hook, and their write path.",
+        "methods": [
+          {
+            "signature": "@Remote('catalog') catalog(): PermissionCatalog"
+          },
+          {
+            "signature": "registerAuto(admit: () => void): () => Promise<void>"
+          },
+          {
+            "signature": "current(session: Session): string"
+          },
+          {
+            "signature": "resolve(name: string): PresetSpec"
+          },
+          {
+            "signature": "optionOf(name: string): PresetOption"
+          },
+          {
+            "signature": "set(session: Session, name: string): void"
+          }
+        ]
+      },
+      {
+        "key": "planMode",
+        "description": "`ctx.planMode`: owns logged plan state, applies and narrates selected state at step start, the `plan:policy` section, the `/plan` command, and the stable exit tool.",
+        "methods": [
+          {
+            "signature": "get(agent: Agent): { active: boolean; pending?: boolean }"
+          },
+          {
+            "signature": "set(agent: Agent, active: boolean): 'committed' | 'queued' | 'cancelled' | 'noop'"
+          }
+        ]
+      },
+      {
+        "key": "pluginManager",
+        "description": "Manage profile files and apply their declared reload lifecycle.",
+        "methods": [
+          {
+            "signature": "@Remote listVersionExemptions(): { exemptions: Record<string, string[]>; warnings: string[] }"
+          },
+          {
+            "signature": "@Remote setVersionExemption(packageVersion: string, runtimeVersion: string, enabled: boolean, acceptRisk?: boolean): Promise<ChangeResult>"
+          },
+          {
+            "signature": "@Remote async listPlugins(): Promise<PluginInfo[]>"
+          },
+          {
+            "signature": "@Remote listBundles(): Promise<BundleInfo[]>"
+          },
+          {
+            "signature": "@Remote async registries(): Promise<PluginRegistries>"
+          },
+          {
+            "signature": "@Remote async inspect(spec: string, options?: InspectOptions, signal?: AbortSignal): Promise<PluginSpecInspection>"
+          },
+          {
+            "signature": "@Remote setPluginEnabled(id: PluginEntryId, enabled: boolean): Promise<ChangeResult>"
+          },
+          {
+            "signature": "@Remote setBundleEnabled(name: string, enabled: boolean): Promise<ChangeResult>"
+          },
+          {
+            "signature": "@Remote installBundle(spec: string, options?: InstallBundleOptions): Promise<ChangeResult>"
+          },
+          {
+            "signature": "@Remote async waitForInstall(requestId: PluginInstallRequestId): Promise<ChangeResult | null>"
+          },
+          {
+            "signature": "@Remote async cancelInstall(requestId: PluginInstallRequestId): Promise<PluginInstallCancellation>"
+          },
+          {
+            "signature": "@Remote removeBundle(name: string): Promise<ChangeResult>"
+          }
+        ]
+      },
+      {
+        "key": "pluginMarket",
+        "description": "Fetches, validates, and caches configured market indexes; annotates entries with the profile's installation facts.",
+        "methods": [
+          {
+            "signature": "@Remote listIndexes(): MarketIndexSummary[]"
+          },
+          {
+            "signature": "@Remote async setIndexes(urls: string[]): Promise<void>"
+          },
+          {
+            "signature": "@Remote async search(url: string, query: MarketQuery): Promise<MarketSearchResult>"
+          },
+          {
+            "signature": "async entry(url: string, name: string): Promise<MarketListingEntry | undefined>"
+          }
+        ]
+      },
+      {
+        "key": "pluginRegistryProbe",
+        "description": "Compares public registry responses on the Host; the Client owns the initial selection.",
+        "methods": [
+          {
+            "signature": "@Remote async fastest(): Promise<string | null>"
+          }
+        ]
+      },
+      {
+        "key": "productAnalytics",
+        "description": "Authenticated event intake; disabled instances do not inspect identity or accept new events.",
+        "methods": [
+          {
+            "signature": "@Remote enabled(): boolean"
+          },
+          {
+            "signature": "@Remote({ mode: 'stream' }) async *watchPolicy(signal: AbortSignal): AsyncIterable<boolean>"
+          },
+          {
+            "signature": "@Remote async report(event: ProductEvent): Promise<void>"
+          }
+        ]
+      },
+      {
+        "key": "productTelemetry",
+        "description": "Host analytics sender.",
+        "methods": [
+          {
+            "signature": "emit(record: ProductTelemetryRecord): void"
+          }
+        ]
+      },
+      {
+        "key": "profileContext",
+        "description": "Current profile facts; scheduling and mutation belong to their callers.",
+        "methods": [
+          {
+            "signature": "readonly packageManager?: ProfilePnpmInvocation"
+          },
+          {
+            "signature": "readonly startedBundles: readonly string[]"
+          },
+          {
+            "signature": "readonly overlays: readonly PatchOptions[]"
+          },
+          {
+            "signature": "readonly telemetryDisabledEnv: string | undefined"
+          }
+        ]
+      },
+      {
+        "key": "ptcRuntime",
+        "description": "Registers one `ctx.ptcRuntime` implementation.",
+        "methods": [
+          {
+            "signature": "abstract readonly language: string"
+          },
+          {
+            "signature": "abstract readonly isolation: string"
+          },
+          {
+            "signature": "release(owner: object): Promise<void>"
+          },
+          {
+            "signature": "abstract resolve(request: PtcRunRequest): PtcRunSpec"
+          },
+          {
+            "signature": "abstract run(spec: PtcRunSpec): Promise<PtcRunResult>"
+          }
+        ]
+      },
+      {
+        "key": "remoteAccess",
+        "description": "Registry of access policies, the Gateway's access decisions, list filtering, and the per-Peer access snapshot.",
+        "methods": [
+          {
+            "signature": "registerPolicy<K extends Exclude<keyof PrincipalMap, 'owner'>>(kind: K, policy: RemoteAccessPolicy<PrincipalMap[K]>): () => void"
+          },
+          {
+            "signature": "invalidate(principal?: Principal): void"
+          },
+          {
+            "signature": "decide(request: RemoteAccessRequest<Principal>): RemoteAccessDecision"
+          },
+          {
+            "signature": "allows(resource: RemoteAccessResource): boolean"
+          },
+          {
+            "signature": "snapshotFor(principal: Principal): RemoteAccessBaseline"
+          },
+          {
+            "signature": "@Remote({ mode: 'stream' }) async *follow(signal: AbortSignal): AsyncIterable<RemoteAccessFrame>"
+          }
+        ]
+      },
+      {
+        "key": "sandbox",
+        "description": "Abstract process-sandbox service.",
+        "methods": [
+          {
+            "signature": "abstract confine(argv: readonly string[], policy: SandboxPolicy, signal?: AbortSignal): Promise<ConfinedArgv>"
+          }
+        ]
+      },
+      {
+        "key": "sandboxPolicy",
+        "description": "The sandbox-policy service (`ctx.sandboxPolicy`).",
+        "methods": [
+          {
+            "signature": "readonly defaultMode: SandboxMode"
+          },
+          {
+            "signature": "readonly workspaceRoot: string"
+          },
+          {
+            "signature": "resolve(request: SandboxPolicyRequest = {}): SandboxExecutionPolicy"
+          },
+          {
+            "signature": "overrideOf(session: Session): SandboxMode | undefined"
+          }
+        ]
+      },
+      {
+        "key": "schedule",
+        "description": "Shared management service; reads, deletion, and timing edits never activate a Session.",
+        "methods": [
+          {
+            "signature": "async create(sessionId: SessionId, request: ScheduleCreateRequest, signal?: AbortSignal): Promise<ScheduleRecord>"
+          },
+          {
+            "signature": "@Remote('list') async list(request: ScheduleListRequest): Promise<ScheduleRecord[]>"
+          },
+          {
+            "signature": "@Remote('catalog') async catalog(): Promise<ScheduleCatalogEntry[]>"
+          },
+          {
+            "signature": "@Remote('history') async history(request: ScheduleDeliveryHistoryRequest): Promise<ScheduleDeliveryHistoryResult>"
+          },
+          {
+            "signature": "@Remote('delete') async delete(request: ScheduleDeleteRequest, signal?: AbortSignal): Promise<ScheduleDeleteResult>"
+          },
+          {
+            "signature": "@Remote('update') async update(request: ScheduleUpdateRequest, signal?: AbortSignal): Promise<ScheduleUpdateResult>"
+          }
+        ]
+      },
+      {
+        "key": "sessionController",
+        "description": "Host service backing the generated `ctx.remote.session` namespace.",
+        "methods": [
+          {
+            "signature": "resolveAgent(sessionId: SessionId): Promise<ApiSessionAgentResult>"
+          },
+          {
+            "signature": "inspect( sessionId: SessionId, signal?: AbortSignal, ): Promise<SessionInspection>"
+          },
+          {
+            "signature": "@Remote('list') async list(_request: SessionListRequest, signal: AbortSignal): Promise<SessionListValue>"
+          },
+          {
+            "signature": "@Remote('search') async search(request: SessionSearchRequest, signal: AbortSignal): Promise<SessionSearchValue>"
+          },
+          {
+            "signature": "@Remote('create') create(request: SessionCreateRequest): Promise<SessionCreateValue>"
+          },
+          {
+            "signature": "@Remote('selectModel') selectModel(request: SessionSelectModelRequest): Promise<SessionSelectModelValue>"
+          },
+          {
+            "signature": "@Remote async initializeDefaultModel(): Promise<void>"
+          },
+          {
+            "signature": "@Remote('modelCatalog') modelCatalog(): Promise<ModelCatalog>"
+          },
+          {
+            "signature": "@Remote canOpenWorkspacePath(): boolean"
+          },
+          {
+            "signature": "workspaceDesktop(): { name: string; available: boolean; fileManager: 'finder' | 'explorer' | 'directory' | null }"
+          },
+          {
+            "signature": "@Remote('openWorkspacePath') async openWorkspacePath( request: SessionOpenWorkspacePathRequest, signal: AbortSignal, ): Promise<SessionOpenWorkspacePathValue>"
+          },
+          {
+            "signature": "@Remote('workspacePathApplications') async workspacePathApplications( request: { readonly path: string }, signal: AbortSignal, ): Promise<readonly SessionWorkspacePathApplication[]>"
+          },
+          {
+            "signature": "@Remote('rename') rename(request: SessionRenameRequest): Promise<SessionRenameValue>"
+          },
+          {
+            "signature": "@Remote('fork') async fork(request: SessionForkRequest): Promise<SessionForkValue>"
+          },
+          {
+            "signature": "@Remote('prompt') async prompt(request: SessionPromptRequest, signal: AbortSignal): Promise<SessionPromptValue>"
+          },
+          {
+            "signature": "@Remote('attachment') attachment(request: SessionAttachmentRequest): Promise<SessionAttachmentValue>"
+          },
+          {
+            "signature": "@Remote('updateQueue') updateQueue(request: SessionUpdateQueueRequest): Promise<SessionUpdateQueueValue>"
+          },
+          {
+            "signature": "@Remote('cancel') cancel(request: SessionCancelRequest): SessionCancelValue"
+          },
+          {
+            "signature": "@Remote({ name: 'page', resources: { session: addressedSession } }) page(request: SessionPageRequest, signal: AbortSignal): Promise<SessionPage>"
+          },
+          {
+            "signature": "@Remote({ mode: 'stream', resources: { session: addressedSession } }) follow(request: SessionFollowRequest, signal: AbortSignal): AsyncIterable<SessionFollowFrame>"
+          },
+          {
+            "signature": "@Remote('projections') async projections(request: SessionProjectionsRequest, signal: AbortSignal): Promise<SessionProjectionsValue>"
+          },
+          {
+            "signature": "@Remote({ mode: 'stream' }) async *control(signal: AbortSignal): AsyncIterable<SessionControlFrame>"
+          }
+        ]
+      },
+      {
+        "key": "sessionFeedback",
+        "description": "Host Remote through which a product surface records a Session-level remark.",
+        "methods": [
+          {
+            "signature": "@Remote('record') record(request: SessionFeedbackRecordRequest): Promise<SessionFeedbackRecordResult>"
+          }
+        ]
+      },
+      {
+        "key": "sessionFileReferences",
+        "description": "Host Remote adapter over the composed file-reference provider.",
+        "methods": [
+          {
+            "signature": "@Remote list( agent: Agent, query: string, signal: AbortSignal, ): Promise<FileReferenceCandidate[]>"
+          }
+        ]
+      },
+      {
+        "key": "sessionPersistence",
+        "description": "Durable append-only session storage addressed through per-session handles.",
+        "methods": [
+          {
+            "signature": "readonly identity: symbol = Symbol('sessionPersistence')"
+          },
+          {
+            "signature": "abstract create(header: SessionHeader, options?: SessionPersistenceCreateOptions): Promise<SessionHandle>"
+          },
+          {
+            "signature": "abstract open(id: SessionId, access: SessionAccess, options?: SessionPersistenceOpenOptions): Promise<SessionHandle>"
+          },
+          {
+            "signature": "abstract flush(): Promise<void>"
+          },
+          {
+            "signature": "abstract stat(id: SessionId, options?: SessionPersistenceStatOptions): Promise<SessionPersistenceSnapshot | undefined>"
+          },
+          {
+            "signature": "abstract list(options?: SessionPersistenceListOptions): Promise<readonly SessionPersistenceSnapshot[]>"
+          }
+        ]
+      },
+      {
+        "key": "sessionProjectionCache",
+        "description": "The persisted projection cache service.",
+        "methods": [
+          {
+            "signature": "cachedSnapshot( meta: SessionHeader, keys?: readonly Extract<keyof SessionProjectionMap, string>[], ): ProjectionSnapshot | undefined"
+          },
+          {
+            "signature": "cachedPredecessorTitle(meta: SessionHeader): ProjectionSnapshot | undefined"
+          },
+          {
+            "signature": "hydratePrepared( session: Session, events: readonly SessionEvent[], ): ProjectionSnapshot"
+          },
+          {
+            "signature": "async write(session: Session): Promise<void>"
+          },
+          {
+            "signature": "coldSnapshot( meta: SessionHeader, inheritedEventCount: SessionLogOffset, events: readonly SessionEvent[], ): ProjectionSnapshot"
+          }
+        ]
+      },
+      {
+        "key": "sessionProjections",
+        "description": "`ctx.sessionProjections`: the projection unit table and its drive.",
+        "methods": [
+          {
+            "signature": "register< K extends keyof SessionProjectionMap, S extends SessionProjectionStateMap[K], >( definition: Omit<ProjectionDefinition<K, S>, 'wire'> & { wire: NonNullable<ProjectionDefinition<K, S>['wire']> }, ): () => void"
+          },
+          {
+            "signature": "register< K extends Exclude<keyof SessionProjectionStateMap, keyof SessionProjectionMap>, S extends SessionProjectionStateMap[K], >( definition: Omit<ProjectionDefinition<K, S>, 'wire'>, ): () => void"
+          },
+          {
+            "signature": "onChanged(listener: ProjectionChangeListener): () => void"
+          },
+          {
+            "signature": "stateOf<K extends keyof SessionProjectionStateMap>( session: Session, key: K, ): SessionProjectionStateMap[K] | undefined"
+          },
+          {
+            "signature": "snapshot( session: Session, keys?: readonly Extract<keyof SessionProjectionMap, string>[], ): ProjectionSnapshot"
+          },
+          {
+            "signature": "cachedSnapshot( session: Session, keys?: readonly Extract<keyof SessionProjectionMap, string>[], ): ProjectionSnapshot | undefined"
+          },
+          {
+            "signature": "checkpoint(session: Session): ProjectionCheckpoint"
+          },
+          {
+            "signature": "restoreFloor(checkpoint: ProjectionCheckpoint): SessionLogOffset | undefined"
+          },
+          {
+            "signature": "viewCheckpoint( checkpoint: ProjectionCheckpoint, keys?: readonly Extract<keyof SessionProjectionMap, string>[], ): Partial<SessionProjectionMap>"
+          },
+          {
+            "signature": "restore( checkpoint: ProjectionCheckpoint, events: readonly SessionEvent[], baseSeq: SessionLogOffset, header: SessionHeader, inheritedEventCount: SessionLogOffset, ): { snapshot: ProjectionSnapshot; checkpoint: ProjectionCheckpoint }"
+          },
+          {
+            "signature": "hydrate( session: Session, checkpoint: ProjectionCheckpoint, events: readonly SessionEvent[], baseSeq: SessionLogOffset, ): ProjectionSnapshot"
+          }
+        ]
+      },
+      {
+        "key": "sessionQuery",
+        "description": "Unified live-preferred session query service.",
+        "methods": [
+          {
+            "signature": "observeSession( sessionId: SessionId, options: SessionObservationOptions = {}, ): Promise<SessionObservation>"
+          },
+          {
+            "signature": "abstract searchSessions( request: SessionSearchRequest, exec?: SessionSearchExecContext, ): Promise<SessionSearchPage<SessionSearchHit>>"
+          },
+          {
+            "signature": "abstract searchEvents( request: SessionEventSearchRequest, exec?: SessionSearchExecContext, ): Promise<SessionEventSearchPage>"
+          },
+          {
+            "signature": "listSessions(signal?: AbortSignal): Promise<SessionRecord[]>"
+          },
+          {
+            "signature": "async readSession(sessionId: SessionId): Promise<SessionLogSnapshot>"
+          },
+          {
+            "signature": "async filterSessions( filters: readonly SessionResultFilter[], signal?: AbortSignal, ): Promise<SessionRecord[]>"
+          },
+          {
+            "signature": "async readTitle( sessionId: SessionId, signal?: AbortSignal, ): Promise<SessionTitleSnapshot | undefined>"
+          },
+          {
+            "signature": "async readTitleSnapshot( sessionId: SessionId, signal?: AbortSignal, ): Promise<SessionTitleObservation>"
+          },
+          {
+            "signature": "async readTitleSnapshots( sessionIds: readonly SessionId[], signal?: AbortSignal, ): Promise<SessionTitleObservationResult[]>"
+          },
+          {
+            "signature": "async listEvents(sessionId: SessionId): Promise<SessionEventRecord[]>"
+          },
+          {
+            "signature": "async filterEvents( sessionId: SessionId, filters: readonly SessionEventResultFilter[], ): Promise<SessionEventSearchDocument[]>"
+          },
+          {
+            "signature": "async readSurface(sessionId: SessionId): Promise<SessionSurfaceSnapshot>"
+          },
+          {
+            "signature": "async traceSession(sessionId: SessionId, signal?: AbortSignal): Promise<SessionLineageTrace>"
+          },
+          {
+            "signature": "async traceEvent(request: SessionEventTraceRequest, signal?: AbortSignal): Promise<SessionEventTraceObservation>"
+          },
+          {
+            "signature": "async readEvent(request: SessionEventReadRequest, signal?: AbortSignal): Promise<SessionEventWindow>"
+          }
+        ]
+      },
+      {
+        "key": "sessionReferenceResolver",
+        "description": "Exact-read consumer that prepares immutable cross-session message context.",
+        "methods": [
+          {
+            "signature": "async listCandidates( agent: Agent, query: string = '', limit: number = this.config.candidateLimit, signal?: AbortSignal, ): Promise<SessionReferenceCandidate[]>"
+          },
+          {
+            "signature": "@Remote('candidates') async remoteExportCandidates( agent: Agent, query: string, signal: AbortSignal, ): Promise<SessionReferenceMentionCandidate[]>"
+          },
+          {
+            "signature": "async prepare( agent: Agent, content: ContentBlock[], references: SessionReferenceInput[], signal?: AbortSignal, ): Promise<PreparedReferencedMessage>"
+          }
+        ]
+      },
+      {
+        "key": "sessions",
+        "description": "In-memory session store (`ctx.sessions`).",
+        "methods": [
+          {
+            "signature": "registerMessageProjection(projection: SessionMessageProjection): () => Promise<void>"
+          },
+          {
+            "signature": "create(id?: SessionId, options?: CreateSessionOptions): Session"
+          },
+          {
+            "signature": "prepare(id?: SessionId, options?: PrepareSessionOptions): Session"
+          },
+          {
+            "signature": "enter(session: Session): () => void"
+          },
+          {
+            "signature": "announce(session: Session): void"
+          },
+          {
+            "signature": "async flush(session: Session): Promise<boolean>"
+          },
+          {
+            "signature": "get(id: SessionId): Session | undefined"
+          },
+          {
+            "signature": "list(): Session[]"
+          },
+          {
+            "signature": "fork(source: SessionForkSource, boundary?: SessionSeq, childSessionId?: SessionId): Session"
+          }
+        ]
+      },
+      {
+        "key": "sessionSkillCatalog",
+        "description": "Host service backing `ctx.remote.skills` without activating a cold Agent.",
+        "methods": [
+          {
+            "signature": "@Remote async list(request: SkillListRequest, signal: AbortSignal): Promise<SkillListValue>"
+          }
+        ]
+      },
+      {
+        "key": "sessionTelemetry",
+        "description": "Loadable form of the backend contract: one implementation per context — the cordis `Service` registration under the `telemetry` key throws on a duplicate, cordis' standard behavior.",
+        "methods": [
+          {
+            "signature": "abstract readonly sharing: SessionTelemetrySharingStatus"
+          },
+          {
+            "signature": "abstract emit(record: SessionTelemetryRecord): void"
+          },
+          {
+            "signature": "flush?(): void"
+          },
+          {
+            "signature": "abstract shutdown(): Promise<void>"
+          }
+        ]
+      },
+      {
+        "key": "sessionTitle",
+        "description": "Log-backed title fold plus asynchronous fallback generation.",
+        "methods": [
+          {
+            "signature": "get(session: Session): SessionTitleSnapshot | undefined"
+          },
+          {
+            "signature": "rename(session: Session, title: string): SessionTitleSnapshot"
+          },
+          {
+            "signature": "async refresh(session: Session, signal?: AbortSignal): Promise<SessionTitleSnapshot | undefined>"
+          },
+          {
+            "signature": "register(provider: SessionTitleProvider): () => Promise<void>"
+          }
+        ]
+      },
+      {
+        "key": "settings",
+        "description": "Project Config schemas into forms and own optional instance-level UI policy.",
+        "methods": [
+          {
+            "signature": "configure(presentation: { auto?: boolean }, owner: Fiber = this.ctx.fiber): () => void"
+          },
+          {
+            "signature": "prepareDocument(): Promise<string>"
+          },
+          {
+            "signature": "describe(options?: SettingsDescribeOptions): SettingsDescriptor[]"
+          },
+          {
+            "signature": "async update(ns: string, patch: object, expectedRevision?: number): Promise<void>"
+          },
+          {
+            "signature": "async replace(ns: string, section: object, expectedRevision?: number): Promise<void>"
+          },
+          {
+            "signature": "async mutate(ns: string, ops: readonly SettingsPathOp[], expectedRevision?: number): Promise<void>"
+          }
+        ]
+      },
+      {
+        "key": "settingsController",
+        "description": "Host service backing the generated `ctx.remote.settings` namespace.",
+        "methods": [
+          {
+            "signature": "@Remote describe(): SettingsDescribeValue"
+          },
+          {
+            "signature": "@Remote update( ns: string, patch: Record<string, JsonValue>, expectedRevision: number | undefined, ): Promise<SettingsNamespaceView>"
+          },
+          {
+            "signature": "@Remote replace( ns: string, section: Record<string, JsonValue>, expectedRevision: number | undefined, ): Promise<SettingsNamespaceView>"
+          },
+          {
+            "signature": "@Remote async mutate( ns: string, ops: SettingsPathOpView[], expectedRevision: number | undefined, ): Promise<SettingsNamespaceView>"
+          },
+          {
+            "signature": "@Remote async openSettingsDocument(signal: AbortSignal): Promise<SettingsDocumentOpenValue>"
+          }
+        ]
+      },
+      {
+        "key": "shell",
+        "description": "Abstract bash execution service.",
+        "methods": [
+          {
+            "signature": "abstract resolve(request: ShellExecRequest): ShellExecSpec"
+          },
+          {
+            "signature": "abstract execute(spec: ShellExecSpec): Promise<ShellExecution>"
+          }
+        ]
+      },
+      {
+        "key": "shellEnv",
+        "description": "Registry (`ctx.shellEnv`) for trusted, per-execution `DSH_*` variables.",
+        "methods": [
+          {
+            "signature": "register(contributor: BashEnvContributor): () => void"
+          },
+          {
+            "signature": "collect(execution: ToolExecution): DshEnvironment"
+          },
+          {
+            "signature": "list(): BashEnvVariableInfo[]"
+          }
+        ]
+      },
+      {
+        "key": "skills",
+        "description": "Layered registry of skill providers, the host+per-scope shape the tools registry established.",
+        "methods": [
+          {
+            "signature": "registerProvider(create: (control: SkillProviderControl) => SkillProvider): () => void"
+          },
+          {
+            "signature": "register(skill: SkillRegistration): () => void"
+          },
+          {
+            "signature": "async list(options: SkillViewOptions = {}): Promise<SkillSummary[]>"
+          },
+          {
+            "signature": "async snapshot(options: SkillViewOptions = {}): Promise<SkillCatalogSnapshot>"
+          },
+          {
+            "signature": "async get(name: string, options: SkillViewOptions = {}): Promise<SkillDefinition | undefined>"
+          }
+        ]
+      },
+      {
+        "key": "speechController",
+        "description": "Speech calls never activate or submit to an Agent.",
+        "methods": [
+          {
+            "signature": "@Remote catalog(): SpeechCatalog"
+          },
+          {
+            "signature": "@Remote({ mode: 'stream' }) async *follow(signal: AbortSignal): AsyncIterable<SpeechCatalog>"
+          },
+          {
+            "signature": "@Remote configure(patch: SpeechSelectionPatch): Promise<void>"
+          },
+          {
+            "signature": "@Remote prepare(providerId: SpeechProviderId, options?: SpeechPreparationOptions): void"
+          },
+          {
+            "signature": "@Remote cancelPreparation(providerId: SpeechProviderId): Promise<void>"
+          },
+          {
+            "signature": "@Remote async transcribe(request: TranscriptionRequest, signal: AbortSignal): Promise<Transcript>"
+          }
+        ]
+      },
+      {
+        "key": "speechToText",
+        "description": "Registry shared by all transcription consumers in one Host composition.",
+        "methods": [
+          {
+            "signature": "register(provider: SpeechProvider): () => Promise<void>"
+          },
+          {
+            "signature": "listProviders(): readonly SpeechProviderInfo[]"
+          },
+          {
+            "signature": "async *follow(caller: AbortSignal): AsyncIterable<SpeechSnapshot>"
+          },
+          {
+            "signature": "snapshot(): SpeechSnapshot"
+          },
+          {
+            "signature": "async configure(patch: SpeechSelectionPatch): Promise<void>"
+          },
+          {
+            "signature": "prepare(id: SpeechProviderId, options?: SpeechPreparationOptions): void"
+          },
+          {
+            "signature": "async cancelPreparation(id: SpeechProviderId): Promise<void>"
+          },
+          {
+            "signature": "resolve(request: SpeechRequest): SpeechSpec"
+          },
+          {
+            "signature": "async transcribe(spec: SpeechSpec, signal: AbortSignal): Promise<Transcript>"
+          }
+        ]
+      },
+      {
+        "key": "spillStore",
+        "description": "Abstract spill storage service.",
+        "methods": [
+          {
+            "signature": "abstract saveText(input: SaveTextSpill): Promise<SpillRef>"
+          }
+        ]
+      },
+      {
+        "key": "ssh",
+        "description": "One non-reconnecting SSH session; loss invalidates all active operations.",
+        "methods": [
+          {
+            "signature": "readonly ready: Promise<Hello>"
+          },
+          {
+            "signature": "async request<T>(method: string, params: unknown, result: z.ZodType<T>, signal?: AbortSignal, wait: boolean = false): Promise<T>"
+          },
+          {
+            "signature": "async connectStream(endpoint: SshStreamEndpoint, signal?: AbortSignal): Promise<Socket>"
+          },
+          {
+            "signature": "dispose(): Promise<void>"
+          }
+        ]
+      },
+      {
+        "key": "storage",
+        "description": "The storage hub service.",
+        "methods": [
+          {
+            "signature": "readonly backend: BackendRegistry = new BackendRegistry()"
+          },
+          {
+            "signature": "mount<K extends keyof StorageForms>(form: K, facility: StorageForms[K]): () => void"
+          },
+          {
+            "signature": "form<K extends keyof StorageForms>(form: K): StorageForms[K]"
+          }
+        ]
+      },
+      {
+        "key": "storageDomain",
+        "description": "The mounted domain facility.",
+        "methods": [
+          {
+            "signature": "async open<S extends DomainSpec>(spec: S): Promise<Domain<S>>"
+          },
+          {
+            "signature": "get(name: string): DomainImpl | undefined"
+          },
+          {
+            "signature": "async closeAll(): Promise<void>"
+          }
+        ]
+      },
+      {
+        "key": "subagentModelSelection",
+        "description": "Singleton settings owner read when delegation tools are composed for a Session.",
+        "methods": [
+          {
+            "signature": "current(): SubagentModelSelectionSettings"
+          }
+        ]
+      },
+      {
+        "key": "subagents",
+        "description": "Named provider registry with managed activations, durable discovery, and local child messaging.",
+        "methods": [
+          {
+            "signature": "resolveMaxDepth(configured?: number | 'provider-managed'): number | undefined"
+          },
+          {
+            "signature": "startActivation(spec: SubagentActivationSpec & { readonly childId: SessionId }): Promise<SubagentActivation & { readonly messageId: MessageId }>"
+          },
+          {
+            "signature": "startActivation(spec: SubagentActivationSpec): Promise<SubagentActivation>"
+          },
+          {
+            "signature": "async waitForChildren(parent: Agent): Promise<boolean>"
+          },
+          {
+            "signature": "async sendMessage( sender: Agent, targetId: SessionId, content: ContentBlock[], options: SubagentSendMessageOptions, ): Promise<MessageId>"
+          },
+          {
+            "signature": "interrupt(targetSessionId: SessionId, authority: SubagentInterruptAuthority): void"
+          },
+          {
+            "signature": "async drainDescendants(parents: readonly Agent[]): Promise<void>"
+          },
+          {
+            "signature": "async drainChildren(parent: Agent, childIds: readonly SessionId[]): Promise<void>"
+          },
+          {
+            "signature": "listChildren(parentSessionId: SessionId, signal?: AbortSignal): Promise<SubagentCatalogEntry[]>"
+          },
+          {
+            "signature": "listDescendants(rootSessionId: SessionId, signal?: AbortSignal): Promise<SubagentDescendantListEntry[]>"
+          },
+          {
+            "signature": "@Remote('prompt') async prompt(request: SubagentPromptRequest, signal: AbortSignal): Promise<SubagentPromptReceipt>"
+          },
+          {
+            "signature": "@Remote('interruptByParent') interruptByParent( childSessionId: SessionId, parentSessionId: SessionId, mode: 'continuable', ): SubagentInterruptReceipt"
+          },
+          {
+            "signature": "registerProvider(provider: SubagentProvider): () => void"
+          },
+          {
+            "signature": "getProvider(name: string): SubagentProvider | undefined"
+          },
+          {
+            "signature": "list(): string[]"
+          }
+        ]
+      },
+      {
+        "key": "subprocess",
+        "description": "Abstract subprocess service.",
+        "methods": [
+          {
+            "signature": "abstract resolveExecutable( command: string, env?: Readonly<Record<string, string>>, signal?: AbortSignal, ): Promise<string>"
+          },
+          {
+            "signature": "abstract terminalEnvironment(signal?: AbortSignal): Promise<SubprocessTerminalEnvironment>"
+          },
+          {
+            "signature": "abstract spawn(spec: SubprocessSpawnSpec): SubprocessHandle"
+          },
+          {
+            "signature": "abstract spawnTerminal(spec: SubprocessTerminalSpawnSpec): Promise<SubprocessTerminalHandle>"
+          }
+        ]
+      },
+      {
+        "key": "systemPrompt",
+        "description": "Registry service for the prompt inputs assembled before each model step.",
+        "methods": [
+          {
+            "signature": "section(section: PromptSection): () => void"
+          },
+          {
+            "signature": "getSectionOrder(name: PromptSectionOrderName): number"
+          },
+          {
+            "signature": "getContextOrder(name: PromptContextOrderName): number"
+          },
+          {
+            "signature": "context(context: PromptContext): () => void"
+          },
+          {
+            "signature": "suppressRuntimeContext(): () => void"
+          },
+          {
+            "signature": "tools(provider: (context: AssembleContext) => ToolProviderResult): () => void"
+          },
+          {
+            "signature": "variable(name: string, provider: (context: AssembleContext) => string | undefined): () => void"
+          },
+          {
+            "signature": "refreshContext(assembly: PromptAssembly, context: AssembleContext = {}): PromptAssembly"
+          },
+          {
+            "signature": "async assemble(context: AssembleContext = {}): Promise<PromptAssembly>"
+          }
+        ]
+      },
+      {
+        "key": "terminalController",
+        "description": "Typed Remote control of transient Session-owned terminal processes.",
+        "methods": [
+          {
+            "signature": "@Remote environment(agent: Agent, signal: AbortSignal): TerminalEnvironment"
+          },
+          {
+            "signature": "@Remote shells(agent: Agent, signal: AbortSignal): Promise<TerminalShell[]>"
+          },
+          {
+            "signature": "@Remote list(sessionId: SessionId): WebTerminalInfo[]"
+          },
+          {
+            "signature": "@Remote async create(agent: Agent, request: TerminalCreateRequest, signal: AbortSignal): Promise<WebTerminalInfo>"
+          },
+          {
+            "signature": "@Remote({ mode: 'stream' }) retain(sessionId: SessionId, id: WebTerminalId, signal: AbortSignal): AsyncIterable<TerminalRetentionFrame>"
+          },
+          {
+            "signature": "@Remote({ mode: 'stream' }) attach(agent: Agent, id: WebTerminalId, signal: AbortSignal): RemoteStream<TerminalFrame, TerminalInput>"
+          },
+          {
+            "signature": "@Remote rename(agent: Agent, id: WebTerminalId, title: string): void"
+          },
+          {
+            "signature": "@Remote async close(agent: Agent, id: WebTerminalId): Promise<void>"
+          }
+        ]
+      },
+      {
+        "key": "terminals",
+        "description": "In-process registry for replaceable PTY backends and exact-Agent sessions.",
+        "methods": [
+          {
+            "signature": "registerBackend(backend: TerminalBackend): () => void"
+          },
+          {
+            "signature": "listBackends(): string[]"
+          },
+          {
+            "signature": "async spawn(owner: Agent, request: TerminalSpawnRequest, signal?: AbortSignal): Promise<TerminalSpawnResult>"
+          },
+          {
+            "signature": "hasOwnerActivity(owner: Agent): boolean"
+          },
+          {
+            "signature": "startSend(owner: Agent, id: TerminalSessionId, request: TerminalSendRequest): TerminalSendOperation"
+          },
+          {
+            "signature": "read(owner: Agent, id: TerminalSessionId, request: TerminalReadRequest = {}): TerminalReadResult"
+          },
+          {
+            "signature": "signal(owner: Agent, id: TerminalSessionId, signal: TerminalSignal): Promise<TerminalSignalResult>"
+          },
+          {
+            "signature": "async kill(owner: Agent, id: TerminalSessionId, reason: string = 'model request'): Promise<boolean>"
+          },
+          {
+            "signature": "list(owner: Agent): TerminalSessionSnapshot[]"
+          }
+        ]
+      },
+      {
+        "key": "timer",
+        "description": "Disposable timer helpers mixed into Cordis contexts.",
+        "methods": [
+          {
+            "signature": "timeout(callback: () => void, delay: number): () => void"
+          },
+          {
+            "signature": "timeout(delay: number): Promise<void>"
+          },
+          {
+            "signature": "interval(callback: () => void, delay: number): () => void"
+          },
+          {
+            "signature": "interval<R = any>(delay: number): AsyncIterableIterator<void, R, void>"
+          },
+          {
+            "signature": "throttle<F extends (...args: any[]) => void>(callback: F, delay: number, noTrailing?: boolean): F & { dispose: () => void }"
+          },
+          {
+            "signature": "debounce<F extends (...args: any[]) => void>(callback: F, delay: number): F & { dispose: () => void }"
+          }
+        ]
+      },
+      {
+        "key": "tokenMeter",
+        "description": "Replay owner for one service-wide estimator and isolated per-session folds.",
+        "methods": [
+          {
+            "signature": "measure(session: Session, requestHeader?: EpochHeader): TokenMeasurement"
+          },
+          {
+            "signature": "estimateMessage(message: Message): number"
+          }
+        ]
+      },
+      {
+        "key": "toolResultPruner",
+        "description": "Deterministic head/middle/tail pruning for current tool-result surface nodes.",
+        "methods": [
+          {
+            "signature": "readonly config: ResolvedConfig"
+          },
+          {
+            "signature": "measureContent(blocks: readonly ContentBlock[]): number"
+          },
+          {
+            "signature": "pruneContent(blocks: readonly ContentBlock[]): ContentBlock[] | null"
+          },
+          {
+            "signature": "pruneSession(session: Session): PruneResult"
+          }
+        ]
+      },
+      {
+        "key": "tools",
+        "description": "Tool registry and execution pipeline.",
+        "methods": [
+          {
+            "signature": "presentAs(mode: ToolPresentationMode): () => void"
+          },
+          {
+            "signature": "register(definition: ToolDefinition): () => void"
+          },
+          {
+            "signature": "restrict(filter: ToolRestriction): () => void"
+          },
+          {
+            "signature": "guard(guard: ToolGuard): () => void"
+          },
+          {
+            "signature": "get(name: string, scope?: ScopeKey): ToolDefinition | undefined"
+          },
+          {
+            "signature": "schemas(scope?: ScopeKey): ToolSchema[]"
+          },
+          {
+            "signature": "executionMode(exec: ToolExecutionInput): ToolExecutionMode"
+          },
+          {
+            "signature": "async execute(exec: ToolExecutionInput): Promise<ToolExecutionResult>"
+          }
+        ]
+      },
+      {
+        "key": "translator",
+        "description": "One Host service with explicit routing, cancellation and quiescent unload.",
+        "methods": [
+          {
+            "signature": "async availableProviders(signal?: AbortSignal): Promise<readonly TranslationProvider[]>"
+          },
+          {
+            "signature": "resolve(request: TranslationRequest): TranslationSpec"
+          },
+          {
+            "signature": "async translate(spec: TranslationSpec, signal?: AbortSignal): Promise<string>"
+          }
+        ]
+      },
+      {
+        "key": "typert",
+        "description": "Registry of generated schemas, package reflection, invocations, and Remote dependency providers.",
+        "methods": [
+          {
+            "signature": "register(contribution: TypertContribution): TypertDisposer"
+          },
+          {
+            "signature": "get(key: string): TypertSchemaRecord | undefined"
+          },
+          {
+            "signature": "resolve(key: string): TypertSchemaRecord"
+          },
+          {
+            "signature": "list(filter: TypertSchemaFilter = {}): TypertSchemaRecord[]"
+          },
+          {
+            "signature": "getPackage(packageName: string, face: TypertFace = 'host'): TypertPackageRecord | undefined"
+          },
+          {
+            "signature": "listPackages(filter: TypertPackageFilter = {}): TypertPackageRecord[]"
+          },
+          {
+            "signature": "toJSONSchema(key: string, params?: z.core.ToJSONSchemaParams): z.core.JSONSchema.BaseSchema"
+          }
+        ]
+      },
+      {
+        "key": "typertGateway",
+        "description": "Resolve strict generated definitions or conservative SRC markers against current Cordis Services and Typert providers.",
+        "methods": [
+          {
+            "signature": "readonly wireStream: TypertGatewayWireStream = { open: (endpoint, payload, uplink, peer, signal) => this.openWireStream(endpoint, payload, uplink, peer, signal, new AbortController()), failure: error => rpcError(error), }"
+          },
+          {
+            "signature": "hasLiveClient(): boolean"
+          },
+          {
+            "signature": "registerRemoteEvents( source: TypertRemoteEventSource, host: RemoteEventHostInfo, ): () => Promise<void>"
+          },
+          {
+            "signature": "async invoke(request: InvokeRemoteRequest): Promise<unknown>"
+          },
+          {
+            "signature": "async stream(request: InvokeRemoteRequest): Promise<AsyncIterable<unknown>>"
+          }
+        ]
+      },
+      {
+        "key": "userQuestions",
+        "description": "`ctx.userQuestions`: validation plus the scoped answerer waterfall.",
+        "methods": [
+          {
+            "signature": "@Remote answer(agent: Agent, callId: ToolCallId, answer: AskUserQuestionAnswer): boolean"
+          },
+          {
+            "signature": "@Remote({ mode: 'stream' }) async *attachWait(agent: Agent, callId: ToolCallId, signal: AbortSignal): AsyncIterable<{ remainingMs: number }>"
+          },
+          {
+            "signature": "async askTimed( request: AskUserQuestionRequest & { agent: Agent }, callId: ToolCallId, timeoutMs: number, ): Promise<TimedUserQuestionResult>"
+          },
+          {
+            "signature": "async ask(request: AskUserQuestionRequest): Promise<AskUserQuestionAnswer>"
+          }
+        ]
+      },
+      {
+        "key": "web",
+        "description": "The web access service.",
+        "methods": [
+          {
+            "signature": "registerSearchProvider(provider: WebSearchProvider): () => void"
+          },
+          {
+            "signature": "registerFetchProvider(provider: WebFetchProvider): () => void"
+          },
+          {
+            "signature": "async search(request: WebSearchRequest, signal?: AbortSignal): Promise<WebSearchResult>"
+          },
+          {
+            "signature": "async fetch(request: WebFetchRequest, signal?: AbortSignal): Promise<WebFetchResult>"
+          }
+        ]
+      },
+      {
+        "key": "webApp",
+        "description": "The Web GUI this process serves, provided by the `web-runtime` row.",
+        "methods": [
+          {
+            "signature": "getAdvertisedUrl(): string"
+          }
+        ]
+      },
+      {
+        "key": "webhookRuntime",
+        "description": "Fire-and-forget rule runtime.",
+        "methods": [
+          {
+            "signature": "register<K extends string>(rule: WebhookRule<K>): () => Promise<void>"
+          },
+          {
+            "signature": "dispatch<K extends string>(delivery: VerifiedWebhookDelivery<K>): void"
+          }
+        ]
+      },
+      {
+        "key": "webServer",
+        "description": "The browser HTTP carrier service.",
+        "methods": [
+          {
+            "signature": "getOrigin(): string"
+          },
+          {
+            "signature": "register(route: WebRoute): () => void"
+          },
+          {
+            "signature": "registerUpgrade(route: WebUpgradeRoute): () => void"
+          },
+          {
+            "signature": "registerFallback(handler: WebRoute['handler']): () => void"
+          },
+          {
+            "signature": "tapIndex(transform: (html: string) => string): () => void"
+          },
+          {
+            "signature": "applyIndexTaps(html: string): string"
+          },
+          {
+            "signature": "collectIndexInjections(): IndexInjection[]"
+          },
+          {
+            "signature": "renderIndex(html: string): string"
+          }
+        ]
+      },
+      {
+        "key": "workflowEngine",
+        "description": "Workflow Service Definition contract.",
+        "methods": [
+          {
+            "signature": "abstract start(request: WorkflowStartRequest): WorkflowRun"
+          }
+        ]
+      },
+      {
+        "key": "workingDirectory",
+        "description": "One owner for each Session's effective directory and its model-visible changes.",
+        "methods": [
+          {
+            "signature": "readonly defaultDirectory: string"
+          },
+          {
+            "signature": "get(session: Session): string"
+          },
+          {
+            "signature": "ensure(agent: Agent, signal?: AbortSignal): Promise<string>"
+          },
+          {
+            "signature": "set(agent: Agent, path: string, signal?: AbortSignal): Promise<string>"
+          }
+        ]
+      },
+      {
+        "key": "workspaceChanges",
+        "description": "Serves the summaries and file comparisons the recorder keeps for live Sessions.",
+        "methods": [
+          {
+            "signature": "summary(sessionId: SessionId, seq: number): WorkspaceChangesSummary | undefined"
+          },
+          {
+            "signature": "diff(sessionId: SessionId, seq: number, index: number, signal: AbortSignal): Promise<WorkspaceFileDiff | undefined>"
+          }
+        ]
+      },
+      {
+        "key": "workspaceController",
+        "description": "Host service backing the generated `ctx.remote.workspace` namespace.",
+        "methods": [
+          {
+            "signature": "@Remote('create') create(request: WorkspaceCreateRequest): Promise<WorkspaceCreateValue>"
+          },
+          {
+            "signature": "@Remote('initializeDefault') async initializeDefault(signal: AbortSignal): Promise<WorkspaceValue | undefined>"
+          },
+          {
+            "signature": "@Remote('rename') rename(request: WorkspaceRenameRequest): Promise<WorkspaceValue>"
+          },
+          {
+            "signature": "@Remote('delete') delete(request: WorkspaceDeleteRequest): Promise<WorkspaceDeleteValue>"
+          },
+          {
+            "signature": "@Remote('insertBefore') insertBefore(request: WorkspaceInsertBeforeRequest): Promise<WorkspaceOrderValue>"
+          },
+          {
+            "signature": "@Remote('insertSessionBefore') insertSessionBefore(request: WorkspaceInsertSessionBeforeRequest): Promise<WorkspaceValue>"
+          },
+          {
+            "signature": "@Remote('archiveSession') archiveSession(request: WorkspaceArchiveSessionRequest): Promise<WorkspaceArchiveValue>"
+          },
+          {
+            "signature": "@Remote('unarchiveSession') unarchiveSession(request: WorkspaceUnarchiveSessionRequest): Promise<WorkspaceArchiveValue>"
+          },
+          {
+            "signature": "@Remote('pinSession') pinSession(request: WorkspacePinSessionRequest): Promise<WorkspacePinValue>"
+          },
+          {
+            "signature": "@Remote('unpinSession') unpinSession(request: WorkspaceUnpinSessionRequest): Promise<WorkspacePinValue>"
+          },
+          {
+            "signature": "@Remote({ mode: 'stream' }) async *follow(signal: AbortSignal): AsyncIterable<WorkspaceFollowFrame>"
+          }
+        ]
+      },
+      {
+        "key": "workspaceFiles",
+        "description": "Host Remote file reads and workspace directory observations over the composed filesystem.",
+        "methods": [
+          {
+            "signature": "@Remote async read( workspaceFileScope: WorkspaceFileScope, path: string, range: WorkspaceFileRange, signal: AbortSignal, ): Promise<WorkspaceFileText>"
+          },
+          {
+            "signature": "@Remote async readBytes( workspaceFileScope: WorkspaceFileScope, path: string, options: WorkspaceByteReadOptions, signal: AbortSignal, ): Promise<WorkspaceFileBytes>"
+          },
+          {
+            "signature": "@Remote async stat(workspaceFileScope: WorkspaceFileScope, path: string, signal: AbortSignal): Promise<WorkspaceFileStat>"
+          },
+          {
+            "signature": "@Remote async list(workspaceFileScope: WorkspaceFileScope, path: string, signal: AbortSignal): Promise<WorkspaceDirectoryListing>"
+          },
+          {
+            "signature": "@Remote({ mode: 'stream' }) changes(workspaceFileScope: WorkspaceFileScope, path: string, signal: AbortSignal): AsyncIterable<WorkspaceFileWatchFrame>"
+          }
+        ]
+      },
+      {
+        "key": "workspaceRegistry",
+        "description": "Durable workspace registry.",
+        "methods": [
+          {
+            "signature": "async create(path: string, title?: string): Promise<Workspace>"
+          },
+          {
+            "signature": "initializeDefault(resolveDirectory: () => Promise<string>): Promise<Workspace | undefined>"
+          },
+          {
+            "signature": "get(id: WorkspaceId): Workspace | undefined"
+          },
+          {
+            "signature": "list(): Workspace[]"
+          },
+          {
+            "signature": "delete(id: WorkspaceId): Promise<boolean>"
+          },
+          {
+            "signature": "insertBefore(id: WorkspaceId, beforeId?: WorkspaceId): Promise<readonly WorkspaceId[]>"
+          },
+          {
+            "signature": "archiveSession(sessionId: SessionId, options: ArchiveSessionOptions = {}): Promise<void>"
+          },
+          {
+            "signature": "unarchiveSession(sessionId: SessionId): Promise<void>"
+          },
+          {
+            "signature": "pinSession(sessionId: SessionId): Promise<void>"
+          },
+          {
+            "signature": "unpinSession(sessionId: SessionId): Promise<void>"
+          },
+          {
+            "signature": "async resolveByPath(path: string): Promise<Workspace | undefined>"
+          }
+        ]
+      },
+      {
+        "key": "worktrees",
+        "description": "Creates retained Git worktrees under the mounted filesystem and sandbox providers.",
+        "methods": [
+          {
+            "signature": "async create(agent: Agent, request: CreateWorktreeRequest = {}, signal?: AbortSignal): Promise<CreatedWorktree>"
+          }
+        ]
+      }
+    ]
+  }
+}

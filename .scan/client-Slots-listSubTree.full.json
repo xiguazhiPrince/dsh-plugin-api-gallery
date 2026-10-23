@@ -1,0 +1,1766 @@
+{
+  "platform": "client",
+  "provider": "Slots",
+  "method": "listSubTree",
+  "data": {
+    "trees": [
+      {
+        "type": "slot",
+        "name": "root",
+        "kind": "single",
+        "scope": "root",
+        "purpose": "The built-in render-tree root hole (seeded by SlotCore): the one slot the shell itself renders, and the ancestor of every other seat.",
+        "replaceRisk": "shadows-shipped-ui",
+        "children": [
+          {
+            "type": "slot",
+            "name": "shell.overlay",
+            "kind": "list",
+            "scope": "root",
+            "purpose": "Frame-wide floating layer, above every column and outside their scroll containers.",
+            "replaceRisk": "none",
+            "registration": [
+              {
+                "name": "id",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "order",
+                "type": "number",
+                "required": false
+              },
+              {
+                "name": "label",
+                "type": "string | (() => string)",
+                "required": false
+              }
+            ],
+            "children": [
+              {
+                "type": "slot",
+                "name": "shell.quota-notice",
+                "kind": "chain",
+                "scope": "root",
+                "purpose": "Frame-wide quota notice chain.",
+                "replaceRisk": "none",
+                "registration": [
+                  {
+                    "name": "select",
+                    "type": "(owner) => unknown | null",
+                    "required": true
+                  }
+                ],
+                "children": []
+              },
+              {
+                "type": "slot",
+                "name": "workspace.toast",
+                "kind": "keyed",
+                "scope": "root",
+                "purpose": "Workspace notices selected by their existing business discriminator.",
+                "replaceRisk": "shadows-shipped-ui",
+                "registration": [
+                  {
+                    "name": "key",
+                    "type": "string",
+                    "required": true
+                  }
+                ],
+                "keyDomain": "fixed by the owner's key table { [K in ToastKind]: ToastNotice<K> }, already taken: archived, archivedNotOpenable, createFailed, defaultWorkspaceFailed, forkRequiresOpen, pinFailed, sessionIdCopied, sessionIdCopyFailed, shortcutForkFailed, stoppedAndArchived, unpinFailed",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "slot",
+            "name": "sidebar",
+            "kind": "single",
+            "scope": "root",
+            "purpose": "The whole left column.",
+            "replaceRisk": "shadows-shipped-ui",
+            "children": [
+              {
+                "type": "slot",
+                "name": "sidebar.brand.mark",
+                "kind": "single",
+                "scope": "root",
+                "purpose": "Brand mark rendered in the expanded brand row and collapsed rail.",
+                "replaceRisk": "shadows-shipped-ui",
+                "children": []
+              },
+              {
+                "type": "slot",
+                "name": "sidebar.toggle.badge",
+                "kind": "single",
+                "scope": "root",
+                "purpose": "Non-interactive notification inside the collapsed sidebar expand button.",
+                "replaceRisk": "shadows-shipped-ui",
+                "children": []
+              },
+              {
+                "type": "slot",
+                "name": "sidebar.settings",
+                "kind": "single",
+                "scope": "root",
+                "purpose": "The settings seat at the sidebar foot.",
+                "replaceRisk": "shadows-shipped-ui",
+                "children": [
+                  {
+                    "type": "slot",
+                    "name": "settings.section",
+                    "kind": "list",
+                    "scope": "root",
+                    "purpose": "One settings page per list entry.",
+                    "replaceRisk": "none",
+                    "registration": [
+                      {
+                        "name": "id",
+                        "type": "string",
+                        "required": true
+                      },
+                      {
+                        "name": "order",
+                        "type": "number",
+                        "required": false
+                      },
+                      {
+                        "name": "label",
+                        "type": "string | (() => string)",
+                        "required": false
+                      }
+                    ],
+                    "children": [
+                      {
+                        "type": "slot",
+                        "name": "settings.general.item",
+                        "kind": "list",
+                        "scope": "root",
+                        "purpose": "One preference row inside the General section — the additive seat for a single setting that needs no page of its own (a whole page is `settings.section`), contributed by the feature plugin that owns the preference (locale → Language, ui-theme → Appearance, ui-conversation → Composer Enter).",
+                        "replaceRisk": "none",
+                        "registration": [
+                          {
+                            "name": "id",
+                            "type": "string",
+                            "required": true
+                          },
+                          {
+                            "name": "order",
+                            "type": "number",
+                            "required": false
+                          },
+                          {
+                            "name": "label",
+                            "type": "string | (() => string)",
+                            "required": false
+                          }
+                        ],
+                        "children": []
+                      },
+                      {
+                        "type": "slot",
+                        "name": "settings.plugins.tab",
+                        "kind": "list",
+                        "scope": "root",
+                        "purpose": "One page inside the Plugins settings section.",
+                        "replaceRisk": "none",
+                        "registration": [
+                          {
+                            "name": "id",
+                            "type": "string",
+                            "required": true
+                          },
+                          {
+                            "name": "order",
+                            "type": "number",
+                            "required": false
+                          },
+                          {
+                            "name": "label",
+                            "type": "string | (() => string)",
+                            "required": false
+                          }
+                        ],
+                        "children": []
+                      },
+                      {
+                        "type": "slot",
+                        "name": "settings.models.provider-card",
+                        "kind": "keyed",
+                        "scope": "root",
+                        "purpose": "One provider card's adapter extension area, dispatched with `entryKey = settingsNs` on every card that renders a directory row: a saved row's card (its first-run setup posture included) and the add-provider draft card.",
+                        "replaceRisk": "none",
+                        "registration": [
+                          {
+                            "name": "key",
+                            "type": "string",
+                            "required": true
+                          }
+                        ],
+                        "keyDomain": "open: any string the owner dispatches (no compile-time key set), none are taken yet",
+                        "children": []
+                      },
+                      {
+                        "type": "slot",
+                        "name": "settings.models.footer",
+                        "kind": "list",
+                        "scope": "root",
+                        "purpose": "Ordered extension area after the provider rows and the add controls.",
+                        "replaceRisk": "none",
+                        "registration": [
+                          {
+                            "name": "id",
+                            "type": "string",
+                            "required": true
+                          },
+                          {
+                            "name": "order",
+                            "type": "number",
+                            "required": false
+                          },
+                          {
+                            "name": "label",
+                            "type": "string | (() => string)",
+                            "required": false
+                          }
+                        ],
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "type": "slot",
+                    "name": "settings.trigger",
+                    "kind": "single",
+                    "scope": "root",
+                    "purpose": "The sidebar-foot trigger row content: icon + label, supplied as slot content (the accessible name comes from the content — rail state renders the label visually hidden).",
+                    "replaceRisk": "shadows-shipped-ui",
+                    "children": []
+                  },
+                  {
+                    "type": "slot",
+                    "name": "settings.header",
+                    "kind": "single",
+                    "scope": "root",
+                    "purpose": "The panel title text seat.",
+                    "replaceRisk": "shadows-shipped-ui",
+                    "children": []
+                  },
+                  {
+                    "type": "slot",
+                    "name": "settings.action",
+                    "kind": "list",
+                    "scope": "root",
+                    "purpose": "Optional actions rendered in the content-column header before Close.",
+                    "replaceRisk": "none",
+                    "registration": [
+                      {
+                        "name": "id",
+                        "type": "string",
+                        "required": true
+                      },
+                      {
+                        "name": "order",
+                        "type": "number",
+                        "required": false
+                      },
+                      {
+                        "name": "label",
+                        "type": "string | (() => string)",
+                        "required": false
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "type": "slot",
+                    "name": "settings.close",
+                    "kind": "single",
+                    "scope": "root",
+                    "purpose": "The close button's visually-hidden label text (the button itself — icon, geometry, focus — is shell chrome).",
+                    "replaceRisk": "shadows-shipped-ui",
+                    "children": []
+                  },
+                  {
+                    "type": "slot",
+                    "name": "settings.onboarding",
+                    "kind": "list",
+                    "scope": "root",
+                    "purpose": "Root-scoped onboarding steps contributed by settings features.",
+                    "replaceRisk": "none",
+                    "registration": [
+                      {
+                        "name": "id",
+                        "type": "string",
+                        "required": true
+                      },
+                      {
+                        "name": "order",
+                        "type": "number",
+                        "required": false
+                      },
+                      {
+                        "name": "label",
+                        "type": "string | (() => string)",
+                        "required": false
+                      }
+                    ],
+                    "children": [
+                      {
+                        "type": "slot",
+                        "name": "settings.models.sign-in",
+                        "kind": "single",
+                        "scope": "root",
+                        "purpose": "Optional account login choice before the credential editor.",
+                        "replaceRisk": "shadows-shipped-ui",
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "type": "slot",
+                    "name": "settings.launcher",
+                    "kind": "single",
+                    "scope": "root",
+                    "purpose": "Optional sidebar account launcher; opens the shell-owned settings panel.",
+                    "replaceRisk": "shadows-shipped-ui",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "type": "slot",
+                "name": "sidebar.footer.action",
+                "kind": "list",
+                "scope": "root",
+                "purpose": "Optional actions beside Settings at the sidebar foot.",
+                "replaceRisk": "none",
+                "registration": [
+                  {
+                    "name": "id",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "order",
+                    "type": "number",
+                    "required": false
+                  },
+                  {
+                    "name": "label",
+                    "type": "string | (() => string)",
+                    "required": false
+                  }
+                ],
+                "children": []
+              },
+              {
+                "type": "slot",
+                "name": "sidebar.panellist",
+                "kind": "list",
+                "scope": "root",
+                "purpose": "Global panel icons.",
+                "replaceRisk": "none",
+                "registration": [
+                  {
+                    "name": "id",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "order",
+                    "type": "number",
+                    "required": false
+                  },
+                  {
+                    "name": "label",
+                    "type": "string | (() => string)",
+                    "required": false
+                  }
+                ],
+                "children": []
+              },
+              {
+                "type": "slot",
+                "name": "sidebar.workspaces",
+                "kind": "single",
+                "scope": "root",
+                "purpose": "The workspace/session browsing region: section header, search, the grouped/flat session list, and every workspace dialog.",
+                "replaceRisk": "shadows-shipped-ui",
+                "children": [
+                  {
+                    "type": "slot",
+                    "name": "sidebar.workspaces.session.menu.item",
+                    "kind": "list",
+                    "scope": "root",
+                    "purpose": "The rows of one Session's \"...\" menu, in ascending `order`.",
+                    "replaceRisk": "none",
+                    "registration": [
+                      {
+                        "name": "id",
+                        "type": "string",
+                        "required": true
+                      },
+                      {
+                        "name": "order",
+                        "type": "number",
+                        "required": false
+                      },
+                      {
+                        "name": "label",
+                        "type": "string | (() => string)",
+                        "required": false
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "type": "slot",
+                    "name": "sidebar.workspaces.session.row.action",
+                    "kind": "list",
+                    "scope": "root",
+                    "purpose": "The hover buttons at the end of one Session row, in ascending `order`, after the \"...\" menu trigger.",
+                    "replaceRisk": "none",
+                    "registration": [
+                      {
+                        "name": "id",
+                        "type": "string",
+                        "required": true
+                      },
+                      {
+                        "name": "order",
+                        "type": "number",
+                        "required": false
+                      },
+                      {
+                        "name": "label",
+                        "type": "string | (() => string)",
+                        "required": false
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "type": "slot",
+                    "name": "sidebar.workspaces.directoryFlow",
+                    "kind": "single",
+                    "scope": "root",
+                    "purpose": "Directory-flow hole under the sidebar browsing region (declared by the WorkspaceBrowser entry).",
+                    "replaceRisk": "shadows-shipped-ui",
+                    "children": []
+                  },
+                  {
+                    "type": "slot",
+                    "name": "sidebar.session.row.leading",
+                    "kind": "list",
+                    "scope": "root",
+                    "purpose": "Leading decoration of one Session row, in the 16px cell before the title that the row's own state dot otherwise occupies.",
+                    "replaceRisk": "none",
+                    "registration": [
+                      {
+                        "name": "id",
+                        "type": "string",
+                        "required": true
+                      },
+                      {
+                        "name": "order",
+                        "type": "number",
+                        "required": false
+                      },
+                      {
+                        "name": "label",
+                        "type": "string | (() => string)",
+                        "required": false
+                      }
+                    ],
+                    "children": []
+                  },
+                  {
+                    "type": "slot",
+                    "name": "sidebar.session.row.hover",
+                    "kind": "list",
+                    "scope": "root",
+                    "purpose": "Section of the Session row's hover card between its relative time and its trailing status line.",
+                    "replaceRisk": "none",
+                    "registration": [
+                      {
+                        "name": "id",
+                        "type": "string",
+                        "required": true
+                      },
+                      {
+                        "name": "order",
+                        "type": "number",
+                        "required": false
+                      },
+                      {
+                        "name": "label",
+                        "type": "string | (() => string)",
+                        "required": false
+                      }
+                    ],
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "type": "slot",
+                "name": "sidebar.brand.name",
+                "kind": "single",
+                "scope": "root",
+                "purpose": "Brand name rendered beside the expanded mark.",
+                "replaceRisk": "shadows-shipped-ui",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "slot",
+            "name": "main",
+            "kind": "keyed",
+            "scope": "root",
+            "purpose": "Central panel selected by sidebar entry id.",
+            "replaceRisk": "shadows-shipped-ui",
+            "registration": [
+              {
+                "name": "key",
+                "type": "string",
+                "required": true
+              }
+            ],
+            "keyDomain": "open: any string the owner dispatches (no compile-time key set), already taken: conversation",
+            "children": [
+              {
+                "type": "slot",
+                "name": "plugins.bundle.config",
+                "kind": "keyed",
+                "scope": "root",
+                "purpose": "A bundle's own configuration, keyed by the bundle's package name and rendered on the bundle's page between its description and its rows (`view: 'page'` only).",
+                "replaceRisk": "shadows-shipped-ui",
+                "registration": [
+                  {
+                    "name": "key",
+                    "type": "string",
+                    "required": true
+                  }
+                ],
+                "keyDomain": "open: any string the owner dispatches (no compile-time key set), already taken: @deepseek-ai/dsh-experimental-cot-translation-bundle, @deepseek-ai/dsh-experimental-voice-input-bundle",
+                "children": []
+              },
+              {
+                "type": "slot",
+                "name": "plugins.add.actions",
+                "kind": "list",
+                "scope": "root",
+                "purpose": "Additional MenuItemButton rows after installation: 72px high, with a title and a description capped at two lines.",
+                "replaceRisk": "none",
+                "registration": [
+                  {
+                    "name": "id",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "order",
+                    "type": "number",
+                    "required": false
+                  },
+                  {
+                    "name": "label",
+                    "type": "string | (() => string)",
+                    "required": false
+                  }
+                ],
+                "children": []
+              },
+              {
+                "type": "slot",
+                "name": "plugins.tab",
+                "kind": "list",
+                "scope": "root",
+                "purpose": "Tabs after the page's own Installed tab, such as Discover: `label` names the tab and `order` places it.",
+                "replaceRisk": "none",
+                "registration": [
+                  {
+                    "name": "id",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "order",
+                    "type": "number",
+                    "required": false
+                  },
+                  {
+                    "name": "label",
+                    "type": "string | (() => string)",
+                    "required": false
+                  }
+                ],
+                "children": []
+              },
+              {
+                "type": "slot",
+                "name": "plugins.item",
+                "kind": "list",
+                "scope": "root",
+                "purpose": "One official plugin the Plugins page lists in its Official group after the official bundles: `label` is the card's title and `order` its place.",
+                "replaceRisk": "none",
+                "registration": [
+                  {
+                    "name": "id",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "order",
+                    "type": "number",
+                    "required": false
+                  },
+                  {
+                    "name": "label",
+                    "type": "string | (() => string)",
+                    "required": false
+                  }
+                ],
+                "children": []
+              },
+              {
+                "type": "slot",
+                "name": "plugins.bundle.activation",
+                "kind": "keyed",
+                "scope": "root",
+                "purpose": "Optional guidance after the user enables a bundle from the list, keyed by npm package name.",
+                "replaceRisk": "shadows-shipped-ui",
+                "registration": [
+                  {
+                    "name": "key",
+                    "type": "string",
+                    "required": true
+                  }
+                ],
+                "keyDomain": "open: any string the owner dispatches (no compile-time key set), already taken: @deepseek-ai/dsh-experimental-voice-input-bundle",
+                "children": []
+              },
+              {
+                "type": "slot",
+                "name": "plugins.row.config",
+                "kind": "keyed",
+                "scope": "root",
+                "purpose": "The configuration of one row a bundle declares, keyed by `<package name>#<row id>` with the row id as the bundle's patch declares it: the row on the bundle's page gains a configure control that opens the entry's page, headed by the plugin's display title and description.",
+                "replaceRisk": "none",
+                "registration": [
+                  {
+                    "name": "key",
+                    "type": "string",
+                    "required": true
+                  }
+                ],
+                "keyDomain": "open: any string the owner dispatches (no compile-time key set), none are taken yet",
+                "children": []
+              },
+              {
+                "type": "slot",
+                "name": "plugins.detail.actions",
+                "kind": "list",
+                "scope": "root",
+                "purpose": "Controls at the head of a detail page, before the page's own switch and uninstall, rendered with the page's subject.",
+                "replaceRisk": "none",
+                "registration": [
+                  {
+                    "name": "id",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "order",
+                    "type": "number",
+                    "required": false
+                  },
+                  {
+                    "name": "label",
+                    "type": "string | (() => string)",
+                    "required": false
+                  }
+                ],
+                "children": []
+              },
+              {
+                "type": "slot",
+                "name": "plugins.detail.badge",
+                "kind": "list",
+                "scope": "root",
+                "purpose": "Tags beside a detail page's title, after the version, beta, and problem tags the page draws itself, rendered with the page's subject.",
+                "replaceRisk": "none",
+                "registration": [
+                  {
+                    "name": "id",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "order",
+                    "type": "number",
+                    "required": false
+                  },
+                  {
+                    "name": "label",
+                    "type": "string | (() => string)",
+                    "required": false
+                  }
+                ],
+                "children": []
+              },
+              {
+                "type": "slot",
+                "name": "plugins.detail.section",
+                "kind": "list",
+                "scope": "root",
+                "purpose": "Sections under a detail page's own content: after the rows on a bundle's page, after the configuration on a row's or an official plugin's page.",
+                "replaceRisk": "none",
+                "registration": [
+                  {
+                    "name": "id",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "order",
+                    "type": "number",
+                    "required": false
+                  },
+                  {
+                    "name": "label",
+                    "type": "string | (() => string)",
+                    "required": false
+                  }
+                ],
+                "children": []
+              },
+              {
+                "type": "slot",
+                "name": "main.conversation",
+                "kind": "single",
+                "scope": "session-maybe",
+                "purpose": "Conversation shell beneath its root-scoped main-panel entry.",
+                "replaceRisk": "shadows-shipped-ui",
+                "children": [
+                  {
+                    "type": "slot",
+                    "name": "conversation.header",
+                    "kind": "single",
+                    "scope": "session-maybe",
+                    "purpose": "Resident navigation container, including when no Session is selected.",
+                    "replaceRisk": "shadows-shipped-ui",
+                    "children": [
+                      {
+                        "type": "slot",
+                        "name": "conversation.header.leading",
+                        "kind": "single",
+                        "scope": "root",
+                        "purpose": "Global navigation before the Session title, available without a Session.",
+                        "replaceRisk": "none",
+                        "children": []
+                      },
+                      {
+                        "type": "slot",
+                        "name": "conversation.session.header",
+                        "kind": "single",
+                        "scope": "session",
+                        "purpose": "Strict per-Session title, actions, and View navigation.",
+                        "replaceRisk": "shadows-shipped-ui",
+                        "children": [
+                          {
+                            "type": "slot",
+                            "name": "conversation.session.header.utilities",
+                            "kind": "list",
+                            "scope": "session",
+                            "purpose": "Right-aligned Session utilities in ascending order.",
+                            "replaceRisk": "none",
+                            "registration": [
+                              {
+                                "name": "id",
+                                "type": "string",
+                                "required": true
+                              },
+                              {
+                                "name": "order",
+                                "type": "number",
+                                "required": false
+                              },
+                              {
+                                "name": "label",
+                                "type": "string | (() => string)",
+                                "required": false
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "type": "slot",
+                            "name": "conversation.session.header.corner",
+                            "kind": "single",
+                            "scope": "session",
+                            "purpose": "The header's far-right corner, past the utilities' edge and into the header's own padding, for one control.",
+                            "replaceRisk": "shadows-shipped-ui",
+                            "children": []
+                          },
+                          {
+                            "type": "slot",
+                            "name": "conversation.session.header.actions",
+                            "kind": "list",
+                            "scope": "session",
+                            "purpose": "Title-adjacent Session actions in ascending order.",
+                            "replaceRisk": "none",
+                            "registration": [
+                              {
+                                "name": "id",
+                                "type": "string",
+                                "required": true
+                              },
+                              {
+                                "name": "order",
+                                "type": "number",
+                                "required": false
+                              },
+                              {
+                                "name": "label",
+                                "type": "string | (() => string)",
+                                "required": false
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "type": "slot",
+                            "name": "conversation.session.header.lineage",
+                            "kind": "single",
+                            "scope": "session",
+                            "purpose": "Optional replacement for one Session breadcrumb title.",
+                            "replaceRisk": "shadows-shipped-ui",
+                            "children": []
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "slot",
+            "name": "rightbar",
+            "kind": "single",
+            "scope": "root",
+            "purpose": "The right column: a track the centre makes room for, or nothing.",
+            "replaceRisk": "shadows-shipped-ui",
+            "children": [
+              {
+                "type": "slot",
+                "name": "rightbar.session",
+                "kind": "single",
+                "scope": "session",
+                "purpose": "Session content selected by the root-scoped right Sidebar controller.",
+                "replaceRisk": "shadows-shipped-ui",
+                "children": [
+                  {
+                    "type": "slot",
+                    "name": "sidebar.right.pane.tab",
+                    "kind": "keyed",
+                    "scope": "session",
+                    "purpose": "One tab's body, dispatched with the `id` of the type in force for `tab.kind`.",
+                    "replaceRisk": "none",
+                    "registration": [
+                      {
+                        "name": "key",
+                        "type": "string",
+                        "required": true
+                      }
+                    ],
+                    "keyDomain": "open: any string the owner dispatches (no compile-time key set), none are taken yet",
+                    "children": [
+                      {
+                        "type": "slot",
+                        "name": "sidebar.right.tab.files.actions",
+                        "kind": "list",
+                        "scope": "session",
+                        "purpose": "Workspace directory actions after the file tree's reload control.",
+                        "replaceRisk": "none",
+                        "registration": [
+                          {
+                            "name": "id",
+                            "type": "string",
+                            "required": true
+                          },
+                          {
+                            "name": "order",
+                            "type": "number",
+                            "required": false
+                          },
+                          {
+                            "name": "label",
+                            "type": "string | (() => string)",
+                            "required": false
+                          }
+                        ],
+                        "children": []
+                      },
+                      {
+                        "type": "slot",
+                        "name": "sidebar.right.tab.document.actions",
+                        "kind": "list",
+                        "scope": "session",
+                        "purpose": "Header toolbar contributions acting on the previewed file, rendered after the preview's own controls once the file's Host path is known.",
+                        "replaceRisk": "none",
+                        "registration": [
+                          {
+                            "name": "id",
+                            "type": "string",
+                            "required": true
+                          },
+                          {
+                            "name": "order",
+                            "type": "number",
+                            "required": false
+                          },
+                          {
+                            "name": "label",
+                            "type": "string | (() => string)",
+                            "required": false
+                          }
+                        ],
+                        "children": []
+                      },
+                      {
+                        "type": "slot",
+                        "name": "sidebar.right.tab.document.unpreviewable",
+                        "kind": "list",
+                        "scope": "session",
+                        "purpose": "Empty-state contributions for a file this preview cannot render, offered where Retry would stand once the file's Host path is known.",
+                        "replaceRisk": "none",
+                        "registration": [
+                          {
+                            "name": "id",
+                            "type": "string",
+                            "required": true
+                          },
+                          {
+                            "name": "order",
+                            "type": "number",
+                            "required": false
+                          },
+                          {
+                            "name": "label",
+                            "type": "string | (() => string)",
+                            "required": false
+                          }
+                        ],
+                        "children": []
+                      },
+                      {
+                        "type": "slot",
+                        "name": "deliverables.review.file.actions",
+                        "kind": "list",
+                        "scope": "session",
+                        "purpose": "The same file actions owned by a changed-file review tab.",
+                        "replaceRisk": "none",
+                        "registration": [
+                          {
+                            "name": "id",
+                            "type": "string",
+                            "required": true
+                          },
+                          {
+                            "name": "order",
+                            "type": "number",
+                            "required": false
+                          },
+                          {
+                            "name": "label",
+                            "type": "string | (() => string)",
+                            "required": false
+                          }
+                        ],
+                        "children": []
+                      },
+                      {
+                        "type": "slot",
+                        "name": "sidebar.right.tab.guide.entry",
+                        "kind": "keyed",
+                        "scope": "session",
+                        "purpose": "One provider's guide card, with the standard card as the owner's fallback.",
+                        "replaceRisk": "none",
+                        "registration": [
+                          {
+                            "name": "key",
+                            "type": "string",
+                            "required": true
+                          }
+                        ],
+                        "keyDomain": "open: any string the owner dispatches (no compile-time key set), none are taken yet",
+                        "children": []
+                      },
+                      {
+                        "type": "slot",
+                        "name": "sidebar.right.tab.guide",
+                        "kind": "chain",
+                        "scope": "session",
+                        "purpose": "The guide tab's body.",
+                        "replaceRisk": "none",
+                        "registration": [
+                          {
+                            "name": "select",
+                            "type": "(owner) => unknown | null",
+                            "required": true
+                          }
+                        ],
+                        "children": []
+                      },
+                      {
+                        "type": "slot",
+                        "name": "sidebar.chat.conversation",
+                        "kind": "single",
+                        "scope": "session",
+                        "purpose": "Session-scoped Conversation occurrence hosted by one Sidebar chat tab.",
+                        "replaceRisk": "shadows-shipped-ui",
+                        "children": []
+                      },
+                      {
+                        "type": "slot",
+                        "name": "sidebar.right.tab.document",
+                        "kind": "keyed",
+                        "scope": "session",
+                        "purpose": "Document body selected by a registered implementation id.",
+                        "replaceRisk": "none",
+                        "registration": [
+                          {
+                            "name": "key",
+                            "type": "string",
+                            "required": true
+                          }
+                        ],
+                        "keyDomain": "open: any string the owner dispatches (no compile-time key set), none are taken yet",
+                        "children": [
+                          {
+                            "type": "slot",
+                            "name": "sidebar.right.tab.document.office.pdf",
+                            "kind": "keyed",
+                            "scope": "session",
+                            "purpose": "PDF presentation supplied with Office-owned converted bytes.",
+                            "replaceRisk": "none",
+                            "registration": [
+                              {
+                                "name": "key",
+                                "type": "string",
+                                "required": true
+                              }
+                            ],
+                            "keyDomain": "open: any string the owner dispatches (no compile-time key set), none are taken yet",
+                            "children": []
+                          }
+                        ]
+                      },
+                      {
+                        "type": "slot",
+                        "name": "sidebar.right.tab.document.action",
+                        "kind": "keyed",
+                        "scope": "session",
+                        "purpose": "Renderer-specific controls before the document toolbar's reload button.",
+                        "replaceRisk": "none",
+                        "registration": [
+                          {
+                            "name": "key",
+                            "type": "string",
+                            "required": true
+                          }
+                        ],
+                        "keyDomain": "open: any string the owner dispatches (no compile-time key set), none are taken yet",
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "type": "slot",
+                    "name": "sidebar.right.pane.tab.title",
+                    "kind": "keyed",
+                    "scope": "session",
+                    "purpose": "A tab's title as its chip (and a floating panel's header) shows it, dispatched with the same key and information hook as the body.",
+                    "replaceRisk": "none",
+                    "registration": [
+                      {
+                        "name": "key",
+                        "type": "string",
+                        "required": true
+                      }
+                    ],
+                    "keyDomain": "open: any string the owner dispatches (no compile-time key set), none are taken yet",
+                    "children": []
+                  },
+                  {
+                    "type": "slot",
+                    "name": "sidebar.right.tab.menu.item",
+                    "kind": "list",
+                    "scope": "session",
+                    "purpose": "Extra items at the end of one tab's actions menu, in registration order.",
+                    "replaceRisk": "none",
+                    "registration": [
+                      {
+                        "name": "id",
+                        "type": "string",
+                        "required": true
+                      },
+                      {
+                        "name": "order",
+                        "type": "number",
+                        "required": false
+                      },
+                      {
+                        "name": "label",
+                        "type": "string | (() => string)",
+                        "required": false
+                      }
+                    ],
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "slot",
+            "name": "shell.bottom",
+            "kind": "single",
+            "scope": "root",
+            "purpose": "Full-width bottom content below all three columns.",
+            "replaceRisk": "shadows-shipped-ui",
+            "children": []
+          },
+          {
+            "type": "slot",
+            "name": "shell.leading",
+            "kind": "single",
+            "scope": "root",
+            "purpose": "Window-chrome seat at the frame's top-left, over every main panel.",
+            "replaceRisk": "shadows-shipped-ui",
+            "children": []
+          }
+        ]
+      },
+      {
+        "type": "factory",
+        "name": "conversation.images.content",
+        "scope": "root",
+        "children": []
+      },
+      {
+        "type": "factory",
+        "name": "workspace.toast.content",
+        "scope": "root",
+        "children": []
+      },
+      {
+        "type": "factory",
+        "name": "conversation.user.text",
+        "scope": "session",
+        "children": [
+          {
+            "type": "slot",
+            "name": "conversation.user.text.node",
+            "kind": "keyed",
+            "scope": "session",
+            "purpose": "One business-owned inline renderer for a pure JSON text node.",
+            "replaceRisk": "shadows-shipped-ui",
+            "registration": [
+              {
+                "name": "key",
+                "type": "string",
+                "required": true
+              }
+            ],
+            "keyDomain": "fixed by the owner's key table { [Id in UserTextId]: { node: UserTextNode<Id> } }, already taken: command, file, folder, secret, session, skill, text",
+            "children": []
+          }
+        ]
+      },
+      {
+        "type": "factory",
+        "name": "conversation.content",
+        "scope": "session-maybe",
+        "children": [
+          {
+            "type": "slot",
+            "name": "conversation.composer",
+            "kind": "chain",
+            "scope": "session",
+            "purpose": "Selector-routed replacements for the current Session's resident composer.",
+            "replaceRisk": "none",
+            "registration": [
+              {
+                "name": "select",
+                "type": "(owner) => unknown | null",
+                "required": true
+              }
+            ],
+            "children": [
+              {
+                "type": "slot",
+                "name": "conversation.approval.detail",
+                "kind": "single",
+                "scope": "session",
+                "purpose": "Optional detail for the Tool call correlated with an approval request.",
+                "replaceRisk": "shadows-shipped-ui",
+                "children": []
+              },
+              {
+                "type": "slot",
+                "name": "conversation.plan-review.actions",
+                "kind": "list",
+                "scope": "session",
+                "purpose": "Actions for the exact plan under review; approval remains with the question composer.",
+                "replaceRisk": "none",
+                "registration": [
+                  {
+                    "name": "id",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "order",
+                    "type": "number",
+                    "required": false
+                  },
+                  {
+                    "name": "label",
+                    "type": "string | (() => string)",
+                    "required": false
+                  }
+                ],
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "slot",
+            "name": "conversation.hero.workspace",
+            "kind": "single",
+            "scope": "root",
+            "purpose": "Workspace picker shown by the blank-session Hero.",
+            "replaceRisk": "shadows-shipped-ui",
+            "children": [
+              {
+                "type": "slot",
+                "name": "conversation.hero.workspace.directoryFlow",
+                "kind": "single",
+                "scope": "root",
+                "purpose": "Directory-flow hole under the conversation empty-state picker (declared by the WorkspacePicker entry).",
+                "replaceRisk": "shadows-shipped-ui",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "slot",
+            "name": "conversation.session",
+            "kind": "single",
+            "scope": "session",
+            "purpose": "Strict per-Session Conversation body.",
+            "replaceRisk": "shadows-shipped-ui",
+            "children": [
+              {
+                "type": "slot",
+                "name": "conversation.view",
+                "kind": "list",
+                "scope": "session",
+                "purpose": "Registered Conversation target Views, rendered one at a time.",
+                "replaceRisk": "none",
+                "registration": [
+                  {
+                    "name": "id",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "order",
+                    "type": "number",
+                    "required": false
+                  },
+                  {
+                    "name": "label",
+                    "type": "string | (() => string)",
+                    "required": false
+                  }
+                ],
+                "children": [
+                  {
+                    "type": "slot",
+                    "name": "conversation.trajectory.images",
+                    "kind": "single",
+                    "scope": "session",
+                    "purpose": "Renderer for one group of durable record images in the Trajectory ledger.",
+                    "replaceRisk": "shadows-shipped-ui",
+                    "children": []
+                  },
+                  {
+                    "type": "slot",
+                    "name": "conversation.chat.flow",
+                    "kind": "single",
+                    "scope": "session",
+                    "purpose": "Ordered Chat rows and local echoes with viewport-bound visibility hooks.",
+                    "replaceRisk": "shadows-shipped-ui",
+                    "children": [
+                      {
+                        "type": "slot",
+                        "name": "conversation.chat.node",
+                        "kind": "keyed",
+                        "scope": "session",
+                        "purpose": "Final Chat node renderer, keyed by `ChatNodeKind`.",
+                        "replaceRisk": "shadows-shipped-ui",
+                        "registration": [
+                          {
+                            "name": "key",
+                            "type": "string",
+                            "required": true
+                          }
+                        ],
+                        "keyDomain": "fixed by the owner's key table { [Kind in ChatNodeKind]: { node: ChatNode<Kind> } }, already taken: assistant-step, command, command-input, compaction, context, manual-compaction, model-retry, question-reply, steering, system-prompt, tool-call, turn-error, turn-max-tokens, turn-process, turn-tail, turn-trigger, unknown, user, workflow-run",
+                        "children": [
+                          {
+                            "type": "slot",
+                            "name": "tool.call.toolview",
+                            "kind": "keyed",
+                            "scope": "session",
+                            "purpose": "Keyed Tool call view dispatched by wire Tool name.",
+                            "replaceRisk": "shadows-shipped-ui",
+                            "registration": [
+                              {
+                                "name": "key",
+                                "type": "string",
+                                "required": true
+                              }
+                            ],
+                            "keyDomain": "open: any string the owner dispatches (no compile-time key set), already taken: ask_user_question, bash, cordis_define, cordis_inspect_list, cordis_inspect_query, cordis_inspect_self, cordis_run, cordis_stop, cordis_undefine, create_goal, edit, get_goal, glob, grep, interrupt_agent, job_kill, job_list, job_output, list_agents, list_subagent_models, lsp, present, ralph, read, read_image, schedule_create, schedule_delete, schedule_list, schedule_update, send_message, session_event_read, session_event_search, session_event_trace, session_search, session_trace, skill, spawn_teammate, subagent, team_task_create, team_task_get, team_task_list, team_task_update, terminal_close, terminal_list, terminal_open, terminal_read, terminal_signal, todo_write, update_goal, wait_agent, web_fetch, web_search, workflow, write",
+                            "children": [
+                              {
+                                "type": "slot",
+                                "name": "tool.call.images",
+                                "kind": "single",
+                                "scope": "session",
+                                "purpose": "Durable images of a settled image-bearing Tool call, rendered through the attachment presentation plugin.",
+                                "replaceRisk": "shadows-shipped-ui",
+                                "children": []
+                              },
+                              {
+                                "type": "slot",
+                                "name": "tool.view.cordis",
+                                "kind": "keyed",
+                                "scope": "session",
+                                "purpose": "Interactive Package-owned region rendered inside the latest eligible `cordis_run` card in the conversation flow.",
+                                "replaceRisk": "none",
+                                "registration": [
+                                  {
+                                    "name": "key",
+                                    "type": "string",
+                                    "required": true
+                                  }
+                                ],
+                                "keyDomain": "fixed by the dynamic Client Guard",
+                                "allowedKeys": [
+                                  {
+                                    "value": "self",
+                                    "description": "The only accepted key. The Guard binds it to this Package's pluginId and packageId."
+                                  }
+                                ],
+                                "children": []
+                              }
+                            ]
+                          },
+                          {
+                            "type": "slot",
+                            "name": "conversation.chat.message.images",
+                            "kind": "single",
+                            "scope": "session",
+                            "purpose": "Renderer for one consecutive group of durable message images.",
+                            "replaceRisk": "shadows-shipped-ui",
+                            "children": []
+                          },
+                          {
+                            "type": "slot",
+                            "name": "conversation.chat.assistant-actions",
+                            "kind": "list",
+                            "scope": "session",
+                            "purpose": "Ordered actions for one finalized assistant message.",
+                            "replaceRisk": "none",
+                            "registration": [
+                              {
+                                "name": "id",
+                                "type": "string",
+                                "required": true
+                              },
+                              {
+                                "name": "order",
+                                "type": "number",
+                                "required": false
+                              },
+                              {
+                                "name": "label",
+                                "type": "string | (() => string)",
+                                "required": false
+                              }
+                            ],
+                            "children": []
+                          },
+                          {
+                            "type": "slot",
+                            "name": "conversation.chat.reasoning.body",
+                            "kind": "single",
+                            "scope": "session",
+                            "purpose": "Expanded reasoning body with the unchanged model text.",
+                            "replaceRisk": "shadows-shipped-ui",
+                            "children": []
+                          },
+                          {
+                            "type": "slot",
+                            "name": "conversation.chat.commandview",
+                            "kind": "keyed",
+                            "scope": "session",
+                            "purpose": "Command row keyed by the command name.",
+                            "replaceRisk": "none",
+                            "registration": [
+                              {
+                                "name": "key",
+                                "type": "string",
+                                "required": true
+                              }
+                            ],
+                            "keyDomain": "open: any string the owner dispatches (no compile-time key set), none are taken yet",
+                            "children": []
+                          },
+                          {
+                            "type": "slot",
+                            "name": "conversation.chat.turnTail",
+                            "kind": "list",
+                            "scope": "session",
+                            "purpose": "Ordered feature contributions before a completed Turn's action row.",
+                            "replaceRisk": "none",
+                            "registration": [
+                              {
+                                "name": "id",
+                                "type": "string",
+                                "required": true
+                              },
+                              {
+                                "name": "order",
+                                "type": "number",
+                                "required": false
+                              },
+                              {
+                                "name": "label",
+                                "type": "string | (() => string)",
+                                "required": false
+                              }
+                            ],
+                            "children": [
+                              {
+                                "type": "slot",
+                                "name": "deliverables.file.actions",
+                                "kind": "list",
+                                "scope": "session",
+                                "purpose": "Open one file through its authorized Session event coordinates.",
+                                "replaceRisk": "none",
+                                "registration": [
+                                  {
+                                    "name": "id",
+                                    "type": "string",
+                                    "required": true
+                                  },
+                                  {
+                                    "name": "order",
+                                    "type": "number",
+                                    "required": false
+                                  },
+                                  {
+                                    "name": "label",
+                                    "type": "string | (() => string)",
+                                    "required": false
+                                  }
+                                ],
+                                "children": []
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "slot",
+            "name": "conversation.composer.bar",
+            "kind": "single",
+            "scope": "session-maybe",
+            "purpose": "Resident composer body, including the no-Session inert state.",
+            "replaceRisk": "shadows-shipped-ui",
+            "children": [
+              {
+                "type": "slot",
+                "name": "conversation.input.attachments",
+                "kind": "single",
+                "scope": "session-maybe",
+                "purpose": "Optional draft-attachment rail and drop target.",
+                "replaceRisk": "shadows-shipped-ui",
+                "children": []
+              },
+              {
+                "type": "slot",
+                "name": "conversation.input.overlay",
+                "kind": "list",
+                "scope": "session",
+                "purpose": "Floating entries rendered inside the resident composer card.",
+                "replaceRisk": "none",
+                "registration": [
+                  {
+                    "name": "id",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "order",
+                    "type": "number",
+                    "required": false
+                  },
+                  {
+                    "name": "label",
+                    "type": "string | (() => string)",
+                    "required": false
+                  }
+                ],
+                "children": []
+              },
+              {
+                "type": "slot",
+                "name": "conversation.input.permission",
+                "kind": "single",
+                "scope": "session",
+                "purpose": "Current-session permission control inside the composer tool row.",
+                "replaceRisk": "shadows-shipped-ui",
+                "children": []
+              },
+              {
+                "type": "slot",
+                "name": "conversation.input.model",
+                "kind": "single",
+                "scope": "session",
+                "purpose": "Model selector inside the composer tool row.",
+                "replaceRisk": "shadows-shipped-ui",
+                "children": [
+                  {
+                    "type": "slot",
+                    "name": "conversation.input.model.label",
+                    "kind": "single",
+                    "scope": "session",
+                    "purpose": "Non-interactive inline model label; selection controls remain owner-managed.",
+                    "replaceRisk": "shadows-shipped-ui",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "type": "slot",
+                "name": "conversation.input.left",
+                "kind": "list",
+                "scope": "session",
+                "purpose": "Compact controls at the left of the composer tool row.",
+                "replaceRisk": "none",
+                "registration": [
+                  {
+                    "name": "id",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "order",
+                    "type": "number",
+                    "required": false
+                  },
+                  {
+                    "name": "label",
+                    "type": "string | (() => string)",
+                    "required": false
+                  }
+                ],
+                "children": []
+              },
+              {
+                "type": "slot",
+                "name": "conversation.input.plan",
+                "kind": "single",
+                "scope": "session",
+                "purpose": "Plan control inside the composer tool row.",
+                "replaceRisk": "shadows-shipped-ui",
+                "children": []
+              },
+              {
+                "type": "slot",
+                "name": "conversation.input.right",
+                "kind": "list",
+                "scope": "session",
+                "purpose": "Compact controls before the composer submit action.",
+                "replaceRisk": "none",
+                "registration": [
+                  {
+                    "name": "id",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "order",
+                    "type": "number",
+                    "required": false
+                  },
+                  {
+                    "name": "label",
+                    "type": "string | (() => string)",
+                    "required": false
+                  }
+                ],
+                "children": []
+              },
+              {
+                "type": "slot",
+                "name": "conversation.input.activity",
+                "kind": "single",
+                "scope": "session",
+                "purpose": "Compact action after the model selector; it can expand across the toolbar while retaining the editor and submit action.",
+                "replaceRisk": "shadows-shipped-ui",
+                "children": []
+              },
+              {
+                "type": "slot",
+                "name": "conversation.composer.dock",
+                "kind": "list",
+                "scope": "session",
+                "purpose": "Ambient entries below the composer card.",
+                "replaceRisk": "none",
+                "registration": [
+                  {
+                    "name": "id",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "name": "order",
+                    "type": "number",
+                    "required": false
+                  },
+                  {
+                    "name": "label",
+                    "type": "string | (() => string)",
+                    "required": false
+                  }
+                ],
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "slot",
+            "name": "conversation.input.dock",
+            "kind": "list",
+            "scope": "session",
+            "purpose": "Full-width entries above the composer card.",
+            "replaceRisk": "none",
+            "registration": [
+              {
+                "name": "id",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "order",
+                "type": "number",
+                "required": false
+              },
+              {
+                "name": "label",
+                "type": "string | (() => string)",
+                "required": false
+              }
+            ],
+            "children": []
+          },
+          {
+            "type": "slot",
+            "name": "conversation.hero.brand.mark",
+            "kind": "single",
+            "scope": "root",
+            "purpose": "Brand mark shown before the blank-session headline.",
+            "replaceRisk": "none",
+            "children": []
+          },
+          {
+            "type": "slot",
+            "name": "conversation.hero.agentPreset",
+            "kind": "single",
+            "scope": "session-maybe",
+            "purpose": "Agent-preset control staged for a New Session.",
+            "replaceRisk": "shadows-shipped-ui",
+            "children": []
+          },
+          {
+            "type": "slot",
+            "name": "conversation.hero.options",
+            "kind": "list",
+            "scope": "session",
+            "purpose": "Compact options right-aligned in the New Session row after the workspace and preset controls; rendered only with a Session.",
+            "replaceRisk": "none",
+            "registration": [
+              {
+                "name": "id",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "order",
+                "type": "number",
+                "required": false
+              },
+              {
+                "name": "label",
+                "type": "string | (() => string)",
+                "required": false
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "type": "factory",
+        "name": "conversation.chat.reasoning.content",
+        "scope": "root",
+        "children": []
+      },
+      {
+        "type": "factory",
+        "name": "conversation.chat.user.content",
+        "scope": "session",
+        "children": [
+          {
+            "type": "slot",
+            "name": "conversation.chat.user.images",
+            "kind": "single",
+            "scope": "session",
+            "purpose": "User-message images, including pending and local-echo previews, independently replaceable from output images.",
+            "replaceRisk": "shadows-shipped-ui",
+            "children": []
+          }
+        ]
+      }
+    ],
+    "referencedTypes": []
+  }
+}

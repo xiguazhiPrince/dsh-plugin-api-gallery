@@ -1,0 +1,51 @@
+{
+  "platform": "client",
+  "provider": "Builtin",
+  "method": "listBuiltins",
+  "data": {
+    "builtins": [
+      {
+        "name": "ctx",
+        "description": "Restricted Cordis Context. Prefer ctx.get(name) with an undefined check; use inject only for hard dependencies.",
+        "signatures": [
+          "ctx.get(name: string): unknown | undefined",
+          "ctx.on(name: string, listener: Function): () => void",
+          "ctx.provide(name: string, value: unknown): () => void",
+          "ctx.effect(callback: Function, label?: string): () => void"
+        ]
+      },
+      {
+        "name": "React",
+        "description": "React runtime exposed without JSX transformation.",
+        "signatures": [
+          "React.createElement(type, props, ...children): ReactElement",
+          "React.useState(initial)",
+          "React.useEffect(effect, deps)"
+        ]
+      },
+      {
+        "name": "host",
+        "description": "Package-private JSON RPC from Client to this Package's Host half.",
+        "signatures": [
+          "host.call(method: string, args?: JsonValue): Promise<JsonValue>"
+        ]
+      },
+      {
+        "name": "styles",
+        "description": "Package-owned stylesheet insertion cleaned up with the Client run.",
+        "signatures": [
+          "styles.insert(css: string): () => void"
+        ]
+      },
+      {
+        "name": "console",
+        "description": "Package-tagged browser logging.",
+        "signatures": [
+          "console.log(...values): void",
+          "console.error(...values): void"
+        ]
+      }
+    ],
+    "referencedTypes": []
+  }
+}

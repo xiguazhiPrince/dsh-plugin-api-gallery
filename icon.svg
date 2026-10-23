@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Plugin API Gallery">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#18213a"/>
+      <stop offset="1" stop-color="#0c1020"/>
+    </linearGradient>
+    <linearGradient id="a" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7aa2ff"/>
+      <stop offset="1" stop-color="#4d6bfe"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="url(#g)"/>
+  <path d="M12 22v-6a4 4 0 0 1 4-4h6M52 22v-6a4 4 0 0 0-4-4h-6M12 42v6a4 4 0 0 0 4 4h6M52 42v6a4 4 0 0 1-4 4h-6"
+        fill="none" stroke="#3f5ec9" stroke-width="2.4" stroke-linecap="round"/>
+  <g fill="url(#a)">
+    <rect x="19" y="19" width="6" height="6" rx="1.6"/>
+    <rect x="29" y="19" width="6" height="6" rx="1.6" opacity="0.72"/>
+    <rect x="39" y="19" width="6" height="6" rx="1.6" opacity="0.46"/>
+    <rect x="19" y="29" width="6" height="6" rx="1.6" opacity="0.72"/>
+    <rect x="29" y="29" width="6" height="6" rx="1.6"/>
+    <rect x="39" y="29" width="6" height="6" rx="1.6" opacity="0.72"/>
+    <rect x="19" y="39" width="6" height="6" rx="1.6" opacity="0.46"/>
+    <rect x="29" y="39" width="6" height="6" rx="1.6" opacity="0.72"/>
+    <rect x="39" y="39" width="6" height="6" rx="1.6"/>
+  </g>
+  <circle cx="32" cy="32" r="27" fill="none" stroke="#8fb0ff" stroke-opacity="0.18" stroke-width="1.4"/>
+</svg>

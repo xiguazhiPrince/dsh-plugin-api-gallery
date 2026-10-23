@@ -1,0 +1,34 @@
+{
+  "platform": "client",
+  "provider": "Event",
+  "method": "listEvents",
+  "data": {
+    "mode": "catalog",
+    "events": [
+      {
+        "name": "connection/reset",
+        "description": "A connection generation was established.",
+        "mode": "emit",
+        "signature": "'connection/reset'(): void"
+      },
+      {
+        "name": "locale/change",
+        "description": "The active locale switched.",
+        "mode": "emit",
+        "signature": "'locale/change'(snapshot: LocaleSnapshot): void"
+      },
+      {
+        "name": "slots/changed",
+        "description": "An ordinary Slot declaration or entry registration set changed.",
+        "mode": "emit",
+        "signature": "'slots/changed'(key: string): void"
+      },
+      {
+        "name": "theme/change",
+        "description": "Theme state changed (preference switched, registry updated, or the OS color scheme changed while the preference is `system`).",
+        "mode": "emit",
+        "signature": "'theme/change'(snapshot: ThemeSnapshot): void"
+      }
+    ]
+  }
+}

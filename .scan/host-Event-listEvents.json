@@ -1,0 +1,466 @@
+{
+  "platform": "host",
+  "provider": "Event",
+  "method": "listEvents",
+  "data": {
+    "mode": "catalog",
+    "events": [
+      {
+        "name": "agent-loop/config-start-failed",
+        "description": "A declarative agent entry failed before it could publish a live agent.",
+        "mode": "emit",
+        "signature": "'agent-loop/config-start-failed'(payload: { sessionId: SessionId; error: unknown }): void"
+      },
+      {
+        "name": "agent-preset/selected",
+        "description": "One session committed a different agent preset to its durable log.",
+        "mode": "emit",
+        "signature": "'agent-preset/selected'(sessionId: SessionId, agentPreset: string): void"
+      },
+      {
+        "name": "agent/assistant-stream",
+        "description": "Process-local assistant-stream publication.",
+        "mode": "emit",
+        "signature": "'agent/assistant-stream'(this: Scoped<Agent>, payload: { agent: Agent; frame: AssistantStreamFrame }): void"
+      },
+      {
+        "name": "agent/created",
+        "description": "An entered agent is ready for per-agent initialization after factory setup.",
+        "mode": "serial",
+        "signature": "'agent/created'(this: Scoped<Agent>, payload: { agent: Agent; source: SessionStartSource; signal?: AbortSignal }): undefined | Promise<undefined>"
+      },
+      {
+        "name": "agent/disposed",
+        "description": "An agent left the registry; AgentLoop emits this after driver quiescence and scoped-registration unwind, but before session detachment.",
+        "mode": "emit",
+        "signature": "'agent/disposed'(this: Scoped<Agent>, payload: { agent: Agent }): void"
+      },
+      {
+        "name": "agent/error",
+        "description": "A step or turn errored.",
+        "mode": "emit",
+        "signature": "'agent/error'(this: Scoped<Agent>, payload: { agent: Agent; turn: number; step: number; error: unknown }): void"
+      },
+      {
+        "name": "agent/inbox/claimed",
+        "description": "One message left the inbox inside its open turn.",
+        "mode": "emit",
+        "signature": "'agent/inbox/claimed'(this: Scoped<Agent>, payload: { agent: Agent; message: UserMessage; turn: number }): void"
+      },
+      {
+        "name": "agent/inbox/discarded",
+        "description": "One message was discarded from the live inbox.",
+        "mode": "emit",
+        "signature": "'agent/inbox/discarded'(this: Scoped<Agent>, payload: { agent: Agent; message: UserMessage }): void"
+      },
+      {
+        "name": "agent/inbox/inserted",
+        "description": "One message entered the live inbox.",
+        "mode": "emit",
+        "signature": "'agent/inbox/inserted'(this: Scoped<Agent>, payload: { agent: Agent; message: UserMessage }): void"
+      },
+      {
+        "name": "agent/pre-step",
+        "description": "Reject a proposed step or replace the messages that enter it.",
+        "mode": "waterfall",
+        "signature": "'agent/pre-step'(this: Scoped<Agent>, payload: { agent: Agent; messages: UserMessage[]; turn: number; step: number; signal: AbortSignal }, next: () => Promise<PreStepDecision>): Promise<PreStepDecision>"
+      },
+      {
+        "name": "agent/request",
+        "description": "Replace the frozen call configuration.",
+        "mode": "waterfall",
+        "signature": "'agent/request'(this: Scoped<Agent>, payload: { agent: Agent; turn: number; step: number; signal: AbortSignal }, next: () => Promise<LlmCallConfig>): Promise<LlmCallConfig>"
+      },
+      {
+        "name": "agent/request-error",
+        "description": "Handle one failed model-request attempt before the loop retries or closes its step.",
+        "mode": "waterfall",
+        "signature": "'agent/request-error'(this: Scoped<Agent>, payload: { agent: Agent; turn: number; step: number; provider: string; failure: LlmFailure; retryPolicy: ResolvedRetryPolicy | undefined; signal: AbortSignal }, next: () => Promise<RequestErrorAction>): Promise<RequestErrorAction>"
+      },
+      {
+        "name": "agent/status",
+        "description": "Agent status changed (`idle` ⇄ `running`).",
+        "mode": "emit",
+        "signature": "'agent/status'(this: Scoped<Agent>, payload: { agent: Agent; status: AgentStatus }): void"
+      },
+      {
+        "name": "agent/turn-stopping",
+        "description": "The turn is about to close: the model owes no response (no live tool calls, no fresh steering).",
+        "mode": "serial",
+        "signature": "'agent/turn-stopping'(this: Scoped<Agent>, payload: { agent: Agent; turn: number; signal: AbortSignal }): Promise<void> | void"
+      },
+      {
+        "name": "api-session/activity",
+        "description": "One user-authored durable message advanced Session list activity.",
+        "mode": "emit",
+        "signature": "'api-session/activity'(sessionId: SessionId, updatedAt: number): void"
+      },
+      {
+        "name": "api-session/added",
+        "description": "A Session became visible or its Agent was created or disposed.",
+        "mode": "emit",
+        "signature": "'api-session/added'(summary: SessionSummary): void"
+      },
+      {
+        "name": "api-session/error",
+        "description": "One Agent failed outside a durable turn position.",
+        "mode": "emit",
+        "signature": "'api-session/error'(sessionId: SessionId, message: string): void"
+      },
+      {
+        "name": "api-session/removed",
+        "description": "A Session left the live Host registry.",
+        "mode": "emit",
+        "signature": "'api-session/removed'(sessionId: SessionId): void"
+      },
+      {
+        "name": "api-session/status",
+        "description": "One Agent changed running state.",
+        "mode": "emit",
+        "signature": "'api-session/status'(sessionId: SessionId, running: boolean): void"
+      },
+      {
+        "name": "app-boot/config-reload",
+        "description": "Profile patches were reconciled into the running Loader tree: every entry update settled and no new inactive entry was introduced.",
+        "mode": "emit",
+        "signature": "'app-boot/config-reload'(): void"
+      },
+      {
+        "name": "approval/request",
+        "description": "Ask composed answerers for one decision.",
+        "mode": "waterfall",
+        "signature": "'approval/request'( this: Scoped<Agent>, req: ApprovalRequestEvent, next: () => Promise<ApprovalOutcome>, ): Promise<ApprovalOutcome>"
+      },
+      {
+        "name": "authorization/settled",
+        "description": "One authorization attempt has finished and released its key.",
+        "mode": "emit",
+        "signature": "'authorization/settled'(key: CredentialKey, settlement: AuthorizationSettlement): void"
+      },
+      {
+        "name": "commands/change",
+        "description": "A command was registered or unregistered.",
+        "mode": "emit",
+        "signature": "'commands/change'(): void"
+      },
+      {
+        "name": "compaction/summary-error",
+        "description": "Recover a failed summary request by synchronously recording a durable change to its selected input.",
+        "mode": "waterfall",
+        "signature": "'compaction/summary-error'(payload: { session: Session; sourceEventSeqs: readonly SessionSeq[]; error: unknown; signal?: AbortSignal }, next: () => boolean): boolean"
+      },
+      {
+        "name": "connection/request",
+        "description": "Admit or wrap an authenticated shared API request, including body transfer.",
+        "mode": "waterfall",
+        "signature": "'connection/request'(request: IncomingMessage, response: ServerResponse, next: () => Promise<void>): Promise<void>"
+      },
+      {
+        "name": "credentials/record-updated",
+        "description": "Committed change to a stored credential record: a `modifyRecord` that wrote, a `deleteRecord` that removed, or an external edit observed in storage.",
+        "mode": "emit",
+        "signature": "'credentials/record-updated'(key: CredentialKey): void"
+      },
+      {
+        "name": "credentials/reference-updated",
+        "description": "Committed change to a provider-managed credential source: a `set`, an `unset`, or an external edit observed in storage.",
+        "mode": "emit",
+        "signature": "'credentials/reference-updated'(ref: CredentialRef): void"
+      },
+      {
+        "name": "deepseek-account/model-sign-in-required",
+        "description": "An account model request requires the user to sign in.",
+        "mode": "emit",
+        "signature": "'deepseek-account/model-sign-in-required'(): void"
+      },
+      {
+        "name": "deepseek-account/session-expired",
+        "description": "Server rejection removed the current account credential; this notification is not replayed.",
+        "mode": "emit",
+        "signature": "'deepseek-account/session-expired'(): void"
+      },
+      {
+        "name": "deepseek-account/signed-out",
+        "description": "Local grant removal has completed.",
+        "mode": "emit",
+        "signature": "'deepseek-account/signed-out'(): void"
+      },
+      {
+        "name": "domain/changed",
+        "description": "A domain record or the global singleton changed, emitted once per write strictly after the backend acknowledged durability.",
+        "mode": "emit",
+        "signature": "'domain/changed'(change: DomainChanged): void"
+      },
+      {
+        "name": "feedback/committed",
+        "description": "Observe a durable cold feedback mutation without publishing a live Session.",
+        "mode": "parallel",
+        "signature": "'feedback/committed'(inspection: SessionInspection): void"
+      },
+      {
+        "name": "fs/edit-intent",
+        "description": "Single-slot decision for the next FileSystem.editText.",
+        "mode": "waterfall",
+        "signature": "'fs/edit-intent'(target: FsTarget, actor: object | undefined, next: () => { version: FsVersion } | undefined | Promise<{ version: FsVersion } | undefined>): Promise<{ version: FsVersion } | undefined>"
+      },
+      {
+        "name": "fs/observed",
+        "description": "Record an authoritative positive or negative observation.",
+        "mode": "emit",
+        "signature": "'fs/observed'(target: FsTarget, observation: FsObservation, actor: object | undefined): void"
+      },
+      {
+        "name": "fs/write-intent",
+        "description": "Single-slot decision for the next FileSystem.writeText.",
+        "mode": "waterfall",
+        "signature": "'fs/write-intent'(target: FsTarget, actor: object | undefined, next: () => FsWriteIntent | undefined | Promise<FsWriteIntent | undefined>): Promise<FsWriteIntent | undefined>"
+      },
+      {
+        "name": "goal/activation-changed",
+        "description": "Process-local goal activation changed for one session.",
+        "mode": "emit",
+        "signature": "'goal/activation-changed'(payload: GoalActivationChanged): void"
+      },
+      {
+        "name": "goal/changed",
+        "description": "Goal mutation accepted by one live agent.",
+        "mode": "emit",
+        "signature": "'goal/changed'(this: import('@deepseek-ai/dsh-scope').Scoped<Agent>, payload: { agent: Agent; change: GoalChanged }): void"
+      },
+      {
+        "name": "hmr/change",
+        "description": "A watched file has no module or configuration handler.",
+        "mode": "emit",
+        "signature": "'hmr/change'(url: string): void"
+      },
+      {
+        "name": "hmr/reload",
+        "description": "Module replacements have finished loading.",
+        "mode": "emit",
+        "signature": "'hmr/reload'(reloads: Map<Plugin, Reload>): void"
+      },
+      {
+        "name": "llm/adapters-updated",
+        "description": "The provider topology changed: an adapter registered or unregistered routes, or the configurable-provider directory gained or lost entries.",
+        "mode": "emit",
+        "signature": "'llm/adapters-updated'(): void"
+      },
+      {
+        "name": "llm/stream",
+        "description": "Waterfall around every streaming model call (retry, replay, routing).",
+        "mode": "waterfall",
+        "signature": "'llm/stream'(this: LlmRuntime, options: GenerateOptions, next: () => AsyncIterable<StreamChunk>): AsyncIterable<StreamChunk>"
+      },
+      {
+        "name": "permission-presets/catalog-changed",
+        "description": "The selectable process catalog changed.",
+        "mode": "emit",
+        "signature": "'permission-presets/catalog-changed'(): void"
+      },
+      {
+        "name": "plugin-manager/changed",
+        "description": "The profile's plugins, bundles, or composition changed: a manager operation completed.",
+        "mode": "emit",
+        "signature": "'plugin-manager/changed'(change: PluginChange): void"
+      },
+      {
+        "name": "plugin-manager/install-log",
+        "description": "One chunk of a pnpm run's output, streamed as the run produces it.",
+        "mode": "emit",
+        "signature": "'plugin-manager/install-log'(chunk: PluginInstallLogChunk): void"
+      },
+      {
+        "name": "plugin-manager/install-state",
+        "description": "An installation moved between its Host phases.",
+        "mode": "emit",
+        "signature": "'plugin-manager/install-state'(progress: PluginInstallProgress): void"
+      },
+      {
+        "name": "plugin-market/changed",
+        "description": "The configured index sources changed.",
+        "mode": "emit",
+        "signature": "'plugin-market/changed'(): void"
+      },
+      {
+        "name": "schedule/changed",
+        "description": "Durable task set changed; clients refetch global task and Session-active catalogs.",
+        "mode": "emit",
+        "signature": "'schedule/changed'(): void"
+      },
+      {
+        "name": "session-telemetry/record",
+        "description": "Transform one outbound record before it reaches the backend.",
+        "mode": "waterfall",
+        "signature": "'session-telemetry/record'(record: SessionTelemetryRecord, next: () => SessionTelemetryRecord): SessionTelemetryRecord"
+      },
+      {
+        "name": "session/created",
+        "description": "Creation announcement during session publication.",
+        "mode": "emit",
+        "signature": "'session/created'(this: Scoped<Session>, session: Session): void"
+      },
+      {
+        "name": "session/disposed",
+        "description": "Emitted once when an announced session leaves the store, including publication rollback, but never for an entry whose creation announcement did not begin.",
+        "mode": "emit",
+        "signature": "'session/disposed'(this: Scoped<Session>, session: Session): void"
+      },
+      {
+        "name": "session/event",
+        "description": "Post-commit, fire-and-forget append feed.",
+        "mode": "emit",
+        "signature": "'session/event'(this: Scoped<Session>, session: Session, event: SessionEvent): void"
+      },
+      {
+        "name": "session/flush",
+        "description": "Awaited parallel durability checkpoint: every listener runs and the caller awaits all of them, with no waterfall veto.",
+        "mode": "parallel",
+        "signature": "'session/flush'(this: Scoped<Session>, session: Session): Promise<void> | void"
+      },
+      {
+        "name": "settings/document-updated",
+        "description": "One profile entry's form values, availability, or page policy changed.",
+        "mode": "emit",
+        "signature": "'settings/document-updated'(ns: SettingsNamespace, revision: number): void"
+      },
+      {
+        "name": "skills/change",
+        "description": "A skill provider, runtime contribution, or provider-backed catalog may have changed.",
+        "mode": "emit",
+        "signature": "'skills/change'(): void"
+      },
+      {
+        "name": "subagent/end",
+        "description": "A published child settled.",
+        "mode": "emit",
+        "signature": "'subagent/end'(this: Scoped<SubagentRuntime>, info: SubagentRunEndInfo): void"
+      },
+      {
+        "name": "subagent/provider-added",
+        "description": "A provider became resolvable in the registry.",
+        "mode": "emit",
+        "signature": "'subagent/provider-added'(provider: SubagentProvider): void"
+      },
+      {
+        "name": "subagent/provider-removed",
+        "description": "A provider left the registry.",
+        "mode": "emit",
+        "signature": "'subagent/provider-removed'(name: string): void"
+      },
+      {
+        "name": "subagent/start",
+        "description": "A provider established a published child.",
+        "mode": "emit",
+        "signature": "'subagent/start'(this: Scoped<SubagentRuntime>, info: SubagentRunInfo): void"
+      },
+      {
+        "name": "system-prompt/assemble",
+        "description": "Expert waterfall over the assembled sections, contexts, tools, and variables.",
+        "mode": "waterfall",
+        "signature": "'system-prompt/assemble'(this: Scoped<SystemPrompt>, assembly: PromptAssembly, context: AssembleContext, next: () => Promise<PromptAssembly>): Promise<PromptAssembly>"
+      },
+      {
+        "name": "system-prompt/change",
+        "description": "Emitted when any prompt provider changes.",
+        "mode": "emit",
+        "signature": "'system-prompt/change'(): void"
+      },
+      {
+        "name": "tools/change",
+        "description": "A tool was registered or unregistered, or a scoped restriction changed (the available tool set changed — possibly for one scope only).",
+        "mode": "emit",
+        "signature": "'tools/change'(): void"
+      },
+      {
+        "name": "tools/execute",
+        "description": "Around-dispatch waterfall for timeout, retry, or metrics.",
+        "mode": "waterfall",
+        "signature": "'tools/execute'(this: Scoped<ToolRuntime>, exec: ToolDispatchExecution, next: () => Promise<ToolExecutionResult>): Promise<ToolExecutionResult>"
+      },
+      {
+        "name": "tools/post-execute",
+        "description": "Accept, replace, enrich, or block a normalized dispatch result.",
+        "mode": "waterfall",
+        "signature": "'tools/post-execute'(this: Scoped<ToolRuntime>, exec: ToolExecution, result: Readonly<ToolExecutionResult>, next: () => Promise<PostToolDecision>): Promise<PostToolDecision>"
+      },
+      {
+        "name": "tools/pre-execute",
+        "description": "Allow, deny, cancel, or ask before dispatch.",
+        "mode": "waterfall",
+        "signature": "'tools/pre-execute'(this: Scoped<ToolRuntime>, exec: ToolExecution, next: () => Promise<PreToolDecision>): Promise<PreToolDecision>"
+      },
+      {
+        "name": "tools/ptc-dispatch-log",
+        "description": "Allow a listener to replace content in the DURABLE LOG COPY of one `run_code` sub-dispatch outcome before the bridge appends its `tool/ptc-dispatch` event.",
+        "mode": "waterfall",
+        "signature": "'tools/ptc-dispatch-log'(this: Scoped<ToolRuntime>, dispatch: PtcDispatchLog, next: () => Promise<ContentBlock[]>): Promise<ContentBlock[]>"
+      },
+      {
+        "name": "tools/result",
+        "description": "Observe the frozen, lossless-JSON final outcome.",
+        "mode": "emit",
+        "signature": "'tools/result'(this: Scoped<ToolRuntime>, exec: Readonly<ToolExecution>, result: Readonly<ToolExecutionResult>): undefined"
+      },
+      {
+        "name": "user-questions/request",
+        "description": "Ask composed answerers for structured user input.",
+        "mode": "waterfall",
+        "signature": "'user-questions/request'( this: Scoped<Agent>, request: AskUserQuestionRequestEvent, next: () => Promise<AskUserQuestionAnswer>, ): Promise<AskUserQuestionAnswer>"
+      },
+      {
+        "name": "webserver/index-inject",
+        "description": "Collect the structured index injection table.",
+        "mode": "emit",
+        "signature": "'webserver/index-inject'(table: IndexInjection[]): void"
+      },
+      {
+        "name": "workflow/agent-end",
+        "description": "One `agent()` call settled (clean result, child failure, or run cancellation).",
+        "mode": "emit",
+        "signature": "'workflow/agent-end'(info: WorkflowRunInfo, agent: WorkflowAgentEndInfo): void"
+      },
+      {
+        "name": "workflow/agent-start",
+        "description": "One `agent()` call established a published child run.",
+        "mode": "emit",
+        "signature": "'workflow/agent-start'(info: WorkflowRunInfo, agent: WorkflowAgentInfo): void"
+      },
+      {
+        "name": "workflow/end",
+        "description": "A workflow run settled (any stop reason).",
+        "mode": "emit",
+        "signature": "'workflow/end'(info: WorkflowRunInfo, result: WorkflowResultInfo): void"
+      },
+      {
+        "name": "workflow/log",
+        "description": "The script emitted a narration line (a `log(message)` call).",
+        "mode": "emit",
+        "signature": "'workflow/log'(info: WorkflowRunInfo, message: string): void"
+      },
+      {
+        "name": "workflow/phase",
+        "description": "The script entered a phase (a `phase(title)` call) — progress grouping for observers; no execution semantics.",
+        "mode": "emit",
+        "signature": "'workflow/phase'(info: WorkflowRunInfo, title: string): void"
+      },
+      {
+        "name": "workflow/start",
+        "description": "A workflow run started — the script's meta block validated, the body about to execute.",
+        "mode": "emit",
+        "signature": "'workflow/start'(info: WorkflowRunInfo): void"
+      },
+      {
+        "name": "workspace/session-activity",
+        "description": "Ask the composed providers what still runs for a session before it is archived.",
+        "mode": "waterfall",
+        "signature": "'workspace/session-activity'( request: SessionActivityRequest, next: () => Promise<readonly SessionActivity[]>, ): Promise<readonly SessionActivity[]>"
+      },
+      {
+        "name": "workspace/session-stop",
+        "description": "Stop a session's running work because the caller archived it with `stopActivity`; the archive set is durable when this dispatches.",
+        "mode": "parallel",
+        "signature": "'workspace/session-stop'(request: SessionActivityRequest): Promise<void> | void"
+      }
+    ]
+  }
+}

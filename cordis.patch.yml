@@ -1,0 +1,5 @@
+# Bundle layer contributed by dsh-plugin-api-gallery.
+# The row id is the Loader entry id; the name resolves the package.
+- insert:
+    - id: api-gallery
+      name: 'dsh-plugin-api-gallery'
