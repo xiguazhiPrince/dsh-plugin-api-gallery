@@ -1,4 +1,4 @@
-# DSH Plugin API Gallery · 插件接口图鉴
+﻿# DSH Plugin API Gallery · 插件接口图鉴
 
 **你想给 DSH 加个功能，但说不清它该长在页面哪个位置？** 这个插件把 43 个可插入位置全部实装了一遍：每个入口都长在真实位置上、都带注册代码，点开就是“这里该怎么注册”。另有全量接口图鉴：100 个 Slot（其中 57 个不可注册，逐个写明为什么）、98 个 Host Service、76 个 Host Event、6 个 Factory。
 
@@ -218,6 +218,7 @@ ctx.inject(['commandUi'], (scope) => {
 ├─ interfaces-reference.json   76 Host Events / 4 Client Events / 106 Services / Builtins（页面数据）
 ├─ cordis.patch.yml             Loader 行
 ├─ package.json                 bundle manifest（dsh.bundle + dsh.client）
+├─ LICENSE                      MIT © 2026 xiguazhiPrince
 ├─ locale/{en,zh}.json          插件标题/描述
 ├─ icon.svg                     插件图标
 ├─ assets/hero.png              README 首屏截图（43 处入口 + 红框标注）
