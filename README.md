@@ -271,8 +271,10 @@ dsh plugin --profile web add github:xiguazhiPrince/dsh-plugin-api-gallery
 要锁死版本、不让上游后续推送悄悄改变运行内容，就带上 commit：
 
 ```sh
-dsh plugin --profile web add github:xiguazhiPrince/dsh-plugin-api-gallery#cf7c7f1
+dsh plugin --profile web add github:xiguazhiPrince/dsh-plugin-api-gallery#<commit-sha>
 ```
+
+`<commit-sha>` 用 `git ls-remote https://github.com/xiguazhiPrince/dsh-plugin-api-gallery main` 取当前 sha 替换。
 
 - `dsh plugin add` 会自动把包写进该 profile 的 `dsh.profile.bundles`，不用手写 manifest；装完重启 DSH。
 - 应用内也可以装：Settings → Plugins 的插件管理器里用同一个 spec（`github:xiguazhiPrince/dsh-plugin-api-gallery`）。
