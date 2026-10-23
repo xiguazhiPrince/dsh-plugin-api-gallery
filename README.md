@@ -365,5 +365,5 @@ dsh plugin --profile web remove dsh-plugin-api-gallery
 
 ## License
 
-示例代码可自由复制、修改、再发布。
+[MIT](LICENSE) © 2026 xiguazhiPrince —— 可自由使用、修改、再发布，保留版权声明即可。
 

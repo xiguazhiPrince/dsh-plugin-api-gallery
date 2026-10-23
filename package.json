@@ -1,8 +1,9 @@
 {
   "name": "dsh-plugin-api-gallery",
   "version": "1.0.0",
-  "private": true,
   "type": "module",
+  "license": "MIT",
+  "author": "xiguazhiPrince",
   "description": "DSH plugin API map: 43 live Slot demos in their real UI positions — find where your plugin's UI belongs. Also 100 Slots, 98 Host Services, 76 Host Events, each with register code.",
   "keywords": [
     "dsh",
