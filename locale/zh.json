@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "插件接口图鉴",
-    "description": "43 个 Slot 实测 demo + 全量接口图鉴：100 个 Slot、98 个 Host Service、76 个 Host Event，每项都带注册代码。"
+    "description": "想写插件但不知道功能该显示在哪？43 个 Slot 实测 demo + 100 个 Slot、98 个 Host Service、76 个 Host Event 的接口图鉴，照着位置抄注册代码。"
   },
   "panel": {
     "title": "插件接口图鉴",

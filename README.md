@@ -1,16 +1,37 @@
-# DSH Plugin API Gallery · 插件接口图鉴
+﻿# DSH Plugin API Gallery · 插件接口图鉴
 
-**DSH 插件作者的地图。** 43 个 Slot 实测 demo，每个都长在真实 UI 位置上；另有全量接口图鉴：100 个 Slot（43 个可增量注册的全部实装）、98 个 Host Service、76 个 Host Event、6 个 Factory，逐项给出可注册性判断和注册代码。
+**你想给 DSH 加个功能，但说不清它该长在页面哪个位置？** 这个插件把 43 个可插入位置全部实装了一遍：每个入口都长在真实位置上、都带注册代码，点开就是“这里该怎么注册”。另有全量接口图鉴：100 个 Slot（其中 57 个不可注册，逐个写明为什么）、98 个 Host Service、76 个 Host Event、6 个 Factory。
 
-An API map for DSH (DeepSeek Harness) plugin authors: 43 Slot demos in their real UI positions, plus 100 Slots / 98 Host Services / 76 Host Events with copy-paste registration snippets — including the 57 Slots you can't register, and why.
+Know what your plugin should do, but not where in the UI it belongs? 43 Slots demoed in their real positions, each with registration code — plus 100 Slots / 98 Host Services / 76 Host Events, including the 57 Slots you can't register, and why.
 
-**装它解决三个问题：**这个位置能不能插 → 看 43 个实测；某个接口存不存在、怎么调 → 查 Service / Event 页；某个 Slot 为什么注册了不显示 → 看 57 个不可见 Slot 的逐项原因。
+**装它解决三个问题：**我的功能该长在哪 → 看下表的意图索引；这个位置能不能插 → 看 43 个实测；某个接口存不存在、怎么调 → 查 Service / Event 页。
 
 > 会在 43 处真实位置插入入口，建议装在测试 profile。找具体 Slot 直接 Ctrl+F 下面的 slot key 索引。
 
 ![DSH 插件接口图鉴：红框为插件在真实 UI 位置上的入口](assets/hero.png)
 
 *红框里就是长在真实位置上的入口（不是总览页）：左侧栏 `sidebar.panellist` 的 tooltip、输入框上方 `conversation.input.dock`、composer 头部按钮、输入行左右两个「图」按钮、左下角 `sidebar.footer.action`，以及原生右侧栏里的图鉴 tab（`key: api-gallery:right-tab`）。*
+
+---
+
+## 先定位：我的功能该长在哪
+
+先说人话再翻源码。左边是“我想做的功能”，右边就是该注册的接口 —— 以及本插件里它的真实样子（图里带红框的就是这些入口）。
+
+| 你想做的事 | 该注册的接口 | 本插件里的实况 |
+| --- | --- | --- |
+| 在输入框旁加个按钮 | `conversation.input.left` / `conversation.input.right` | 输入行左右各一个「图」小按钮 |
+| 在输入框上加常驻提示 | `conversation.input.dock`（卡片上方通栏）/ `conversation.composer.dock`（卡片下方 chip） | 两种都在图里，一眼看出区别 |
+| 给会话加一整页新 tab | `conversation.view` | 顶部 View 标签栏多一个 `图鉴demo · conversation.view` |
+| 在消息旁加操作 | `conversation.chat.assistant-actions` / `conversation.chat.turnTail` | 每条完成的 assistant 消息旁 / 每轮结束后一行 |
+| 加设置页或设置行 | `settings.section`（整页）/ `settings.general.item`（偏好行）/ `settings.plugins.tab`（tab） | Settings 左侧导航多一页、General 多一行 |
+| 加右侧栏 tab（文件、终端那一列） | `ctx.sidebarRightTabs.register`（tab 类型）+ `sidebar.right.pane.tab`（body） | **不是单靠 Slot**：先注册类型，再按 key 渲染 body |
+| 在侧栏 Session 行加东西 | `sidebar.session.row.leading` / `sidebar.workspaces.session.row.action` / `sidebar.workspaces.session.menu.item` | 14px 徽标 / hover 按钮 / 「…」菜单项 |
+| 加全局弹层或 Toast | `shell.overlay` | 所有小入口点开的详情弹层都在这里 |
+| 加「+」菜单或斜杠命令 | `ctx.commandUi.register`（**是 Service，不是 Slot**） | composer 的「指令」分组里多一项 |
+| 在插件详情页加区块 | `plugins.detail.section` / `plugins.detail.badge` / `plugins.detail.actions` | 详情页下方说明区、标题旁标签、操作按钮 |
+
+**表里查不到，大概率就是“不该插”的位置。** 57 个 Slot 属于 single / chain / fixed-key / owner-dispatch-only，硬注册会替换内置 UI 或永远不渲染 —— 每一个都在「Slot / Factory」页写明了原因；全量 100 个 Slot 的 census 和 UI 区域图见 [docs/all-slots.md](docs/all-slots.md)，分类依据见 [docs/slot-classification.md](docs/slot-classification.md)。
 
 ---
 
