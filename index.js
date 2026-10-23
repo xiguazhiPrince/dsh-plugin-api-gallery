@@ -21,6 +21,8 @@ const ROUTE_PREFIX = '/plugin-api-gallery';
 const STATE_CACHE_MS = 1500;
 let nonUiCache = null;
 let nonUiCacheAt = 0;
+let interfacesCache = null;
+let interfacesCacheAt = 0;
 
 function readNonUiText() {
   const now = Date.now();
@@ -28,6 +30,14 @@ function readNonUiText() {
   nonUiCache = readFileSync(new URL('./non-ui-slots.json', import.meta.url), 'utf8');
   nonUiCacheAt = now;
   return nonUiCache;
+}
+
+function readInterfacesText() {
+  const now = Date.now();
+  if (interfacesCache !== null && now - interfacesCacheAt < 1000) return interfacesCache;
+  interfacesCache = readFileSync(new URL('./interfaces-reference.json', import.meta.url), 'utf8');
+  interfacesCacheAt = now;
+  return interfacesCache;
 }
 
 const startedAt = Date.now();
@@ -269,6 +279,16 @@ export function apply(ctx, config) {
     }
     if (url.pathname === `${ROUTE_PREFIX}/non-ui`) {
       const text = readNonUiText();
+      response.writeHead(200, {
+        'content-type': 'application/json; charset=utf-8',
+        'cache-control': 'public, max-age=60',
+        'content-length': Buffer.byteLength(text),
+      });
+      response.end(text);
+      return;
+    }
+    if (url.pathname === `${ROUTE_PREFIX}/interfaces`) {
+      const text = readInterfacesText();
       response.writeHead(200, {
         'content-type': 'application/json; charset=utf-8',
         'cache-control': 'public, max-age=60',

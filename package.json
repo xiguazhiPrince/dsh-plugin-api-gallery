@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "15 distributed Slot demos for DSH plugin authors: every demo lives in its real UI slot and is titled 图鉴demo · <slot-key>.",
+  "description": "43 distributed Slot demos plus a non-UI interface reference page for DSH plugin authors.",
   "exports": {
     ".": "./index.js",
     "./client": "./client.js",
@@ -15,6 +15,7 @@
     "client.js",
     "catalog.json",
     "non-ui-slots.json",
+    "interfaces-reference.json",
     "cordis.patch.yml",
     "locale/*.json",
     "icon.svg",

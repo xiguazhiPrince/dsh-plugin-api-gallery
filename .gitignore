@@ -2,3 +2,4 @@ node_modules/
 *.log
 dump-config.yml
 probe*.cjs
+.idea/

@@ -1,0 +1,2173 @@
+{
+  "generatedAt": "2026-10-23",
+  "dshVersion": "0.2.1-rc.2",
+  "counts": {
+    "hostEvents": 76,
+    "clientEvents": 4,
+    "hostServices": 98,
+    "clientServices": 8,
+    "extraClientServices": 4,
+    "clientBuiltins": 5,
+    "themeTokens": 14
+  },
+  "events": {
+    "host": [
+      {
+        "name": "agent-loop/config-start-failed",
+        "mode": "emit",
+        "description": "A declarative agent entry failed before it could publish a live agent.",
+        "signature": "'agent-loop/config-start-failed'(payload: { sessionId: SessionId; error: unknown }): void",
+        "observe": "ctx.on('agent-loop/config-start-failed', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "agent-preset/selected",
+        "mode": "emit",
+        "description": "One session committed a different agent preset to its durable log.",
+        "signature": "'agent-preset/selected'(sessionId: SessionId, agentPreset: string): void",
+        "observe": "ctx.on('agent-preset/selected', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "agent/assistant-stream",
+        "mode": "emit",
+        "description": "Process-local assistant-stream publication.",
+        "signature": "'agent/assistant-stream'(this: Scoped<Agent>, payload: { agent: Agent; frame: AssistantStreamFrame }): void",
+        "observe": "ctx.on('agent/assistant-stream', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "agent/created",
+        "mode": "serial",
+        "description": "An entered agent is ready for per-agent initialization after factory setup.",
+        "signature": "'agent/created'(this: Scoped<Agent>, payload: { agent: Agent; source: SessionStartSource; signal?: AbortSignal }): undefined | Promise<undefined>",
+        "observe": "ctx.on('agent/created', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "agent/disposed",
+        "mode": "emit",
+        "description": "An agent left the registry; AgentLoop emits this after driver quiescence and scoped-registration unwind, but before session detachment.",
+        "signature": "'agent/disposed'(this: Scoped<Agent>, payload: { agent: Agent }): void",
+        "observe": "ctx.on('agent/disposed', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "agent/error",
+        "mode": "emit",
+        "description": "A step or turn errored.",
+        "signature": "'agent/error'(this: Scoped<Agent>, payload: { agent: Agent; turn: number; step: number; error: unknown }): void",
+        "observe": "ctx.on('agent/error', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "agent/inbox/claimed",
+        "mode": "emit",
+        "description": "One message left the inbox inside its open turn.",
+        "signature": "'agent/inbox/claimed'(this: Scoped<Agent>, payload: { agent: Agent; message: UserMessage; turn: number }): void",
+        "observe": "ctx.on('agent/inbox/claimed', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "agent/inbox/discarded",
+        "mode": "emit",
+        "description": "One message was discarded from the live inbox.",
+        "signature": "'agent/inbox/discarded'(this: Scoped<Agent>, payload: { agent: Agent; message: UserMessage }): void",
+        "observe": "ctx.on('agent/inbox/discarded', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "agent/inbox/inserted",
+        "mode": "emit",
+        "description": "One message entered the live inbox.",
+        "signature": "'agent/inbox/inserted'(this: Scoped<Agent>, payload: { agent: Agent; message: UserMessage }): void",
+        "observe": "ctx.on('agent/inbox/inserted', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "agent/pre-step",
+        "mode": "waterfall",
+        "description": "Reject a proposed step or replace the messages that enter it.",
+        "signature": "'agent/pre-step'(this: Scoped<Agent>, payload: { agent: Agent; messages: UserMessage[]; turn: number; step: number; signal: AbortSignal }, next: () => Promise<PreStepDecision>): Promise<PreStepDecision>",
+        "observe": "ctx.on('agent/pre-step', (payload, next) => {\n  // inspect or rewrite payload\n  return next();\n})"
+      },
+      {
+        "name": "agent/request",
+        "mode": "waterfall",
+        "description": "Replace the frozen call configuration.",
+        "signature": "'agent/request'(this: Scoped<Agent>, payload: { agent: Agent; turn: number; step: number; signal: AbortSignal }, next: () => Promise<LlmCallConfig>): Promise<LlmCallConfig>",
+        "observe": "ctx.on('agent/request', (payload, next) => {\n  // inspect or rewrite payload\n  return next();\n})"
+      },
+      {
+        "name": "agent/request-error",
+        "mode": "waterfall",
+        "description": "Handle one failed model-request attempt before the loop retries or closes its step.",
+        "signature": "'agent/request-error'(this: Scoped<Agent>, payload: { agent: Agent; turn: number; step: number; provider: string; failure: LlmFailure; retryPolicy: ResolvedRetryPolicy | undefined; signal: AbortSignal }, next: () => Promise<RequestErrorAction>): Promise<RequestErrorAction>",
+        "observe": "ctx.on('agent/request-error', (payload, next) => {\n  // inspect or rewrite payload\n  return next();\n})"
+      },
+      {
+        "name": "agent/status",
+        "mode": "emit",
+        "description": "Agent status changed (`idle` ⇄ `running`).",
+        "signature": "'agent/status'(this: Scoped<Agent>, payload: { agent: Agent; status: AgentStatus }): void",
+        "observe": "ctx.on('agent/status', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "agent/turn-stopping",
+        "mode": "serial",
+        "description": "The turn is about to close: the model owes no response (no live tool calls, no fresh steering).",
+        "signature": "'agent/turn-stopping'(this: Scoped<Agent>, payload: { agent: Agent; turn: number; signal: AbortSignal }): Promise<void> | void",
+        "observe": "ctx.on('agent/turn-stopping', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "api-session/activity",
+        "mode": "emit",
+        "description": "One user-authored durable message advanced Session list activity.",
+        "signature": "'api-session/activity'(sessionId: SessionId, updatedAt: number): void",
+        "observe": "ctx.on('api-session/activity', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "api-session/added",
+        "mode": "emit",
+        "description": "A Session became visible or its Agent was created or disposed.",
+        "signature": "'api-session/added'(summary: SessionSummary): void",
+        "observe": "ctx.on('api-session/added', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "api-session/error",
+        "mode": "emit",
+        "description": "One Agent failed outside a durable turn position.",
+        "signature": "'api-session/error'(sessionId: SessionId, message: string): void",
+        "observe": "ctx.on('api-session/error', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "api-session/removed",
+        "mode": "emit",
+        "description": "A Session left the live Host registry.",
+        "signature": "'api-session/removed'(sessionId: SessionId): void",
+        "observe": "ctx.on('api-session/removed', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "api-session/status",
+        "mode": "emit",
+        "description": "One Agent changed running state.",
+        "signature": "'api-session/status'(sessionId: SessionId, running: boolean): void",
+        "observe": "ctx.on('api-session/status', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "app-boot/config-reload",
+        "mode": "emit",
+        "description": "Profile patches were reconciled into the running Loader tree: every entry update settled and no new inactive entry was introduced.",
+        "signature": "'app-boot/config-reload'(): void",
+        "observe": "ctx.on('app-boot/config-reload', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "approval/request",
+        "mode": "waterfall",
+        "description": "Ask composed answerers for one decision.",
+        "signature": "'approval/request'( this: Scoped<Agent>, req: ApprovalRequestEvent, next: () => Promise<ApprovalOutcome>, ): Promise<ApprovalOutcome>",
+        "observe": "ctx.on('approval/request', (payload, next) => {\n  // inspect or rewrite payload\n  return next();\n})"
+      },
+      {
+        "name": "authorization/settled",
+        "mode": "emit",
+        "description": "One authorization attempt has finished and released its key.",
+        "signature": "'authorization/settled'(key: CredentialKey, settlement: AuthorizationSettlement): void",
+        "observe": "ctx.on('authorization/settled', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "commands/change",
+        "mode": "emit",
+        "description": "A command was registered or unregistered.",
+        "signature": "'commands/change'(): void",
+        "observe": "ctx.on('commands/change', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "compaction/summary-error",
+        "mode": "waterfall",
+        "description": "Recover a failed summary request by synchronously recording a durable change to its selected input.",
+        "signature": "'compaction/summary-error'(payload: { session: Session; sourceEventSeqs: readonly SessionSeq[]; error: unknown; signal?: AbortSignal }, next: () => boolean): boolean",
+        "observe": "ctx.on('compaction/summary-error', (payload, next) => {\n  // inspect or rewrite payload\n  return next();\n})"
+      },
+      {
+        "name": "connection/request",
+        "mode": "waterfall",
+        "description": "Admit or wrap an authenticated shared API request, including body transfer.",
+        "signature": "'connection/request'(request: IncomingMessage, response: ServerResponse, next: () => Promise<void>): Promise<void>",
+        "observe": "ctx.on('connection/request', (payload, next) => {\n  // inspect or rewrite payload\n  return next();\n})"
+      },
+      {
+        "name": "credentials/record-updated",
+        "mode": "emit",
+        "description": "Committed change to a stored credential record: a `modifyRecord` that wrote, a `deleteRecord` that removed, or an external edit observed in storage.",
+        "signature": "'credentials/record-updated'(key: CredentialKey): void",
+        "observe": "ctx.on('credentials/record-updated', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "credentials/reference-updated",
+        "mode": "emit",
+        "description": "Committed change to a provider-managed credential source: a `set`, an `unset`, or an external edit observed in storage.",
+        "signature": "'credentials/reference-updated'(ref: CredentialRef): void",
+        "observe": "ctx.on('credentials/reference-updated', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "deepseek-account/model-sign-in-required",
+        "mode": "emit",
+        "description": "An account model request requires the user to sign in.",
+        "signature": "'deepseek-account/model-sign-in-required'(): void",
+        "observe": "ctx.on('deepseek-account/model-sign-in-required', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "deepseek-account/session-expired",
+        "mode": "emit",
+        "description": "Server rejection removed the current account credential; this notification is not replayed.",
+        "signature": "'deepseek-account/session-expired'(): void",
+        "observe": "ctx.on('deepseek-account/session-expired', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "deepseek-account/signed-out",
+        "mode": "emit",
+        "description": "Local grant removal has completed.",
+        "signature": "'deepseek-account/signed-out'(): void",
+        "observe": "ctx.on('deepseek-account/signed-out', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "domain/changed",
+        "mode": "emit",
+        "description": "A domain record or the global singleton changed, emitted once per write strictly after the backend acknowledged durability.",
+        "signature": "'domain/changed'(change: DomainChanged): void",
+        "observe": "ctx.on('domain/changed', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "feedback/committed",
+        "mode": "parallel",
+        "description": "Observe a durable cold feedback mutation without publishing a live Session.",
+        "signature": "'feedback/committed'(inspection: SessionInspection): void",
+        "observe": "ctx.on('feedback/committed', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "fs/edit-intent",
+        "mode": "waterfall",
+        "description": "Single-slot decision for the next FileSystem.editText.",
+        "signature": "'fs/edit-intent'(target: FsTarget, actor: object | undefined, next: () => { version: FsVersion } | undefined | Promise<{ version: FsVersion } | undefined>): Promise<{ version: FsVersion } | undefined>",
+        "observe": "ctx.on('fs/edit-intent', (payload, next) => {\n  // inspect or rewrite payload\n  return next();\n})"
+      },
+      {
+        "name": "fs/observed",
+        "mode": "emit",
+        "description": "Record an authoritative positive or negative observation.",
+        "signature": "'fs/observed'(target: FsTarget, observation: FsObservation, actor: object | undefined): void",
+        "observe": "ctx.on('fs/observed', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "fs/write-intent",
+        "mode": "waterfall",
+        "description": "Single-slot decision for the next FileSystem.writeText.",
+        "signature": "'fs/write-intent'(target: FsTarget, actor: object | undefined, next: () => FsWriteIntent | undefined | Promise<FsWriteIntent | undefined>): Promise<FsWriteIntent | undefined>",
+        "observe": "ctx.on('fs/write-intent', (payload, next) => {\n  // inspect or rewrite payload\n  return next();\n})"
+      },
+      {
+        "name": "goal/activation-changed",
+        "mode": "emit",
+        "description": "Process-local goal activation changed for one session.",
+        "signature": "'goal/activation-changed'(payload: GoalActivationChanged): void",
+        "observe": "ctx.on('goal/activation-changed', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "goal/changed",
+        "mode": "emit",
+        "description": "Goal mutation accepted by one live agent.",
+        "signature": "'goal/changed'(this: import('@deepseek-ai/dsh-scope').Scoped<Agent>, payload: { agent: Agent; change: GoalChanged }): void",
+        "observe": "ctx.on('goal/changed', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "hmr/change",
+        "mode": "emit",
+        "description": "A watched file has no module or configuration handler.",
+        "signature": "'hmr/change'(url: string): void",
+        "observe": "ctx.on('hmr/change', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "hmr/reload",
+        "mode": "emit",
+        "description": "Module replacements have finished loading.",
+        "signature": "'hmr/reload'(reloads: Map<Plugin, Reload>): void",
+        "observe": "ctx.on('hmr/reload', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "llm/adapters-updated",
+        "mode": "emit",
+        "description": "The provider topology changed: an adapter registered or unregistered routes, or the configurable-provider directory gained or lost entries.",
+        "signature": "'llm/adapters-updated'(): void",
+        "observe": "ctx.on('llm/adapters-updated', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "llm/stream",
+        "mode": "waterfall",
+        "description": "Waterfall around every streaming model call (retry, replay, routing).",
+        "signature": "'llm/stream'(this: LlmRuntime, options: GenerateOptions, next: () => AsyncIterable<StreamChunk>): AsyncIterable<StreamChunk>",
+        "observe": "ctx.on('llm/stream', (payload, next) => {\n  // inspect or rewrite payload\n  return next();\n})"
+      },
+      {
+        "name": "permission-presets/catalog-changed",
+        "mode": "emit",
+        "description": "The selectable process catalog changed.",
+        "signature": "'permission-presets/catalog-changed'(): void",
+        "observe": "ctx.on('permission-presets/catalog-changed', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "plugin-manager/changed",
+        "mode": "emit",
+        "description": "The profile's plugins, bundles, or composition changed: a manager operation completed.",
+        "signature": "'plugin-manager/changed'(change: PluginChange): void",
+        "observe": "ctx.on('plugin-manager/changed', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "plugin-manager/install-log",
+        "mode": "emit",
+        "description": "One chunk of a pnpm run's output, streamed as the run produces it.",
+        "signature": "'plugin-manager/install-log'(chunk: PluginInstallLogChunk): void",
+        "observe": "ctx.on('plugin-manager/install-log', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "plugin-manager/install-state",
+        "mode": "emit",
+        "description": "An installation moved between its Host phases.",
+        "signature": "'plugin-manager/install-state'(progress: PluginInstallProgress): void",
+        "observe": "ctx.on('plugin-manager/install-state', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "plugin-market/changed",
+        "mode": "emit",
+        "description": "The configured index sources changed.",
+        "signature": "'plugin-market/changed'(): void",
+        "observe": "ctx.on('plugin-market/changed', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "schedule/changed",
+        "mode": "emit",
+        "description": "Durable task set changed; clients refetch global task and Session-active catalogs.",
+        "signature": "'schedule/changed'(): void",
+        "observe": "ctx.on('schedule/changed', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "session-telemetry/record",
+        "mode": "waterfall",
+        "description": "Transform one outbound record before it reaches the backend.",
+        "signature": "'session-telemetry/record'(record: SessionTelemetryRecord, next: () => SessionTelemetryRecord): SessionTelemetryRecord",
+        "observe": "ctx.on('session-telemetry/record', (payload, next) => {\n  // inspect or rewrite payload\n  return next();\n})"
+      },
+      {
+        "name": "session/created",
+        "mode": "emit",
+        "description": "Creation announcement during session publication.",
+        "signature": "'session/created'(this: Scoped<Session>, session: Session): void",
+        "observe": "ctx.on('session/created', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "session/disposed",
+        "mode": "emit",
+        "description": "Emitted once when an announced session leaves the store, including publication rollback, but never for an entry whose creation announcement did not begin.",
+        "signature": "'session/disposed'(this: Scoped<Session>, session: Session): void",
+        "observe": "ctx.on('session/disposed', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "session/event",
+        "mode": "emit",
+        "description": "Post-commit, fire-and-forget append feed.",
+        "signature": "'session/event'(this: Scoped<Session>, session: Session, event: SessionEvent): void",
+        "observe": "ctx.on('session/event', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "session/flush",
+        "mode": "parallel",
+        "description": "Awaited parallel durability checkpoint: every listener runs and the caller awaits all of them, with no waterfall veto.",
+        "signature": "'session/flush'(this: Scoped<Session>, session: Session): Promise<void> | void",
+        "observe": "ctx.on('session/flush', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "settings/document-updated",
+        "mode": "emit",
+        "description": "One profile entry's form values, availability, or page policy changed.",
+        "signature": "'settings/document-updated'(ns: SettingsNamespace, revision: number): void",
+        "observe": "ctx.on('settings/document-updated', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "skills/change",
+        "mode": "emit",
+        "description": "A skill provider, runtime contribution, or provider-backed catalog may have changed.",
+        "signature": "'skills/change'(): void",
+        "observe": "ctx.on('skills/change', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "subagent/end",
+        "mode": "emit",
+        "description": "A published child settled.",
+        "signature": "'subagent/end'(this: Scoped<SubagentRuntime>, info: SubagentRunEndInfo): void",
+        "observe": "ctx.on('subagent/end', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "subagent/provider-added",
+        "mode": "emit",
+        "description": "A provider became resolvable in the registry.",
+        "signature": "'subagent/provider-added'(provider: SubagentProvider): void",
+        "observe": "ctx.on('subagent/provider-added', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "subagent/provider-removed",
+        "mode": "emit",
+        "description": "A provider left the registry.",
+        "signature": "'subagent/provider-removed'(name: string): void",
+        "observe": "ctx.on('subagent/provider-removed', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "subagent/start",
+        "mode": "emit",
+        "description": "A provider established a published child.",
+        "signature": "'subagent/start'(this: Scoped<SubagentRuntime>, info: SubagentRunInfo): void",
+        "observe": "ctx.on('subagent/start', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "system-prompt/assemble",
+        "mode": "waterfall",
+        "description": "Expert waterfall over the assembled sections, contexts, tools, and variables.",
+        "signature": "'system-prompt/assemble'(this: Scoped<SystemPrompt>, assembly: PromptAssembly, context: AssembleContext, next: () => Promise<PromptAssembly>): Promise<PromptAssembly>",
+        "observe": "ctx.on('system-prompt/assemble', (payload, next) => {\n  // inspect or rewrite payload\n  return next();\n})"
+      },
+      {
+        "name": "system-prompt/change",
+        "mode": "emit",
+        "description": "Emitted when any prompt provider changes.",
+        "signature": "'system-prompt/change'(): void",
+        "observe": "ctx.on('system-prompt/change', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "tools/change",
+        "mode": "emit",
+        "description": "A tool was registered or unregistered, or a scoped restriction changed (the available tool set changed — possibly for one scope only).",
+        "signature": "'tools/change'(): void",
+        "observe": "ctx.on('tools/change', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "tools/execute",
+        "mode": "waterfall",
+        "description": "Around-dispatch waterfall for timeout, retry, or metrics.",
+        "signature": "'tools/execute'(this: Scoped<ToolRuntime>, exec: ToolDispatchExecution, next: () => Promise<ToolExecutionResult>): Promise<ToolExecutionResult>",
+        "observe": "ctx.on('tools/execute', (payload, next) => {\n  // inspect or rewrite payload\n  return next();\n})"
+      },
+      {
+        "name": "tools/post-execute",
+        "mode": "waterfall",
+        "description": "Accept, replace, enrich, or block a normalized dispatch result.",
+        "signature": "'tools/post-execute'(this: Scoped<ToolRuntime>, exec: ToolExecution, result: Readonly<ToolExecutionResult>, next: () => Promise<PostToolDecision>): Promise<PostToolDecision>",
+        "observe": "ctx.on('tools/post-execute', (payload, next) => {\n  // inspect or rewrite payload\n  return next();\n})"
+      },
+      {
+        "name": "tools/pre-execute",
+        "mode": "waterfall",
+        "description": "Allow, deny, cancel, or ask before dispatch.",
+        "signature": "'tools/pre-execute'(this: Scoped<ToolRuntime>, exec: ToolExecution, next: () => Promise<PreToolDecision>): Promise<PreToolDecision>",
+        "observe": "ctx.on('tools/pre-execute', (payload, next) => {\n  // inspect or rewrite payload\n  return next();\n})"
+      },
+      {
+        "name": "tools/ptc-dispatch-log",
+        "mode": "waterfall",
+        "description": "Allow a listener to replace content in the DURABLE LOG COPY of one `run_code` sub-dispatch outcome before the bridge appends its `tool/ptc-dispatch` event.",
+        "signature": "'tools/ptc-dispatch-log'(this: Scoped<ToolRuntime>, dispatch: PtcDispatchLog, next: () => Promise<ContentBlock[]>): Promise<ContentBlock[]>",
+        "observe": "ctx.on('tools/ptc-dispatch-log', (payload, next) => {\n  // inspect or rewrite payload\n  return next();\n})"
+      },
+      {
+        "name": "tools/result",
+        "mode": "emit",
+        "description": "Observe the frozen, lossless-JSON final outcome.",
+        "signature": "'tools/result'(this: Scoped<ToolRuntime>, exec: Readonly<ToolExecution>, result: Readonly<ToolExecutionResult>): undefined",
+        "observe": "ctx.on('tools/result', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "user-questions/request",
+        "mode": "waterfall",
+        "description": "Ask composed answerers for structured user input.",
+        "signature": "'user-questions/request'( this: Scoped<Agent>, request: AskUserQuestionRequestEvent, next: () => Promise<AskUserQuestionAnswer>, ): Promise<AskUserQuestionAnswer>",
+        "observe": "ctx.on('user-questions/request', (payload, next) => {\n  // inspect or rewrite payload\n  return next();\n})"
+      },
+      {
+        "name": "webserver/index-inject",
+        "mode": "emit",
+        "description": "Collect the structured index injection table.",
+        "signature": "'webserver/index-inject'(table: IndexInjection[]): void",
+        "observe": "ctx.on('webserver/index-inject', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "workflow/agent-end",
+        "mode": "emit",
+        "description": "One `agent()` call settled (clean result, child failure, or run cancellation).",
+        "signature": "'workflow/agent-end'(info: WorkflowRunInfo, agent: WorkflowAgentEndInfo): void",
+        "observe": "ctx.on('workflow/agent-end', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "workflow/agent-start",
+        "mode": "emit",
+        "description": "One `agent()` call established a published child run.",
+        "signature": "'workflow/agent-start'(info: WorkflowRunInfo, agent: WorkflowAgentInfo): void",
+        "observe": "ctx.on('workflow/agent-start', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "workflow/end",
+        "mode": "emit",
+        "description": "A workflow run settled (any stop reason).",
+        "signature": "'workflow/end'(info: WorkflowRunInfo, result: WorkflowResultInfo): void",
+        "observe": "ctx.on('workflow/end', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "workflow/log",
+        "mode": "emit",
+        "description": "The script emitted a narration line (a `log(message)` call).",
+        "signature": "'workflow/log'(info: WorkflowRunInfo, message: string): void",
+        "observe": "ctx.on('workflow/log', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "workflow/phase",
+        "mode": "emit",
+        "description": "The script entered a phase (a `phase(title)` call) — progress grouping for observers; no execution semantics.",
+        "signature": "'workflow/phase'(info: WorkflowRunInfo, title: string): void",
+        "observe": "ctx.on('workflow/phase', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "workflow/start",
+        "mode": "emit",
+        "description": "A workflow run started — the script's meta block validated, the body about to execute.",
+        "signature": "'workflow/start'(info: WorkflowRunInfo): void",
+        "observe": "ctx.on('workflow/start', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "workspace/session-activity",
+        "mode": "waterfall",
+        "description": "Ask the composed providers what still runs for a session before it is archived.",
+        "signature": "'workspace/session-activity'( request: SessionActivityRequest, next: () => Promise<readonly SessionActivity[]>, ): Promise<readonly SessionActivity[]>",
+        "observe": "ctx.on('workspace/session-activity', (payload, next) => {\n  // inspect or rewrite payload\n  return next();\n})"
+      },
+      {
+        "name": "workspace/session-stop",
+        "mode": "parallel",
+        "description": "Stop a session's running work because the caller archived it with `stopActivity`; the archive set is durable when this dispatches.",
+        "signature": "'workspace/session-stop'(request: SessionActivityRequest): Promise<void> | void",
+        "observe": "ctx.on('workspace/session-stop', (payload) => {\n  // observe only\n})"
+      }
+    ],
+    "client": [
+      {
+        "name": "connection/reset",
+        "mode": "emit",
+        "description": "A connection generation was established.",
+        "signature": "'connection/reset'(): void",
+        "observe": "ctx.on('connection/reset', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "locale/change",
+        "mode": "emit",
+        "description": "The active locale switched.",
+        "signature": "'locale/change'(snapshot: LocaleSnapshot): void",
+        "observe": "ctx.on('locale/change', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "slots/changed",
+        "mode": "emit",
+        "description": "An ordinary Slot declaration or entry registration set changed.",
+        "signature": "'slots/changed'(key: string): void",
+        "observe": "ctx.on('slots/changed', (payload) => {\n  // observe only\n})"
+      },
+      {
+        "name": "theme/change",
+        "mode": "emit",
+        "description": "Theme state changed (preference switched, registry updated, or the OS color scheme changed while the preference is `system`).",
+        "signature": "'theme/change'(snapshot: ThemeSnapshot): void",
+        "observe": "ctx.on('theme/change', (payload) => {\n  // observe only\n})"
+      }
+    ]
+  },
+  "services": {
+    "host": [
+      {
+        "key": "agentDefaultModel",
+        "description": "Owns the default model selection independently of any Host or transport.",
+        "methods": [
+          "currentSelection(): ModelSelection",
+          "async saveSelection(next: ModelSelection): Promise<void>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('agentDefaultModel');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "agentLoop",
+        "description": "Concrete agent factory and driver service.",
+        "methods": [
+          "readonly config: Config",
+          "async create(id: SessionId, options: AgentOptions = {}, meta: Pick<SessionHeader, 'cwd'> = {}): Promise<Agent>",
+          "async createAgent(ownerCtx: Context, options: CreateAgentOptions): Promise<AgentHandle>",
+          "async resume(ownerCtx: Context, options: ResumeAgentOptions): Promise<AgentHandle>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('agentLoop');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "agentPresets",
+        "description": "Registry of YAML-declared presets and the revisions live Agents retain.",
+        "methods": [
+          "async register(definition: PresetDefinition): Promise<() => Promise<void>>",
+          "inspectCompositions(ctx?: Context): AgentPresetInspection[]",
+          "async list(): Promise<AgentPreset[]>",
+          "@Remote('list') async remoteExportList(): Promise<AgentPresetRoster>",
+          "async resolve(id?: string): Promise<AgentPreset>",
+          "@Remote('read') readDocument(agentPreset: string): Promise<AgentPresetDocument>",
+          "async mount(ctx: Context, id?: string): Promise<AgentPreset>",
+          "composeFrom(ctx: Context, parent: Context): string | undefined",
+          "composedPreset(ctx: Context): string | undefined",
+          "serviceFor<K extends string & keyof Context>(agent: { ctx: Context }, name: K): Context[K] | undefined",
+          "async recompose(ctx: Context, id: string): Promise<AgentPreset>",
+          "@Remote('select') async select(agent: Agent, agentPreset: string): Promise<string>",
+          "async acquireScope(id?: string): Promise<{ key: ScopeKey } & AsyncDisposable>",
+          "compositionInventory(): Promise<AgentPresetComposition[]>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('agentPresets');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "agents",
+        "description": "Agent service (`ctx.agents`): tracks live agents and carries the initiating Agent through one process-local asynchronous driver chain.",
+        "methods": [
+          "currentInitiator(): Agent | undefined",
+          "requireInitiator(): Agent",
+          "withInitiator<T>(agent: Agent, operation: () => T): T",
+          "withoutInitiator<T>(operation: () => T): T",
+          "setFactory(factory: AgentFactory): () => void",
+          "async create(options: CreateAgentOptions): Promise<AgentHandle>",
+          "async resume(options: ResumeAgentOptions): Promise<AgentHandle>",
+          "register(agent: Agent): ReturnType<Context['effect']>",
+          "enter(agent: Agent, owner: Agent | undefined): () => void",
+          "async announce(agent: Agent, source: SessionStartSource, signal?: AbortSignal): Promise<void>",
+          "get(id: SessionId): Agent | undefined",
+          "isOwnedBy(id: SessionId, owner: Agent): boolean",
+          "list(): Agent[]",
+          "roots(): Agent[]"
+        ],
+        "used": true,
+        "use": "const service = ctx.get('agents');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "agentTeams",
+        "description": "Agent Teams service backed by the exact live Lead Session log.",
+        "methods": [
+          "membership(agent: Agent): TeamMembership",
+          "listMembers(agent: Agent): TeamMemberView[]",
+          "async spawnTeammate(caller: Agent, request: SpawnTeammateRequest): Promise<SpawnTeammateResult>",
+          "async sendMessage(caller: Agent, request: SendTeamMessageRequest): Promise<SendTeamMessageResult>",
+          "async createTask(caller: Agent, request: CreateTeamTaskRequest): Promise<TeamTaskView>",
+          "getTask(caller: Agent, id: TeamTaskId): TeamTaskView",
+          "listTasks(caller: Agent): TeamTaskView[]",
+          "async updateTask(caller: Agent, request: UpdateTeamTaskRequest): Promise<TeamTaskView>",
+          "async waitForChange(caller: Agent, timeoutMs: number, signal: AbortSignal): Promise<TeamWaitResult>",
+          "interrupt(caller: Agent, targetName: string): { previousStatus: 'running' | 'inactive' }",
+          "tryMembership(agent: Agent): TeamMembership | undefined"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('agentTeams');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "approval",
+        "description": "Approval service that applies session policy before answerers and logs every ask/outcome pair to the requesting session.",
+        "methods": [
+          "setPolicy(agent: Agent, policy: ApprovalPolicy): void",
+          "async request(req: ApprovalRequest): Promise<ApprovalOutcome>",
+          "overrideOf(session: Session): ApprovalPolicy | undefined"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('approval');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "attachments",
+        "description": "Immutable binary attachment service.",
+        "methods": [
+          "abstract readonly imageLimits: ImageAttachmentLimits",
+          "abstract validateImage(input: SaveImageAttachment): Promise<void>",
+          "async saveImages(inputs: readonly SaveImageAttachment[]): Promise<readonly ImageAttachmentRef[]>",
+          "async admitPromptContent( content: readonly AttachmentAdmissionPart[], ): Promise<AdmittedPromptContentPart[]>",
+          "admitEncodedFile(input: EncodedFileAttachment): Promise<FileAttachmentRef>",
+          "isAttachmentError(error: unknown): error is AttachmentError",
+          "abstract saveImage(input: SaveImageAttachment): Promise<ImageAttachmentRef>",
+          "abstract readImage(ref: ImageAttachmentRef, signal?: AbortSignal): Promise<StoredImageAttachment>",
+          "imageHostPath(ref: ImageAttachmentRef): string | undefined",
+          "saveFile(input: SaveFileAttachment): Promise<FileAttachmentRef>",
+          "saveFileStream(input: SaveFileStreamAttachment): Promise<FileAttachmentRef>",
+          "async *readFileStream( ref: FileAttachmentRef, signal?: AbortSignal, ): AsyncIterable<Uint8Array>",
+          "fileHostPath(ref: FileAttachmentRef): string | undefined",
+          "readImageRequest( ref: ImageAttachmentRef, target: ImageRequestTarget, signal?: AbortSignal, ): Promise<RequestImageAttachment>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('attachments');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "authorization",
+        "description": "`ctx.authorization`: a registry of credential-obtaining flows, one attempt at a time per key.",
+        "methods": [
+          "registerFlow(flow: AuthorizationFlow): () => void",
+          "list(): readonly AuthorizationEntry[]",
+          "describe(key: CredentialKey): AuthorizationEntry | undefined",
+          "cancel(key: CredentialKey): void",
+          "async begin(request: AuthorizationRequest): Promise<AuthorizationOutcome>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('authorization');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "browserUse",
+        "description": "Owns one optional provider registration in the shared browser-use service.",
+        "methods": [
+          "register(name: BrowserUseProviderName): () => Promise<void>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('browserUse');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "claudeCodeMods",
+        "description": "The bridge service: loaded mods, their hooks, and the harness listeners that raise their events.",
+        "methods": [
+          "@Remote({ mode: 'stream' }) watchBand(agent: Agent, signal: AbortSignal): AsyncIterable<SurfaceSnapshot>",
+          "@Remote pressBand(agent: Agent, generation: number, actionId: string): Promise<SurfaceSnapshot>",
+          "async add(definition: ModDefinition): Promise<() => Promise<void>>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('claudeCodeMods');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "clientModules",
+        "description": "The web plugin table service: incremental `dsh.client` scan + wire composition + bundle route + index injection rows.",
+        "methods": [
+          "graph(): WebBootGraph",
+          "clientPath(id: string): string | undefined",
+          "async fetchBundle(request: Request): Promise<Response>",
+          "artifactBaseline(id: string): ClientArtifactBaseline | undefined",
+          "rebuilt(id: string): string | undefined",
+          "onRebuilt(listener: (id: string, rev: string) => void): () => void",
+          "onGraphChanged(listener: () => void): () => void"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('clientModules');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "commands",
+        "description": "Human-command registry.",
+        "methods": [
+          "register(definition: CommandDefinition): () => void",
+          "registerFileReceiptResolver(resolver: CommandFileReceiptResolver): () => void",
+          "@Remote list(agent: Agent): readonly CommandDescriptor[]",
+          "find(agent: Agent, name: string): CommandDefinition | undefined",
+          "@Remote async execute( agent: Agent, line: string, submittedAttachments: readonly CommandSubmitAttachment[], signal: AbortSignal, ): Promise<CommandExecution | undefined>"
+        ],
+        "used": true,
+        "use": "const service = ctx.get('commands');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "compaction",
+        "description": "Abstract compaction service.",
+        "methods": [
+          "abstract compactIfNeeded( agent: CompactionAgentContext, trigger: CompactionTrigger, signal: AbortSignal, ): Promise<CompactionResult | null>",
+          "abstract compactNow( agent: ManualCompactAgentContext, signal: AbortSignal, sourceCommandId?: CommandId, ): Promise<CompactionResult | null>",
+          "abstract compactRegion( start: SessionSeq, end: SessionSeq, agent: CompactionAgentContext, signal?: AbortSignal, ): Promise<CompactionResult>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('compaction');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "computerUse",
+        "description": "Owns one optional provider registration in the shared computer-use service.",
+        "methods": [
+          "register(name: ComputerUseProviderName): () => Promise<void>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('computerUse');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "configEditor",
+        "description": "Persist complete raw configs and apply them through the normal Loader path.",
+        "methods": [
+          "entries(): Entry[]",
+          "configuration(): Array<{ entry: Entry; inherited: Record<string, unknown>; override: Record<string, unknown> }>",
+          "async edit( entry: Entry, change: (current: Record<string, unknown>, inherited: Record<string, unknown>) => Record<string, unknown>, ): Promise<void>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('configEditor');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "connection",
+        "description": "Host `ctx.connection` members consumed by transport-independent adapters.",
+        "methods": [
+          "readonly rpc: HostConnectionRpc",
+          "readonly fetch: HostConnectionFetch",
+          "readonly browserPeer: PeerScope",
+          "readonly allowsRemoteAuthorities: boolean",
+          "createSharedFetchHandler(channel: '/api'): ConnectionFetchHandler",
+          "requestRejection(request: ConnectionTrustRequest): ConnectionRequestRejection",
+          "admit(request: ConnectionTrustRequest): PeerAdmission",
+          "createPeer(options: { readonly principal: Principal; readonly interactions?: 'answer' | 'none' }): PeerScope",
+          "admitConnection(request: ConnectionTrustRequest): ConnectionAdmission",
+          "authorizeIndex(request: ConnectionIndexRequest, response: ConnectionIndexResponse): boolean",
+          "authenticatedUrl(baseUrl: string): string"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('connection');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "cotTranslation",
+        "description": "Optional reasoning translation delegates Session-bound storage to the translator.",
+        "methods": [
+          "@Remote async limits(signal: AbortSignal): Promise<CotTranslationSnapshot>",
+          "@Remote async translate(request: TranslationRequest, signal: AbortSignal): Promise<string>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('cotTranslation');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "credentials",
+        "description": "Abstract credential service over two key spaces that answer two questions.",
+        "methods": [
+          "abstract resolve(ref: CredentialRef): Promise<ResolvedCredential | undefined>",
+          "abstract describe(ref: CredentialRef): Promise<CredentialInfo>",
+          "abstract set(ref: CredentialRef, value: string): Promise<void>",
+          "abstract unset(ref: CredentialRef): Promise<void>",
+          "abstract readRecord(key: CredentialKey): Promise<CredentialRecord | undefined>",
+          "abstract describeRecord(key: CredentialKey): Promise<CredentialRecordInfo>",
+          "abstract listRecords(): Promise<readonly CredentialRecordEntry[]>",
+          "abstract modifyRecord( key: CredentialKey, mutate: (current: CredentialRecord | undefined) => Promise<CredentialRecord | undefined>, ): Promise<CredentialRecord | undefined>",
+          "abstract deleteRecord(key: CredentialKey): Promise<void>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('credentials');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "credentialsController",
+        "description": "Host service backing the generated `ctx.remote.credentials` namespace.",
+        "methods": [
+          "@Remote async describe(refs: string[]): Promise<Record<string, CredentialInfo>>",
+          "@Remote async set(ref: string, value: string): Promise<void>",
+          "@Remote async unset(ref: string): Promise<void>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('credentialsController');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "deepseekAccount",
+        "description": "Account operations; only Host consumers can obtain a request credential.",
+        "methods": [
+          "abstract getState(): Promise<AccountView>",
+          "abstract getProfile(client: AccountClientMetadata): Promise<AccountDetails['profile'] | null>",
+          "abstract getBalance(client: AccountClientMetadata): Promise<AccountDetails['balance'] | null>",
+          "abstract getUnnotifiedBonuses(client: AccountClientMetadata): Promise<AccountBonusBatch | null>",
+          "abstract ackBonusNotified(accountId: AccountUserId, orderId: AccountBonusOrderId, client: AccountClientMetadata): Promise<boolean>",
+          "abstract startSignIn(client: AccountClientMetadata, callbackOrigin: string, loginSource: 'web' | 'desktop'): Promise<AccountView>",
+          "abstract cancelSignIn(id: SignInAttemptId): Promise<AccountView>",
+          "abstract signOut(client: AccountClientMetadata): Promise<AccountView>",
+          "abstract watch(signal: AbortSignal, includeIdentityChanges?: boolean): AsyncIterable<AccountView>",
+          "abstract resolveToken(url: string): Promise<string | undefined>",
+          "abstract rejectToken(token: string): Promise<void>",
+          "abstract getPlatformSession(): Promise<PlatformSession | null>",
+          "abstract getDeviceIdentity(): Promise<{ deviceId?: string; userId?: AccountUserId; osVersion: string }>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('deepseekAccount');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "deepseekLlmApiExtensions",
+        "description": "Registry of independently owned top-level fields for official DeepSeek requests.",
+        "methods": [
+          "register<K extends keyof DeepSeekLlmApiExtensionMap>( field: K, provider: DeepSeekLlmApiExtensionProvider<DeepSeekLlmApiExtensionMap[K]>, ): () => Promise<void>",
+          "async prepare(request: DeepSeekLlmApiExtensionRequest): Promise<PreparedDeepSeekLlmApiExtensions>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('deepseekLlmApiExtensions');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "directoryPicker",
+        "description": "Abstract directory-picking service.",
+        "methods": [
+          "abstract capability(): DirectoryPickerCapability"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('directoryPicker');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "directoryPickerController",
+        "description": "Host service backing the generated `ctx.remote.directoryPicker` namespace.",
+        "methods": [
+          "@Remote('pick') async pick(signal: AbortSignal): Promise<string | null>",
+          "@Remote('list') async list(path: string | undefined, signal: AbortSignal): Promise<DirectoryListing>",
+          "@Remote('createDirectory') async createDirectory(path: string, name: string): Promise<string>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('directoryPickerController');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "fileReferences",
+        "description": "Host capability for cancellable file-reference discovery.",
+        "methods": [
+          "abstract list( agent: Agent, query: string, signal: AbortSignal, ): Promise<FileReferenceCandidate[]>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('fileReferences');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "fileUploads",
+        "description": "Host service owning upload storage and receipts keyed by each receiving Agent's exact Session.",
+        "methods": [
+          "registerAgentResolver(resolve: AgentResolver): () => void",
+          "@Remote('upload') upload(agent: Agent, request: EncodedFileUploadRequest, signal: AbortSignal): Promise<FileUploadValue>",
+          "async uploadStream(request: { readonly sessionId: SessionId readonly data: AsyncIterable<Uint8Array> readonly signal?: AbortSignal readonly name?: string }): Promise<FileUploadValue>",
+          "resolve(agent: Agent, receiptId: FileUploadReceiptId): FileAttachmentRef | undefined",
+          "bindPrompt( agent: Agent, receiptIds: readonly FileUploadReceiptId[], requestId: string, ): PromptFileBinding",
+          "retirePrompt(agent: Agent, requestId: string): void"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('fileUploads');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "fs",
+        "description": "Abstract filesystem provider.",
+        "methods": [
+          "watch(target: FsTarget, changed: (error?: Error) => void, signal: AbortSignal): Promise<() => Promise<void>>",
+          "abstract resolve(path: string, opts?: { cwd?: string; signal?: AbortSignal }): Promise<FsTarget>",
+          "abstract processPath(target: FsTarget): string",
+          "processPathFromHostPath(hostPath: string): string | undefined",
+          "abstract fileUrl(target: FsTarget): string",
+          "abstract contains(parent: FsTarget, child: FsTarget): boolean",
+          "abstract stat(target: FsTarget, signal?: AbortSignal): Promise<FsInfo | undefined>",
+          "abstract lstat(path: string, opts?: { cwd?: string }, signal?: AbortSignal): Promise<FsPathInfo | undefined>",
+          "abstract readText(target: FsTarget, signal?: AbortSignal): Promise<string>",
+          "abstract streamText(target: FsTarget, signal?: AbortSignal): Promise<AsyncIterable<string>>",
+          "abstract readBytes(target: FsTarget, signal: AbortSignal | undefined, maxBytes: number): Promise<Uint8Array>",
+          "abstract readByteRange(target: FsTarget, range: { offset: number; length: number }, signal?: AbortSignal): Promise<Uint8Array>",
+          "abstract listDir(target: FsTarget, signal?: AbortSignal): Promise<FsDirEntry[]>",
+          "abstract writeText( target: FsTarget, content: string, expected?: FsWriteIntent, signal?: AbortSignal, sandboxPolicy?: SandboxExecutionPolicy, ): Promise<FsWriteOutcome>",
+          "abstract editText( target: FsTarget, edit: FsEditRequest, expected?: { version: FsVersion }, signal?: AbortSignal, sandboxPolicy?: SandboxExecutionPolicy, ): Promise<FsEditOutcome>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('fs');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "goals",
+        "description": "Goal service (`ctx.goals`) backed exclusively by the owning session log.",
+        "methods": [
+          "@Remote('get') get(agent: Agent): GoalView | undefined",
+          "disarm(agent: Agent): GoalView | undefined",
+          "create(agent: Agent, request: CreateGoalRequest): GoalView",
+          "@Remote('edit') edit(agent: Agent, ref: GoalRef, request: EditGoalRequest): GoalView",
+          "@Remote('pause') pause(agent: Agent, ref: GoalRef): GoalView",
+          "@Remote('resume') resume(agent: Agent, ref: GoalRef): GoalView",
+          "@Remote('complete') complete(agent: Agent, ref: GoalRef): GoalView",
+          "block(agent: Agent, ref: GoalRef, reason: GoalBlockReason): GoalView",
+          "@Remote('clear') clear(agent: Agent, ref: GoalRef): GoalRef",
+          "@Remote('create') remoteExportCreate(agent: Agent, request: CreateGoalRequest): CreateGoalResult"
+        ],
+        "used": true,
+        "use": "const service = ctx.get('goals');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "hmr",
+        "description": "Hot reload service with Cordis-compatible module configuration and events.",
+        "methods": [
+          "public baseDir: string",
+          "runExclusive<T>(operation: () => Promise<T>): Promise<T>",
+          "async watchConfig(filename: string, refresh: () => Promise<void>): Promise<() => Promise<void>>",
+          "getOuterStack: () => string[] = () => []",
+          "async getLinked(url: string): Promise<string[]>",
+          "async reconcileProfile(requiredIds: readonly string[] = []): Promise<ProfileReconciliation>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('hmr');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "inspector",
+        "description": "Shared Host/Client service façade over the realm's source publisher.",
+        "methods": [
+          "publish(topic: string, payload: InspectorJsonValue, monotonicMs?: number): void",
+          "readonly cordis: CordisRuntimeTreeReader"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('inspector');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "jobController",
+        "description": "Host service backing the generated `ctx.remote.job` namespace.",
+        "methods": [
+          "@Remote({ mode: 'stream' }) list(request: JobListRequest, signal: AbortSignal): AsyncIterable<JobListFrame>",
+          "@Remote({ mode: 'stream' }) follow(request: JobFollowRequest, signal: AbortSignal): AsyncIterable<JobFollowFrame>",
+          "@Remote('kill') kill(request: JobKillRequest): JobKillValue"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('jobController');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "jobs",
+        "description": "Abstract background job registry.",
+        "methods": [
+          "abstract readonly events: JobEvents",
+          "abstract start(spec: JobSpec): JobId",
+          "abstract list(caller?: SessionId): JobView[]",
+          "abstract get(id: JobId, caller?: SessionId): JobView",
+          "abstract read(id: JobId, caller?: SessionId): JobRead",
+          "abstract readAt(id: JobId, from: number, caller?: SessionId): JobOutputRead",
+          "abstract kill(id: JobId, caller?: SessionId, reason?: string): 'requested' | 'already-finished'",
+          "abstract wait(id: JobId, timeoutMs: number, caller?: SessionId, signal?: AbortSignal): Promise<JobView>",
+          "abstract remove(id: JobId, caller?: SessionId): void",
+          "abstract attachController(name: string): () => void"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('jobs');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "llm",
+        "description": "The abstract `llm` service: an adapter registry plus a streaming model-call API, interceptable via the `llm/stream` waterfall.",
+        "methods": [
+          "registerAdapter(providers: string[], adapter: LlmAdapter): AdapterRegistrationHandle",
+          "@Remote listProviders(): LlmProviderInfo[]",
+          "registerConfigurableProviders(entries: readonly LlmConfigurableProvider[]): DirectoryRegistrationHandle",
+          "@Remote listConfigurableProviders(): LlmConfigurableProvider[]",
+          "registerModelDiscovery( settingsNs: string, discover: ( request: LlmModelDiscoveryRequest, signal?: AbortSignal, ) => Promise<readonly LlmDiscoveredModel[]>, ): () => void",
+          "async discoverModels( settingsNs: string, request: LlmModelDiscoveryRequest, signal?: AbortSignal, ): Promise<LlmDiscoveredModel[]>",
+          "@Remote('discoverModels') async remoteDiscoverModels( settingsNs: string, request: LlmModelDiscoveryRequest, signal: AbortSignal, ): Promise<LlmDiscoveredModel[]>",
+          "providerRetryPolicy(provider: string): ResolvedRetryPolicy",
+          "imageRequestPricing(provider: string, model: string): LlmImageRequestPricing | undefined",
+          "imageRequestTarget(provider: string, model: string, image: ImageAttachmentRef): ImageRequestTarget",
+          "fileRequestText(ref: FileAttachmentRef): string",
+          "async listModels(provider: string): Promise<LlmModelInfo[]>",
+          "async resolveModelInfo( provider: string, model: string, signal?: AbortSignal, ): Promise<LlmResolvedModelInfo>",
+          "async resolveCallConfig(config: LlmCallConfig, signal?: AbortSignal): Promise<LlmCallConfig>",
+          "async prepareCall( config: LlmCallConfig, signal?: AbortSignal, configure?: ConfigureCall, ): Promise<PreparedLlmCall>",
+          "stream(options: GenerateOptions): AsyncIterable<StreamChunk>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('llm');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "lsp",
+        "description": "The LSP capability seam (`ctx.lsp`).",
+        "methods": [
+          "registerProvider(provider: LspProvider): () => void",
+          "query(request: LspQueryRequest, signal?: AbortSignal): Promise<LspQueryResult>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('lsp');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "mcpResources",
+        "description": "Scoped resource access plus three tools shared by configured MCP servers.",
+        "methods": [
+          "register(server: string, provider: McpResourceProvider): () => void"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('mcpResources');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "messageFeedback",
+        "description": "Session-log service; cold operations never construct a Session or Agent.",
+        "methods": [
+          "@Remote('list') list(request: MessageFeedbackListRequest): Promise<MessageFeedbackListResult>",
+          "@Remote('put') put(request: MessageFeedbackPutRequest): Promise<MessageFeedbackPutResult>",
+          "@Remote('delete') delete(request: MessageFeedbackDeleteRequest): Promise<MessageFeedbackDeleteResult>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('messageFeedback');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "officeToPdf",
+        "description": "A provider lifetime owns all converters, queued calls, and temporary files.",
+        "methods": [
+          "readonly generation: OfficeToPdfGeneration = OfficeToPdfGeneration(randomUUID())",
+          "convert(request: OfficeToPdfRequest, signal?: AbortSignal): Promise<OfficeToPdfResult>",
+          "@Remote async render( workspaceFileScope: WorkspaceFileScope, path: string, priority: OfficeToPdfPriority, signal: AbortSignal, ): Promise<RenderedDocumentBytes>",
+          "@Remote('generation') getGeneration(signal: AbortSignal): OfficeToPdfGeneration"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('officeToPdf');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "otel",
+        "description": "Shared transport provider.",
+        "methods": [
+          "createEventReporter(options: EventLogOptions): EventLogReporter",
+          "createSessionLogReporter(options: SessionLogOptions): SessionLogReporter"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('otel');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "permissionPresets",
+        "description": "Owns the deployment's configured permission presets, the fixed Auto integration hook, and their write path.",
+        "methods": [
+          "@Remote('catalog') catalog(): PermissionCatalog",
+          "registerAuto(admit: () => void): () => Promise<void>",
+          "current(session: Session): string",
+          "resolve(name: string): PresetSpec",
+          "optionOf(name: string): PresetOption",
+          "set(session: Session, name: string): void"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('permissionPresets');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "planMode",
+        "description": "`ctx.planMode`: owns logged plan state, applies and narrates selected state at step start, the `plan:policy` section, the `/plan` command, and the stable exit tool.",
+        "methods": [
+          "get(agent: Agent): { active: boolean; pending?: boolean }",
+          "set(agent: Agent, active: boolean): 'committed' | 'queued' | 'cancelled' | 'noop'"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('planMode');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "pluginManager",
+        "description": "Manage profile files and apply their declared reload lifecycle.",
+        "methods": [
+          "@Remote listVersionExemptions(): { exemptions: Record<string, string[]>; warnings: string[] }",
+          "@Remote setVersionExemption(packageVersion: string, runtimeVersion: string, enabled: boolean, acceptRisk?: boolean): Promise<ChangeResult>",
+          "@Remote async listPlugins(): Promise<PluginInfo[]>",
+          "@Remote listBundles(): Promise<BundleInfo[]>",
+          "@Remote async registries(): Promise<PluginRegistries>",
+          "@Remote async inspect(spec: string, options?: InspectOptions, signal?: AbortSignal): Promise<PluginSpecInspection>",
+          "@Remote setPluginEnabled(id: PluginEntryId, enabled: boolean): Promise<ChangeResult>",
+          "@Remote setBundleEnabled(name: string, enabled: boolean): Promise<ChangeResult>",
+          "@Remote installBundle(spec: string, options?: InstallBundleOptions): Promise<ChangeResult>",
+          "@Remote async waitForInstall(requestId: PluginInstallRequestId): Promise<ChangeResult | null>",
+          "@Remote async cancelInstall(requestId: PluginInstallRequestId): Promise<PluginInstallCancellation>",
+          "@Remote removeBundle(name: string): Promise<ChangeResult>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('pluginManager');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "pluginMarket",
+        "description": "Fetches, validates, and caches configured market indexes; annotates entries with the profile's installation facts.",
+        "methods": [
+          "@Remote listIndexes(): MarketIndexSummary[]",
+          "@Remote async setIndexes(urls: string[]): Promise<void>",
+          "@Remote async search(url: string, query: MarketQuery): Promise<MarketSearchResult>",
+          "async entry(url: string, name: string): Promise<MarketListingEntry | undefined>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('pluginMarket');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "pluginRegistryProbe",
+        "description": "Compares public registry responses on the Host; the Client owns the initial selection.",
+        "methods": [
+          "@Remote async fastest(): Promise<string | null>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('pluginRegistryProbe');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "productAnalytics",
+        "description": "Authenticated event intake; disabled instances do not inspect identity or accept new events.",
+        "methods": [
+          "@Remote enabled(): boolean",
+          "@Remote({ mode: 'stream' }) async *watchPolicy(signal: AbortSignal): AsyncIterable<boolean>",
+          "@Remote async report(event: ProductEvent): Promise<void>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('productAnalytics');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "productTelemetry",
+        "description": "Host analytics sender.",
+        "methods": [
+          "emit(record: ProductTelemetryRecord): void"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('productTelemetry');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "profileContext",
+        "description": "Current profile facts; scheduling and mutation belong to their callers.",
+        "methods": [
+          "readonly packageManager?: ProfilePnpmInvocation",
+          "readonly startedBundles: readonly string[]",
+          "readonly overlays: readonly PatchOptions[]",
+          "readonly telemetryDisabledEnv: string | undefined"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('profileContext');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "ptcRuntime",
+        "description": "Registers one `ctx.ptcRuntime` implementation.",
+        "methods": [
+          "abstract readonly language: string",
+          "abstract readonly isolation: string",
+          "release(owner: object): Promise<void>",
+          "abstract resolve(request: PtcRunRequest): PtcRunSpec",
+          "abstract run(spec: PtcRunSpec): Promise<PtcRunResult>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('ptcRuntime');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "remoteAccess",
+        "description": "Registry of access policies, the Gateway's access decisions, list filtering, and the per-Peer access snapshot.",
+        "methods": [
+          "registerPolicy<K extends Exclude<keyof PrincipalMap, 'owner'>>(kind: K, policy: RemoteAccessPolicy<PrincipalMap[K]>): () => void",
+          "invalidate(principal?: Principal): void",
+          "decide(request: RemoteAccessRequest<Principal>): RemoteAccessDecision",
+          "allows(resource: RemoteAccessResource): boolean",
+          "snapshotFor(principal: Principal): RemoteAccessBaseline",
+          "@Remote({ mode: 'stream' }) async *follow(signal: AbortSignal): AsyncIterable<RemoteAccessFrame>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('remoteAccess');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "sandbox",
+        "description": "Abstract process-sandbox service.",
+        "methods": [
+          "abstract confine(argv: readonly string[], policy: SandboxPolicy, signal?: AbortSignal): Promise<ConfinedArgv>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('sandbox');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "sandboxPolicy",
+        "description": "The sandbox-policy service (`ctx.sandboxPolicy`).",
+        "methods": [
+          "readonly defaultMode: SandboxMode",
+          "readonly workspaceRoot: string",
+          "resolve(request: SandboxPolicyRequest = {}): SandboxExecutionPolicy",
+          "overrideOf(session: Session): SandboxMode | undefined"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('sandboxPolicy');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "schedule",
+        "description": "Shared management service; reads, deletion, and timing edits never activate a Session.",
+        "methods": [
+          "async create(sessionId: SessionId, request: ScheduleCreateRequest, signal?: AbortSignal): Promise<ScheduleRecord>",
+          "@Remote('list') async list(request: ScheduleListRequest): Promise<ScheduleRecord[]>",
+          "@Remote('catalog') async catalog(): Promise<ScheduleCatalogEntry[]>",
+          "@Remote('history') async history(request: ScheduleDeliveryHistoryRequest): Promise<ScheduleDeliveryHistoryResult>",
+          "@Remote('delete') async delete(request: ScheduleDeleteRequest, signal?: AbortSignal): Promise<ScheduleDeleteResult>",
+          "@Remote('update') async update(request: ScheduleUpdateRequest, signal?: AbortSignal): Promise<ScheduleUpdateResult>"
+        ],
+        "used": true,
+        "use": "const service = ctx.get('schedule');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "sessionController",
+        "description": "Host service backing the generated `ctx.remote.session` namespace.",
+        "methods": [
+          "resolveAgent(sessionId: SessionId): Promise<ApiSessionAgentResult>",
+          "inspect( sessionId: SessionId, signal?: AbortSignal, ): Promise<SessionInspection>",
+          "@Remote('list') async list(_request: SessionListRequest, signal: AbortSignal): Promise<SessionListValue>",
+          "@Remote('search') async search(request: SessionSearchRequest, signal: AbortSignal): Promise<SessionSearchValue>",
+          "@Remote('create') create(request: SessionCreateRequest): Promise<SessionCreateValue>",
+          "@Remote('selectModel') selectModel(request: SessionSelectModelRequest): Promise<SessionSelectModelValue>",
+          "@Remote async initializeDefaultModel(): Promise<void>",
+          "@Remote('modelCatalog') modelCatalog(): Promise<ModelCatalog>",
+          "@Remote canOpenWorkspacePath(): boolean",
+          "workspaceDesktop(): { name: string; available: boolean; fileManager: 'finder' | 'explorer' | 'directory' | null }",
+          "@Remote('openWorkspacePath') async openWorkspacePath( request: SessionOpenWorkspacePathRequest, signal: AbortSignal, ): Promise<SessionOpenWorkspacePathValue>",
+          "@Remote('workspacePathApplications') async workspacePathApplications( request: { readonly path: string }, signal: AbortSignal, ): Promise<readonly SessionWorkspacePathApplication[]>",
+          "@Remote('rename') rename(request: SessionRenameRequest): Promise<SessionRenameValue>",
+          "@Remote('fork') async fork(request: SessionForkRequest): Promise<SessionForkValue>",
+          "@Remote('prompt') async prompt(request: SessionPromptRequest, signal: AbortSignal): Promise<SessionPromptValue>",
+          "@Remote('attachment') attachment(request: SessionAttachmentRequest): Promise<SessionAttachmentValue>",
+          "@Remote('updateQueue') updateQueue(request: SessionUpdateQueueRequest): Promise<SessionUpdateQueueValue>",
+          "@Remote('cancel') cancel(request: SessionCancelRequest): SessionCancelValue",
+          "@Remote({ name: 'page', resources: { session: addressedSession } }) page(request: SessionPageRequest, signal: AbortSignal): Promise<SessionPage>",
+          "@Remote({ mode: 'stream', resources: { session: addressedSession } }) follow(request: SessionFollowRequest, signal: AbortSignal): AsyncIterable<SessionFollowFrame>",
+          "@Remote('projections') async projections(request: SessionProjectionsRequest, signal: AbortSignal): Promise<SessionProjectionsValue>",
+          "@Remote({ mode: 'stream' }) async *control(signal: AbortSignal): AsyncIterable<SessionControlFrame>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('sessionController');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "sessionFeedback",
+        "description": "Host Remote through which a product surface records a Session-level remark.",
+        "methods": [
+          "@Remote('record') record(request: SessionFeedbackRecordRequest): Promise<SessionFeedbackRecordResult>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('sessionFeedback');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "sessionFileReferences",
+        "description": "Host Remote adapter over the composed file-reference provider.",
+        "methods": [
+          "@Remote list( agent: Agent, query: string, signal: AbortSignal, ): Promise<FileReferenceCandidate[]>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('sessionFileReferences');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "sessionPersistence",
+        "description": "Durable append-only session storage addressed through per-session handles.",
+        "methods": [
+          "readonly identity: symbol = Symbol('sessionPersistence')",
+          "abstract create(header: SessionHeader, options?: SessionPersistenceCreateOptions): Promise<SessionHandle>",
+          "abstract open(id: SessionId, access: SessionAccess, options?: SessionPersistenceOpenOptions): Promise<SessionHandle>",
+          "abstract flush(): Promise<void>",
+          "abstract stat(id: SessionId, options?: SessionPersistenceStatOptions): Promise<SessionPersistenceSnapshot | undefined>",
+          "abstract list(options?: SessionPersistenceListOptions): Promise<readonly SessionPersistenceSnapshot[]>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('sessionPersistence');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "sessionProjectionCache",
+        "description": "The persisted projection cache service.",
+        "methods": [
+          "cachedSnapshot( meta: SessionHeader, keys?: readonly Extract<keyof SessionProjectionMap, string>[], ): ProjectionSnapshot | undefined",
+          "cachedPredecessorTitle(meta: SessionHeader): ProjectionSnapshot | undefined",
+          "hydratePrepared( session: Session, events: readonly SessionEvent[], ): ProjectionSnapshot",
+          "async write(session: Session): Promise<void>",
+          "coldSnapshot( meta: SessionHeader, inheritedEventCount: SessionLogOffset, events: readonly SessionEvent[], ): ProjectionSnapshot"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('sessionProjectionCache');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "sessionProjections",
+        "description": "`ctx.sessionProjections`: the projection unit table and its drive.",
+        "methods": [
+          "register< K extends keyof SessionProjectionMap, S extends SessionProjectionStateMap[K], >( definition: Omit<ProjectionDefinition<K, S>, 'wire'> & { wire: NonNullable<ProjectionDefinition<K, S>['wire']> }, ): () => void",
+          "register< K extends Exclude<keyof SessionProjectionStateMap, keyof SessionProjectionMap>, S extends SessionProjectionStateMap[K], >( definition: Omit<ProjectionDefinition<K, S>, 'wire'>, ): () => void",
+          "onChanged(listener: ProjectionChangeListener): () => void",
+          "stateOf<K extends keyof SessionProjectionStateMap>( session: Session, key: K, ): SessionProjectionStateMap[K] | undefined",
+          "snapshot( session: Session, keys?: readonly Extract<keyof SessionProjectionMap, string>[], ): ProjectionSnapshot",
+          "cachedSnapshot( session: Session, keys?: readonly Extract<keyof SessionProjectionMap, string>[], ): ProjectionSnapshot | undefined",
+          "checkpoint(session: Session): ProjectionCheckpoint",
+          "restoreFloor(checkpoint: ProjectionCheckpoint): SessionLogOffset | undefined",
+          "viewCheckpoint( checkpoint: ProjectionCheckpoint, keys?: readonly Extract<keyof SessionProjectionMap, string>[], ): Partial<SessionProjectionMap>",
+          "restore( checkpoint: ProjectionCheckpoint, events: readonly SessionEvent[], baseSeq: SessionLogOffset, header: SessionHeader, inheritedEventCount: SessionLogOffset, ): { snapshot: ProjectionSnapshot; checkpoint: ProjectionCheckpoint }",
+          "hydrate( session: Session, checkpoint: ProjectionCheckpoint, events: readonly SessionEvent[], baseSeq: SessionLogOffset, ): ProjectionSnapshot"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('sessionProjections');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "sessionQuery",
+        "description": "Unified live-preferred session query service.",
+        "methods": [
+          "observeSession( sessionId: SessionId, options: SessionObservationOptions = {}, ): Promise<SessionObservation>",
+          "abstract searchSessions( request: SessionSearchRequest, exec?: SessionSearchExecContext, ): Promise<SessionSearchPage<SessionSearchHit>>",
+          "abstract searchEvents( request: SessionEventSearchRequest, exec?: SessionSearchExecContext, ): Promise<SessionEventSearchPage>",
+          "listSessions(signal?: AbortSignal): Promise<SessionRecord[]>",
+          "async readSession(sessionId: SessionId): Promise<SessionLogSnapshot>",
+          "async filterSessions( filters: readonly SessionResultFilter[], signal?: AbortSignal, ): Promise<SessionRecord[]>",
+          "async readTitle( sessionId: SessionId, signal?: AbortSignal, ): Promise<SessionTitleSnapshot | undefined>",
+          "async readTitleSnapshot( sessionId: SessionId, signal?: AbortSignal, ): Promise<SessionTitleObservation>",
+          "async readTitleSnapshots( sessionIds: readonly SessionId[], signal?: AbortSignal, ): Promise<SessionTitleObservationResult[]>",
+          "async listEvents(sessionId: SessionId): Promise<SessionEventRecord[]>",
+          "async filterEvents( sessionId: SessionId, filters: readonly SessionEventResultFilter[], ): Promise<SessionEventSearchDocument[]>",
+          "async readSurface(sessionId: SessionId): Promise<SessionSurfaceSnapshot>",
+          "async traceSession(sessionId: SessionId, signal?: AbortSignal): Promise<SessionLineageTrace>",
+          "async traceEvent(request: SessionEventTraceRequest, signal?: AbortSignal): Promise<SessionEventTraceObservation>",
+          "async readEvent(request: SessionEventReadRequest, signal?: AbortSignal): Promise<SessionEventWindow>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('sessionQuery');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "sessionReferenceResolver",
+        "description": "Exact-read consumer that prepares immutable cross-session message context.",
+        "methods": [
+          "async listCandidates( agent: Agent, query: string = '', limit: number = this.config.candidateLimit, signal?: AbortSignal, ): Promise<SessionReferenceCandidate[]>",
+          "@Remote('candidates') async remoteExportCandidates( agent: Agent, query: string, signal: AbortSignal, ): Promise<SessionReferenceMentionCandidate[]>",
+          "async prepare( agent: Agent, content: ContentBlock[], references: SessionReferenceInput[], signal?: AbortSignal, ): Promise<PreparedReferencedMessage>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('sessionReferenceResolver');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "sessions",
+        "description": "In-memory session store (`ctx.sessions`).",
+        "methods": [
+          "registerMessageProjection(projection: SessionMessageProjection): () => Promise<void>",
+          "create(id?: SessionId, options?: CreateSessionOptions): Session",
+          "prepare(id?: SessionId, options?: PrepareSessionOptions): Session",
+          "enter(session: Session): () => void",
+          "announce(session: Session): void",
+          "async flush(session: Session): Promise<boolean>",
+          "get(id: SessionId): Session | undefined",
+          "list(): Session[]",
+          "fork(source: SessionForkSource, boundary?: SessionSeq, childSessionId?: SessionId): Session"
+        ],
+        "used": true,
+        "use": "const service = ctx.get('sessions');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "sessionSkillCatalog",
+        "description": "Host service backing `ctx.remote.skills` without activating a cold Agent.",
+        "methods": [
+          "@Remote async list(request: SkillListRequest, signal: AbortSignal): Promise<SkillListValue>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('sessionSkillCatalog');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "sessionTelemetry",
+        "description": "Loadable form of the backend contract: one implementation per context — the cordis `Service` registration under the `telemetry` key throws on a duplicate, cordis' standard behavior.",
+        "methods": [
+          "abstract readonly sharing: SessionTelemetrySharingStatus",
+          "abstract emit(record: SessionTelemetryRecord): void",
+          "flush?(): void",
+          "abstract shutdown(): Promise<void>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('sessionTelemetry');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "sessionTitle",
+        "description": "Log-backed title fold plus asynchronous fallback generation.",
+        "methods": [
+          "get(session: Session): SessionTitleSnapshot | undefined",
+          "rename(session: Session, title: string): SessionTitleSnapshot",
+          "async refresh(session: Session, signal?: AbortSignal): Promise<SessionTitleSnapshot | undefined>",
+          "register(provider: SessionTitleProvider): () => Promise<void>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('sessionTitle');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "settings",
+        "description": "Project Config schemas into forms and own optional instance-level UI policy.",
+        "methods": [
+          "configure(presentation: { auto?: boolean }, owner: Fiber = this.ctx.fiber): () => void",
+          "prepareDocument(): Promise<string>",
+          "describe(options?: SettingsDescribeOptions): SettingsDescriptor[]",
+          "async update(ns: string, patch: object, expectedRevision?: number): Promise<void>",
+          "async replace(ns: string, section: object, expectedRevision?: number): Promise<void>",
+          "async mutate(ns: string, ops: readonly SettingsPathOp[], expectedRevision?: number): Promise<void>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('settings');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "settingsController",
+        "description": "Host service backing the generated `ctx.remote.settings` namespace.",
+        "methods": [
+          "@Remote describe(): SettingsDescribeValue",
+          "@Remote update( ns: string, patch: Record<string, JsonValue>, expectedRevision: number | undefined, ): Promise<SettingsNamespaceView>",
+          "@Remote replace( ns: string, section: Record<string, JsonValue>, expectedRevision: number | undefined, ): Promise<SettingsNamespaceView>",
+          "@Remote async mutate( ns: string, ops: SettingsPathOpView[], expectedRevision: number | undefined, ): Promise<SettingsNamespaceView>",
+          "@Remote async openSettingsDocument(signal: AbortSignal): Promise<SettingsDocumentOpenValue>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('settingsController');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "shell",
+        "description": "Abstract bash execution service.",
+        "methods": [
+          "abstract resolve(request: ShellExecRequest): ShellExecSpec",
+          "abstract execute(spec: ShellExecSpec): Promise<ShellExecution>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('shell');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "shellEnv",
+        "description": "Registry (`ctx.shellEnv`) for trusted, per-execution `DSH_*` variables.",
+        "methods": [
+          "register(contributor: BashEnvContributor): () => void",
+          "collect(execution: ToolExecution): DshEnvironment",
+          "list(): BashEnvVariableInfo[]"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('shellEnv');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "skills",
+        "description": "Layered registry of skill providers, the host+per-scope shape the tools registry established.",
+        "methods": [
+          "registerProvider(create: (control: SkillProviderControl) => SkillProvider): () => void",
+          "register(skill: SkillRegistration): () => void",
+          "async list(options: SkillViewOptions = {}): Promise<SkillSummary[]>",
+          "async snapshot(options: SkillViewOptions = {}): Promise<SkillCatalogSnapshot>",
+          "async get(name: string, options: SkillViewOptions = {}): Promise<SkillDefinition | undefined>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('skills');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "speechController",
+        "description": "Speech calls never activate or submit to an Agent.",
+        "methods": [
+          "@Remote catalog(): SpeechCatalog",
+          "@Remote({ mode: 'stream' }) async *follow(signal: AbortSignal): AsyncIterable<SpeechCatalog>",
+          "@Remote configure(patch: SpeechSelectionPatch): Promise<void>",
+          "@Remote prepare(providerId: SpeechProviderId, options?: SpeechPreparationOptions): void",
+          "@Remote cancelPreparation(providerId: SpeechProviderId): Promise<void>",
+          "@Remote async transcribe(request: TranscriptionRequest, signal: AbortSignal): Promise<Transcript>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('speechController');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "speechToText",
+        "description": "Registry shared by all transcription consumers in one Host composition.",
+        "methods": [
+          "register(provider: SpeechProvider): () => Promise<void>",
+          "listProviders(): readonly SpeechProviderInfo[]",
+          "async *follow(caller: AbortSignal): AsyncIterable<SpeechSnapshot>",
+          "snapshot(): SpeechSnapshot",
+          "async configure(patch: SpeechSelectionPatch): Promise<void>",
+          "prepare(id: SpeechProviderId, options?: SpeechPreparationOptions): void",
+          "async cancelPreparation(id: SpeechProviderId): Promise<void>",
+          "resolve(request: SpeechRequest): SpeechSpec",
+          "async transcribe(spec: SpeechSpec, signal: AbortSignal): Promise<Transcript>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('speechToText');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "spillStore",
+        "description": "Abstract spill storage service.",
+        "methods": [
+          "abstract saveText(input: SaveTextSpill): Promise<SpillRef>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('spillStore');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "ssh",
+        "description": "One non-reconnecting SSH session; loss invalidates all active operations.",
+        "methods": [
+          "readonly ready: Promise<Hello>",
+          "async request<T>(method: string, params: unknown, result: z.ZodType<T>, signal?: AbortSignal, wait: boolean = false): Promise<T>",
+          "async connectStream(endpoint: SshStreamEndpoint, signal?: AbortSignal): Promise<Socket>",
+          "dispose(): Promise<void>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('ssh');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "storage",
+        "description": "The storage hub service.",
+        "methods": [
+          "readonly backend: BackendRegistry = new BackendRegistry()",
+          "mount<K extends keyof StorageForms>(form: K, facility: StorageForms[K]): () => void",
+          "form<K extends keyof StorageForms>(form: K): StorageForms[K]"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('storage');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "storageDomain",
+        "description": "The mounted domain facility.",
+        "methods": [
+          "async open<S extends DomainSpec>(spec: S): Promise<Domain<S>>",
+          "get(name: string): DomainImpl | undefined",
+          "async closeAll(): Promise<void>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('storageDomain');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "subagentModelSelection",
+        "description": "Singleton settings owner read when delegation tools are composed for a Session.",
+        "methods": [
+          "current(): SubagentModelSelectionSettings"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('subagentModelSelection');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "subagents",
+        "description": "Named provider registry with managed activations, durable discovery, and local child messaging.",
+        "methods": [
+          "resolveMaxDepth(configured?: number | 'provider-managed'): number | undefined",
+          "startActivation(spec: SubagentActivationSpec & { readonly childId: SessionId }): Promise<SubagentActivation & { readonly messageId: MessageId }>",
+          "startActivation(spec: SubagentActivationSpec): Promise<SubagentActivation>",
+          "async waitForChildren(parent: Agent): Promise<boolean>",
+          "async sendMessage( sender: Agent, targetId: SessionId, content: ContentBlock[], options: SubagentSendMessageOptions, ): Promise<MessageId>",
+          "interrupt(targetSessionId: SessionId, authority: SubagentInterruptAuthority): void",
+          "async drainDescendants(parents: readonly Agent[]): Promise<void>",
+          "async drainChildren(parent: Agent, childIds: readonly SessionId[]): Promise<void>",
+          "listChildren(parentSessionId: SessionId, signal?: AbortSignal): Promise<SubagentCatalogEntry[]>",
+          "listDescendants(rootSessionId: SessionId, signal?: AbortSignal): Promise<SubagentDescendantListEntry[]>",
+          "@Remote('prompt') async prompt(request: SubagentPromptRequest, signal: AbortSignal): Promise<SubagentPromptReceipt>",
+          "@Remote('interruptByParent') interruptByParent( childSessionId: SessionId, parentSessionId: SessionId, mode: 'continuable', ): SubagentInterruptReceipt",
+          "registerProvider(provider: SubagentProvider): () => void",
+          "getProvider(name: string): SubagentProvider | undefined",
+          "list(): string[]"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('subagents');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "subprocess",
+        "description": "Abstract subprocess service.",
+        "methods": [
+          "abstract resolveExecutable( command: string, env?: Readonly<Record<string, string>>, signal?: AbortSignal, ): Promise<string>",
+          "abstract terminalEnvironment(signal?: AbortSignal): Promise<SubprocessTerminalEnvironment>",
+          "abstract spawn(spec: SubprocessSpawnSpec): SubprocessHandle",
+          "abstract spawnTerminal(spec: SubprocessTerminalSpawnSpec): Promise<SubprocessTerminalHandle>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('subprocess');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "systemPrompt",
+        "description": "Registry service for the prompt inputs assembled before each model step.",
+        "methods": [
+          "section(section: PromptSection): () => void",
+          "getSectionOrder(name: PromptSectionOrderName): number",
+          "getContextOrder(name: PromptContextOrderName): number",
+          "context(context: PromptContext): () => void",
+          "suppressRuntimeContext(): () => void",
+          "tools(provider: (context: AssembleContext) => ToolProviderResult): () => void",
+          "variable(name: string, provider: (context: AssembleContext) => string | undefined): () => void",
+          "refreshContext(assembly: PromptAssembly, context: AssembleContext = {}): PromptAssembly",
+          "async assemble(context: AssembleContext = {}): Promise<PromptAssembly>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('systemPrompt');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "terminalController",
+        "description": "Typed Remote control of transient Session-owned terminal processes.",
+        "methods": [
+          "@Remote environment(agent: Agent, signal: AbortSignal): TerminalEnvironment",
+          "@Remote shells(agent: Agent, signal: AbortSignal): Promise<TerminalShell[]>",
+          "@Remote list(sessionId: SessionId): WebTerminalInfo[]",
+          "@Remote async create(agent: Agent, request: TerminalCreateRequest, signal: AbortSignal): Promise<WebTerminalInfo>",
+          "@Remote({ mode: 'stream' }) retain(sessionId: SessionId, id: WebTerminalId, signal: AbortSignal): AsyncIterable<TerminalRetentionFrame>",
+          "@Remote({ mode: 'stream' }) attach(agent: Agent, id: WebTerminalId, signal: AbortSignal): RemoteStream<TerminalFrame, TerminalInput>",
+          "@Remote rename(agent: Agent, id: WebTerminalId, title: string): void",
+          "@Remote async close(agent: Agent, id: WebTerminalId): Promise<void>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('terminalController');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "terminals",
+        "description": "In-process registry for replaceable PTY backends and exact-Agent sessions.",
+        "methods": [
+          "registerBackend(backend: TerminalBackend): () => void",
+          "listBackends(): string[]",
+          "async spawn(owner: Agent, request: TerminalSpawnRequest, signal?: AbortSignal): Promise<TerminalSpawnResult>",
+          "hasOwnerActivity(owner: Agent): boolean",
+          "startSend(owner: Agent, id: TerminalSessionId, request: TerminalSendRequest): TerminalSendOperation",
+          "read(owner: Agent, id: TerminalSessionId, request: TerminalReadRequest = {}): TerminalReadResult",
+          "signal(owner: Agent, id: TerminalSessionId, signal: TerminalSignal): Promise<TerminalSignalResult>",
+          "async kill(owner: Agent, id: TerminalSessionId, reason: string = 'model request'): Promise<boolean>",
+          "list(owner: Agent): TerminalSessionSnapshot[]"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('terminals');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "timer",
+        "description": "Disposable timer helpers mixed into Cordis contexts.",
+        "methods": [
+          "timeout(callback: () => void, delay: number): () => void",
+          "timeout(delay: number): Promise<void>",
+          "interval(callback: () => void, delay: number): () => void",
+          "interval<R = any>(delay: number): AsyncIterableIterator<void, R, void>",
+          "throttle<F extends (...args: any[]) => void>(callback: F, delay: number, noTrailing?: boolean): F & { dispose: () => void }",
+          "debounce<F extends (...args: any[]) => void>(callback: F, delay: number): F & { dispose: () => void }"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('timer');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "tokenMeter",
+        "description": "Replay owner for one service-wide estimator and isolated per-session folds.",
+        "methods": [
+          "measure(session: Session, requestHeader?: EpochHeader): TokenMeasurement",
+          "estimateMessage(message: Message): number"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('tokenMeter');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "toolResultPruner",
+        "description": "Deterministic head/middle/tail pruning for current tool-result surface nodes.",
+        "methods": [
+          "readonly config: ResolvedConfig",
+          "measureContent(blocks: readonly ContentBlock[]): number",
+          "pruneContent(blocks: readonly ContentBlock[]): ContentBlock[] | null",
+          "pruneSession(session: Session): PruneResult"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('toolResultPruner');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "tools",
+        "description": "Tool registry and execution pipeline.",
+        "methods": [
+          "presentAs(mode: ToolPresentationMode): () => void",
+          "register(definition: ToolDefinition): () => void",
+          "restrict(filter: ToolRestriction): () => void",
+          "guard(guard: ToolGuard): () => void",
+          "get(name: string, scope?: ScopeKey): ToolDefinition | undefined",
+          "schemas(scope?: ScopeKey): ToolSchema[]",
+          "executionMode(exec: ToolExecutionInput): ToolExecutionMode",
+          "async execute(exec: ToolExecutionInput): Promise<ToolExecutionResult>"
+        ],
+        "used": true,
+        "use": "const service = ctx.get('tools');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "translator",
+        "description": "One Host service with explicit routing, cancellation and quiescent unload.",
+        "methods": [
+          "async availableProviders(signal?: AbortSignal): Promise<readonly TranslationProvider[]>",
+          "resolve(request: TranslationRequest): TranslationSpec",
+          "async translate(spec: TranslationSpec, signal?: AbortSignal): Promise<string>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('translator');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "typert",
+        "description": "Registry of generated schemas, package reflection, invocations, and Remote dependency providers.",
+        "methods": [
+          "register(contribution: TypertContribution): TypertDisposer",
+          "get(key: string): TypertSchemaRecord | undefined",
+          "resolve(key: string): TypertSchemaRecord",
+          "list(filter: TypertSchemaFilter = {}): TypertSchemaRecord[]",
+          "getPackage(packageName: string, face: TypertFace = 'host'): TypertPackageRecord | undefined",
+          "listPackages(filter: TypertPackageFilter = {}): TypertPackageRecord[]",
+          "toJSONSchema(key: string, params?: z.core.ToJSONSchemaParams): z.core.JSONSchema.BaseSchema"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('typert');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "typertGateway",
+        "description": "Resolve strict generated definitions or conservative SRC markers against current Cordis Services and Typert providers.",
+        "methods": [
+          "readonly wireStream: TypertGatewayWireStream = { open: (endpoint, payload, uplink, peer, signal) => this.openWireStream(endpoint, payload, uplink, peer, signal, new AbortController()), failure: error => rpcError(error), }",
+          "hasLiveClient(): boolean",
+          "registerRemoteEvents( source: TypertRemoteEventSource, host: RemoteEventHostInfo, ): () => Promise<void>",
+          "async invoke(request: InvokeRemoteRequest): Promise<unknown>",
+          "async stream(request: InvokeRemoteRequest): Promise<AsyncIterable<unknown>>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('typertGateway');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "userQuestions",
+        "description": "`ctx.userQuestions`: validation plus the scoped answerer waterfall.",
+        "methods": [
+          "@Remote answer(agent: Agent, callId: ToolCallId, answer: AskUserQuestionAnswer): boolean",
+          "@Remote({ mode: 'stream' }) async *attachWait(agent: Agent, callId: ToolCallId, signal: AbortSignal): AsyncIterable<{ remainingMs: number }>",
+          "async askTimed( request: AskUserQuestionRequest & { agent: Agent }, callId: ToolCallId, timeoutMs: number, ): Promise<TimedUserQuestionResult>",
+          "async ask(request: AskUserQuestionRequest): Promise<AskUserQuestionAnswer>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('userQuestions');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "web",
+        "description": "The web access service.",
+        "methods": [
+          "registerSearchProvider(provider: WebSearchProvider): () => void",
+          "registerFetchProvider(provider: WebFetchProvider): () => void",
+          "async search(request: WebSearchRequest, signal?: AbortSignal): Promise<WebSearchResult>",
+          "async fetch(request: WebFetchRequest, signal?: AbortSignal): Promise<WebFetchResult>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('web');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "webApp",
+        "description": "The Web GUI this process serves, provided by the `web-runtime` row.",
+        "methods": [
+          "getAdvertisedUrl(): string"
+        ],
+        "used": true,
+        "use": "const service = ctx.get('webApp');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "webhookRuntime",
+        "description": "Fire-and-forget rule runtime.",
+        "methods": [
+          "register<K extends string>(rule: WebhookRule<K>): () => Promise<void>",
+          "dispatch<K extends string>(delivery: VerifiedWebhookDelivery<K>): void"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('webhookRuntime');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "webServer",
+        "description": "The browser HTTP carrier service.",
+        "methods": [
+          "getOrigin(): string",
+          "register(route: WebRoute): () => void",
+          "registerUpgrade(route: WebUpgradeRoute): () => void",
+          "registerFallback(handler: WebRoute['handler']): () => void",
+          "tapIndex(transform: (html: string) => string): () => void",
+          "applyIndexTaps(html: string): string",
+          "collectIndexInjections(): IndexInjection[]",
+          "renderIndex(html: string): string"
+        ],
+        "used": true,
+        "use": "const service = ctx.get('webServer');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "workflowEngine",
+        "description": "Workflow Service Definition contract.",
+        "methods": [
+          "abstract start(request: WorkflowStartRequest): WorkflowRun"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('workflowEngine');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "workingDirectory",
+        "description": "One owner for each Session's effective directory and its model-visible changes.",
+        "methods": [
+          "readonly defaultDirectory: string",
+          "get(session: Session): string",
+          "ensure(agent: Agent, signal?: AbortSignal): Promise<string>",
+          "set(agent: Agent, path: string, signal?: AbortSignal): Promise<string>"
+        ],
+        "used": true,
+        "use": "const service = ctx.get('workingDirectory');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "workspaceChanges",
+        "description": "Serves the summaries and file comparisons the recorder keeps for live Sessions.",
+        "methods": [
+          "summary(sessionId: SessionId, seq: number): WorkspaceChangesSummary | undefined",
+          "diff(sessionId: SessionId, seq: number, index: number, signal: AbortSignal): Promise<WorkspaceFileDiff | undefined>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('workspaceChanges');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "workspaceController",
+        "description": "Host service backing the generated `ctx.remote.workspace` namespace.",
+        "methods": [
+          "@Remote('create') create(request: WorkspaceCreateRequest): Promise<WorkspaceCreateValue>",
+          "@Remote('initializeDefault') async initializeDefault(signal: AbortSignal): Promise<WorkspaceValue | undefined>",
+          "@Remote('rename') rename(request: WorkspaceRenameRequest): Promise<WorkspaceValue>",
+          "@Remote('delete') delete(request: WorkspaceDeleteRequest): Promise<WorkspaceDeleteValue>",
+          "@Remote('insertBefore') insertBefore(request: WorkspaceInsertBeforeRequest): Promise<WorkspaceOrderValue>",
+          "@Remote('insertSessionBefore') insertSessionBefore(request: WorkspaceInsertSessionBeforeRequest): Promise<WorkspaceValue>",
+          "@Remote('archiveSession') archiveSession(request: WorkspaceArchiveSessionRequest): Promise<WorkspaceArchiveValue>",
+          "@Remote('unarchiveSession') unarchiveSession(request: WorkspaceUnarchiveSessionRequest): Promise<WorkspaceArchiveValue>",
+          "@Remote('pinSession') pinSession(request: WorkspacePinSessionRequest): Promise<WorkspacePinValue>",
+          "@Remote('unpinSession') unpinSession(request: WorkspaceUnpinSessionRequest): Promise<WorkspacePinValue>",
+          "@Remote({ mode: 'stream' }) async *follow(signal: AbortSignal): AsyncIterable<WorkspaceFollowFrame>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('workspaceController');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "workspaceFiles",
+        "description": "Host Remote file reads and workspace directory observations over the composed filesystem.",
+        "methods": [
+          "@Remote async read( workspaceFileScope: WorkspaceFileScope, path: string, range: WorkspaceFileRange, signal: AbortSignal, ): Promise<WorkspaceFileText>",
+          "@Remote async readBytes( workspaceFileScope: WorkspaceFileScope, path: string, options: WorkspaceByteReadOptions, signal: AbortSignal, ): Promise<WorkspaceFileBytes>",
+          "@Remote async stat(workspaceFileScope: WorkspaceFileScope, path: string, signal: AbortSignal): Promise<WorkspaceFileStat>",
+          "@Remote async list(workspaceFileScope: WorkspaceFileScope, path: string, signal: AbortSignal): Promise<WorkspaceDirectoryListing>",
+          "@Remote({ mode: 'stream' }) changes(workspaceFileScope: WorkspaceFileScope, path: string, signal: AbortSignal): AsyncIterable<WorkspaceFileWatchFrame>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('workspaceFiles');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "workspaceRegistry",
+        "description": "Durable workspace registry.",
+        "methods": [
+          "async create(path: string, title?: string): Promise<Workspace>",
+          "initializeDefault(resolveDirectory: () => Promise<string>): Promise<Workspace | undefined>",
+          "get(id: WorkspaceId): Workspace | undefined",
+          "list(): Workspace[]",
+          "delete(id: WorkspaceId): Promise<boolean>",
+          "insertBefore(id: WorkspaceId, beforeId?: WorkspaceId): Promise<readonly WorkspaceId[]>",
+          "archiveSession(sessionId: SessionId, options: ArchiveSessionOptions = {}): Promise<void>",
+          "unarchiveSession(sessionId: SessionId): Promise<void>",
+          "pinSession(sessionId: SessionId): Promise<void>",
+          "unpinSession(sessionId: SessionId): Promise<void>",
+          "async resolveByPath(path: string): Promise<Workspace | undefined>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('workspaceRegistry');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "worktrees",
+        "description": "Creates retained Git worktrees under the mounted filesystem and sandbox providers.",
+        "methods": [
+          "async create(agent: Agent, request: CreateWorktreeRequest = {}, signal?: AbortSignal): Promise<CreatedWorktree>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('worktrees');\nif (service !== undefined) {\n  // service.<method>\n}"
+      }
+    ],
+    "client": [
+      {
+        "key": "layout",
+        "description": "Panel navigation and geometry actions exposed through ctx.layout.",
+        "methods": [
+          "selectPanel(panelId: MainPanelId | null): void",
+          "beginNavigation(): AbortSignal",
+          "toggleSidebar(): void",
+          "openRightbar(track: boolean, fullscreen: boolean): void",
+          "closeRightbar(): void"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('layout');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "locale",
+        "description": "Dictionary registry plus locale preference.",
+        "methods": [
+          "getLocale(): LocaleSnapshot",
+          "getSnapshot(): LocaleSnapshot",
+          "subscribe(fn: () => void): () => void",
+          "setLocale(id: string): void",
+          "addLanguage(input: LanguageRegistration): () => void",
+          "register<N extends Extract<keyof LocaleNamespaceMap, string>>(ns: N, dicts: Record<BuiltInLocaleId, LocaleDictOf<N>>): () => void",
+          "register(ns: string, locale: string, dict: LocaleDict): () => void",
+          "bind<N extends Extract<keyof LocaleNamespaceMap, string>>(ns: N): TranslateNS<N>",
+          "bind(ns: string): Translate"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('locale');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "sessions",
+        "description": "The sessions-service face injected as `ctx.sessions`.",
+        "methods": [
+          "retain(target: SessionTarget, options: SessionRetainOptions): SessionReference",
+          "using<T>(target: SessionTarget, options: SessionRetainOptions, operation: (reference: SessionReference) => T | Promise<T>): Promise<T>",
+          "retainInfo(id: SessionId): ObservableSnapshot<SessionRetainInfo>",
+          "refreshProjections(sessionId: SessionId): Promise<void>",
+          "search( query: string, signal: AbortSignal, ): Promise<RemoteResult<{ items: SessionSearchResultItem[]; hasMore: boolean }>>",
+          "fork(opts: { sessionId: SessionId atSeq?: number increaseTitle?: boolean onCreated?: (childId: SessionId) => void /** False refuses source migration; omission preserves the Host default. */ allowMigration?: boolean }): Promise<SessionId>",
+          "scope(id: SessionId): AgentContext | undefined",
+          "binding(id: SessionId): SessionBinding | undefined"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('sessions');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "slots",
+        "description": "cordis Service layer of the slot system; see the module doc for the split with SlotCore.",
+        "methods": [
+          "declare readonly register: SlotCore['register']",
+          "declare readonly registerFactory: RegisterFactory",
+          "inject(key: keyof SlotMap & string, callback: () => SlotInjectionEffect): () => void"
+        ],
+        "used": true,
+        "use": "const service = ctx.get('slots');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "theme",
+        "description": "Theme registry and preference owner.",
+        "methods": [
+          "getTheme(): ThemeSnapshot",
+          "setTheme(id: string): void",
+          "setFontSize(role: FontRole, px: number): void",
+          "register(definition: ThemeDefinition): () => void",
+          "overrideTokens(source: string, tokens: ThemeTokenOverrides): () => void"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('theme');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "timer",
+        "description": "Disposable timer helpers mixed into Cordis contexts.",
+        "methods": [
+          "timeout(callback: () => void, delay: number): () => void",
+          "timeout(delay: number): Promise<void>",
+          "interval(callback: () => void, delay: number): () => void",
+          "interval<R = any>(delay: number): AsyncIterableIterator<void, R, void>",
+          "throttle<F extends (...args: any[]) => void>(callback: F, delay: number, noTrailing?: boolean): F & { dispose: () => void }",
+          "debounce<F extends (...args: any[]) => void>(callback: F, delay: number): F & { dispose: () => void }"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('timer');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "uiWorkspace",
+        "description": "Workspace archive and directory operations consumed by Client UI domains.",
+        "methods": [
+          "openSession(target: SessionTarget): void",
+          "openWorkspace( workspaceId: WorkspaceId, beforeOpen?: (sessionId: SessionId) => void, options?: Pick<StartSessionOptions, 'agentPreset'>, ): Promise<void>",
+          "forkSession( sessionId: SessionId, onCreated?: (childId: SessionId) => void, options?: Pick<Parameters<ISessions['fork']>[0], 'allowMigration'>, ): Promise<SessionId>",
+          "connectWorkspace(workspaceId: WorkspaceId, options?: Pick<StartSessionOptions, 'agentPreset'>): Promise<SessionId>",
+          "startSession(workspaceId?: WorkspaceId, options?: StartSessionOptions): void",
+          "archiveSession(sessionId: SessionId, options?: { readonly stopActivity?: boolean }): Promise<void>",
+          "unarchiveSession(sessionId: SessionId): Promise<void>",
+          "pickDirectory(): Promise<string | null>",
+          "listDirectory(path?: string, signal?: AbortSignal): Promise<DirectoryListing>",
+          "createDirectory(path: string, name: string): Promise<string>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('uiWorkspace');\nif (service !== undefined) {\n  // service.<method>\n}"
+      },
+      {
+        "key": "workspaces",
+        "description": "Workspace Controller's Client service face.",
+        "methods": [
+          "create(input: { path: string }): Promise<WorkspaceView>",
+          "rename(workspaceId: WorkspaceId, title: string): Promise<WorkspaceView>",
+          "delete(workspaceId: WorkspaceId): Promise<void>",
+          "archiveSession(sessionId: SessionId, options?: { readonly stopActivity?: boolean }): Promise<void>",
+          "unarchiveSession(sessionId: SessionId): Promise<void>",
+          "insertSessionBefore( workspaceId: WorkspaceId, sessionId: SessionId, beforeSessionId?: SessionId, ): Promise<WorkspaceView>"
+        ],
+        "used": false,
+        "use": "const service = ctx.get('workspaces');\nif (service !== undefined) {\n  // service.<method>\n}"
+      }
+    ],
+    "extraClient": [
+      {
+        "key": "sidebarRight",
+        "description": "原生右侧栏导航 controller：打开/关闭 tab、按 target 打开、tabDomain 与命令目标解析。",
+        "methods": [
+          "openTab(kind, options?)",
+          "close(tabId)",
+          "openTabs.getSnapshot()",
+          "tabDomain.occurrence(sessionId, { id })"
+        ],
+        "used": true
+      },
+      {
+        "key": "sidebarRightTabs",
+        "description": "原生右侧栏 tab 类型 registry：注册 { id, kind, title, guide, priority }，body 由 sidebar.right.pane.tab 渲染。",
+        "methods": [
+          "register(definition): () => void"
+        ],
+        "used": true
+      },
+      {
+        "key": "commandUi",
+        "description": "composer + 菜单与 / 菜单的客户端命令 registry：注册 popupSelect 或 action contribution。",
+        "methods": [
+          "register(contribution): () => void",
+          "decorate(decoration): () => void",
+          "dismiss(name)"
+        ],
+        "used": true
+      },
+      {
+        "key": "inputTriggers",
+        "description": "输入触发源 registry：/ 与 @ 的候选源、pick/claim/header 路由。",
+        "methods": [
+          "registerSource(source): () => void"
+        ],
+        "used": false
+      }
+    ]
+  },
+  "builtins": [
+    {
+      "name": "ctx",
+      "description": "Restricted Cordis Context. Prefer ctx.get(name) with an undefined check; use inject only for hard dependencies.",
+      "signatures": [
+        "ctx.get(name: string): unknown | undefined",
+        "ctx.on(name: string, listener: Function): () => void",
+        "ctx.provide(name: string, value: unknown): () => void",
+        "ctx.effect(callback: Function, label?: string): () => void"
+      ]
+    },
+    {
+      "name": "React",
+      "description": "React runtime exposed without JSX transformation.",
+      "signatures": [
+        "React.createElement(type, props, ...children): ReactElement",
+        "React.useState(initial)",
+        "React.useEffect(effect, deps)"
+      ]
+    },
+    {
+      "name": "host",
+      "description": "Package-private JSON RPC from Client to this Package's Host half.",
+      "signatures": [
+        "host.call(method: string, args?: JsonValue): Promise<JsonValue>"
+      ]
+    },
+    {
+      "name": "styles",
+      "description": "Package-owned stylesheet insertion cleaned up with the Client run.",
+      "signatures": [
+        "styles.insert(css: string): () => void"
+      ]
+    },
+    {
+      "name": "console",
+      "description": "Package-tagged browser logging.",
+      "signatures": [
+        "console.log(...values): void",
+        "console.error(...values): void"
+      ]
+    }
+  ],
+  "themeTokens": [
+    {
+      "name": "--dsw-alias-bg-base",
+      "description": "Application base background.",
+      "valueType": "CSS color"
+    },
+    {
+      "name": "--dsw-alias-bg-layer-1",
+      "description": "Primary raised surface background.",
+      "valueType": "CSS color"
+    },
+    {
+      "name": "--dsw-alias-bg-layer-2",
+      "description": "Secondary nested surface background.",
+      "valueType": "CSS color"
+    },
+    {
+      "name": "--dsw-alias-bg-overlay",
+      "description": "Overlay and popover background.",
+      "valueType": "CSS color"
+    },
+    {
+      "name": "--dsw-alias-border-l1",
+      "description": "Primary subtle border.",
+      "valueType": "CSS color"
+    },
+    {
+      "name": "--dsw-alias-border-l2",
+      "description": "Secondary stronger border.",
+      "valueType": "CSS color"
+    },
+    {
+      "name": "--dsw-alias-brand-primary",
+      "description": "Primary brand accent.",
+      "valueType": "CSS color"
+    },
+    {
+      "name": "--dsw-alias-label-primary",
+      "description": "Primary text color.",
+      "valueType": "CSS color"
+    },
+    {
+      "name": "--dsw-alias-label-secondary",
+      "description": "Secondary text color.",
+      "valueType": "CSS color"
+    },
+    {
+      "name": "--dsw-alias-state-error-primary",
+      "description": "Primary error state color.",
+      "valueType": "CSS color"
+    },
+    {
+      "name": "--dsw-alias-state-idle-primary",
+      "description": "Primary inactive state color.",
+      "valueType": "CSS color"
+    },
+    {
+      "name": "--dsw-alias-state-success-primary",
+      "description": "Primary success state color.",
+      "valueType": "CSS color"
+    },
+    {
+      "name": "--dsw-alias-state-warn-primary",
+      "description": "Primary warning state color.",
+      "valueType": "CSS color"
+    },
+    {
+      "name": "--dsw-specific-sidebar-fill",
+      "description": "Sidebar column and title-row background.",
+      "valueType": "CSS color"
+    }
+  ]
+}

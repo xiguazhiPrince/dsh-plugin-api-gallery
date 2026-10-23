@@ -123,21 +123,16 @@ for (const entry of GENERIC_SLOTS) {
 
 ---
 
-## 不可见 Slot / Factory 参考页
+## 非 UI 接口参考页
 
-`main` + `sidebar.panellist` 这一对现在承载的是“不可见 Slot 参考页”：
+`main` + `sidebar.panellist` 这一对现在承载的是“非 UI 接口参考页”，有四个 tab：
 
-- 数据：`non-ui-slots.json`，由 `node scripts/build-non-ui.cjs` 从 `catalog.json` 生成；
-- Host：`GET /plugin-api-gallery/non-ui`（只读 JSON，缓存 60s）；
-- 页面：侧栏 3×3 图标 → `main` 页面，分组展示 `single 43 / chain 3 / fixed-key 4 / owner-dispatch 7 / Factory 6`，共 63 项；
-- 页面顶部有 **UI 位置示意图**（左栏 / 中央 / 右侧 + frame / overlay）：每个区域带该区域不可见项数量，点击过滤，再点取消；
-- 每行折叠显示 slot 名 + 区域标签 + kind/scope + 简短原因；展开显示 region 说明、breadcrumb（`root › … › slot`）、purpose、parent、replaceRisk、keyDomain、registration、原因；
-- 顶部搜索按 slot 名 / 用途 / 原因过滤；
-- 页面底部可展开 `main` + `sidebar.panellist` 注册代码和 Host 快照。
+- **Slot / Factory（63）**：`non-ui-slots.json` + `GET /plugin-api-gallery/non-ui`；分组 `single 43 / chain 3 / fixed-key 4 / owner-dispatch 7 / Factory 6`；顶部 UI 位置示意图（左栏 / 中央 / 右侧 + frame / overlay）点击过滤；每行区域标签 + breadcrumb + purpose/region 说明。
+- **Events（80）**：`interfaces-reference.json` + `GET /plugin-api-gallery/interfaces`；76 Host + 4 Client；每行 mode、signature、描述和 `ctx.on(...)` 片段。
+- **Services（110）**：98 Host + 8 Client + 4 个 source-verified 但 Inspect 未列出的 Client Services（`sidebarRight` / `sidebarRightTabs` / `commandUi` / `inputTriggers`）；每行 methods、`ctx.get(...)` 片段，标“图鉴已用”。
+- **Tools / Builtins**：当前 `/state` 的模型可见 Tools（43）+ 5 个 Client Builtins；Theme tokens（14）收在折叠区，标注是 UI 令牌。
 
-> UI 位置示意图是**概念布局**，不是像素级截图；精确位置仍需对照实际界面。数据里的 `regionCounts` / `regions` 是页面地图的来源，`breadcrumb` 由 `parent` 链生成。
-
-> 这一页只收录 57 个不可见 Slot + 6 Factory；43 个可交互 Slot 仍在各自位置，不在这页重复。`/non-ui` 已 live 验证：200、total 63、counts 43/3/4/7/6。
+`/non-ui` 已验证 200、total 63、counts 43/3/4/7/6；`/interfaces` 已验证 200，counts 76/4/98/8/4/5/14。UI 位置图是概念布局，不是真实截图。
 
 ## 通用注册方式
 

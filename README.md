@@ -103,19 +103,18 @@
 
 > 43 个可增量 Slot（15 原有 + 18 A + 10 C）已全部注册；`main` + `sidebar.panellist`、`tool.call.toolview`、`conversation.chat.commandview` 也已补齐。剩余 B 类 57 + Factory 6 属于“不可增量/不可见”，注册只会替换内置 UI 或永远不渲染，因此不注册。
 
-## 不可见 Slot / Factory 页面
+## 非 UI 接口参考页
 
-侧栏的 **图鉴demo** 图标（`sidebar.panellist`）现在打开的 `main` 页面就是这 57 + 6 项的逐项参考页：
+侧栏的 **图鉴demo** 图标（`sidebar.panellist`）打开的 `main` 页面是“非 UI 接口参考页”，有四个 tab：
 
-- 数据：`non-ui-slots.json`（由 `scripts/build-non-ui.cjs` 从 `catalog.json` 生成）；
-- Host 路由：`GET /plugin-api-gallery/non-ui`；
-- 页面分组：`single（43）`、`chain（3）`、`fixed-key keyed（4）`、`owner-dispatch-only keyed（7）`、`Factory（6）`；
-- 页面顶部有 **UI 位置示意图**：左栏 / 中央 / 右侧三列 + frame / overlay，点击区域可过滤（再点一次取消）；每个区域显示该区域下的不可见项数量；
-- 每行折叠时显示 slot 名、所在区域标签、kind/scope 和简短原因；展开后显示 region 说明、breadcrumb（如 `root › sidebar › sidebar.settings › settings.trigger`）、purpose、parent、replaceRisk、keyDomain、registration 和逐项原因；
-- 顶部搜索框可以按 slot 名 / 用途 / 原因过滤；
-- 这一页本身也是 `main` + `sidebar.panellist` 的 demo，页面底部可以展开这两个 Slot 的注册代码和 Host 快照。
+- **Slot / Factory（63）**：57 个不可见 Slot + 6 个 Factory；数据 `non-ui-slots.json`，路由 `GET /plugin-api-gallery/non-ui`；分组 `single 43 / chain 3 / fixed-key 4 / owner-dispatch 7 / Factory 6`；顶部 UI 位置示意图（左栏 / 中央 / 右侧 + frame / overlay）可点击过滤；每行有区域标签、breadcrumb、purpose、parent、replaceRisk、keyDomain、registration 和逐项原因。
+- **Events（80）**：76 Host Events + 4 Client Events；数据 `interfaces-reference.json`，路由 `GET /plugin-api-gallery/interfaces`；每行显示 mode、signature、描述和 `ctx.on(...)` 观察/waterfall 片段。
+- **Services（110）**：98 Host Services + 8 Client Services + 4 个 source-verified 但 Inspect 目录未列出的 Client Services（`sidebarRight` / `sidebarRightTabs` / `commandUi` / `inputTriggers`）；每行显示 methods、`ctx.get(...)` 片段，并标注“图鉴已用”。
+- **Tools / Builtins**：当前模型可见 Tools（来自 `/state`，当前 43 个）+ 5 个 Client Builtins；Theme tokens 收在折叠区，标注它们是 UI 令牌而不是事件/接口。
 
-> UI 位置示意图是**概念布局**，不是像素级截图；它用来回答“这个 Slot 管的是哪一栏/哪一块”，精确位置仍需在实际界面里对照。当前环境没有浏览器控制入口，无法生成带标注的真实截图。
+页面顶部搜索可过滤当前 tab；所有数据来自只读 JSON 路由，不注册任何额外 UI。`main` + `sidebar.panellist` 自身的注册代码和 Host 快照在页面底部折叠区。
+
+> UI 位置示意图是**概念布局**，不是像素级截图；它用来回答“这个 Slot 管的是哪一栏/哪一块”，精确位置仍需对照实际界面。当前环境没有浏览器控制入口，无法生成带标注的真实截图。
 
 它不是 43 个可交互 Slot 的总览页；43 个入口仍然分布在各自的真实位置。
 
@@ -175,10 +174,11 @@ ctx.inject(['commandUi'], (scope) => {
 
 ```text
 .
-├─ client.js                    43 个 Slot 注册（15 保留 + 24 新增 + 4 最后补齐）+ 不可见 Slot 参考页
-├─ index.js                     Host 半：/state 快照 + /non-ui 参考数据 + api_gallery_demo 工具 + /api-gallery 命令
+├─ client.js                    43 个 Slot 注册（15 保留 + 24 新增 + 4 最后补齐）+ 非 UI 接口参考页
+├─ index.js                     Host 半：/state + /non-ui + /interfaces 只读数据 + api_gallery_demo 工具 + /api-gallery 命令
 ├─ catalog.json                 全量接口快照（文档用，不参与 UI）
 ├─ non-ui-slots.json           57 个不可见 Slot + 6 Factory 的逐项原因（页面数据）
+├─ interfaces-reference.json   76 Host Events / 4 Client Events / 106 Services / Builtins（页面数据）
 ├─ cordis.patch.yml             Loader 行
 ├─ package.json                 bundle manifest（dsh.bundle + dsh.client）
 ├─ locale/{en,zh}.json          插件标题/描述
@@ -190,12 +190,13 @@ ctx.inject(['commandUi'], (scope) => {
 ├─ scripts/build-catalog.cjs    从 .scan/ 生成 catalog.json
 ├─ scripts/build-docs.cjs       从 catalog.json 生成 interface-catalog.md
 ├─ scripts/build-non-ui.cjs     从 catalog.json 生成 non-ui-slots.json
+├─ scripts/build-interfaces.cjs 从 catalog.json + source-verified services 生成 interfaces-reference.json
 └─ .scan/                       cordis_inspect_query 原始快照
 ```
 
 ### Host 半
 
-`index.js` 用 `ctx.webServer.register` 暴露只读的 `/plugin-api-gallery/state`，供 Settings 页和原生右侧栏 tab 显示实时 session / tool / server 数据；另外注册两个 demo 能力，让两个 keyed Slot 有真实 key 可派发：
+`index.js` 用 `ctx.webServer.register` 暴露只读的 `/plugin-api-gallery/state`（实时 session / tool / server）、`/non-ui`（57+6 参考数据）、`/interfaces`（Events / Services / Builtins 参考数据）；另外注册两个 demo 能力，让两个 keyed Slot 有真实 key 可派发：
 
 - `ctx.tools.register` → `api_gallery_demo`（`tool.call.toolview` 的 key）
 - `ctx.commands.register` → `/api-gallery`（`conversation.chat.commandview` 的 key）
@@ -248,6 +249,7 @@ plugin_manager { action: "install_bundle", target: "C:/Users/54647/Developer/myP
   - 最后 4：`api-gallery-panel`（sidebar.panellist 与 main key 都是它）、`api_gallery_demo`（tool.call.toolview key）、`api-gallery`（conversation.chat.commandview key）。
 - Host tool `api_gallery_demo` 已实际调用成功（返回 echo + Host 时间），tool view 有真实 key 可派发；Host `/api-gallery` 命令已注册，command view occupant 已 active。
 - `GET /plugin-api-gallery/non-ui` 返回 200，`total=63`，counts = `single 43 / chain 3 / fixed 4 / owner 7 / factory 6`；`main` 与 `sidebar.panellist` 的 `api-gallery-panel` occupant 均 active，页面数据链路可用。
+- `GET /plugin-api-gallery/interfaces` 返回 200：76 Host Events / 4 Client Events / 98 Host Services / 8 Client Services / 4 source-verified extras / 5 Client Builtins / 14 theme tokens；Tools tab 的实时 tools 来自 `/state`（当前 43 个）。
 - 既有 15 个保留项仍 active；`main`/`sidebar.panellist` 在旧总览页阶段没有 occupant，现在分别由 `api-gallery-panel` 占用（成对实现，不是旧总览页）。
 - 额外的 `ctx.commandUi.register` action 已按内置 File action 的同构写法注册；`+` 菜单的实际渲染和点击未能截图验证。
 
@@ -257,7 +259,7 @@ plugin_manager { action: "install_bundle", target: "C:/Users/54647/Developer/myP
 
 ## 已知问题
 
-- **sidebar.panellist 打开的是“不可见 Slot 参考页”**：为了覆盖 main + sidebar.panellist 这两个 Slot，侧栏多了一个 3×3 点阵图标；点开后的页面是 57 个不可见 Slot + 6 Factory 的参考页（不是 43 个可交互 Slot 的总览）。如果不需要，删掉这两个注册即可（它们是独立的一对）。
+- **sidebar.panellist 打开的是“非 UI 接口参考页”**：为了覆盖 main + sidebar.panellist 这两个 Slot，侧栏多了一个 3×3 点阵图标；点开后的页面有 Slot/Factory、Events、Services、Tools/Builtins 四个 tab。它不注册这些非 UI 接口，只做只读参考；如果不需要，删掉这两个注册即可（它们是独立的一对）。
 - **tool/command 视图需要调用才可见**：`tool.call.toolview` 只有模型调用 `api_gallery_demo` 时出现；`conversation.chat.commandview` 只有输入 `/api-gallery` 时出现。两者都已在 Host 注册，但 UI 点击未截图验证。
 - **C 子集出现条件苛刻**：`settings.onboarding`、`plugins.add.actions`、`sidebar.right.tab.document.unpreviewable`、`deliverables.review.file.actions`、`conversation.plan-review.actions` 只在 onboarding / 安装完成 / 不可预览 / review / plan-review 状态出现；occupant 已确认 active，但正常聊天流程中可能看不到。
 - **better-sidebar 仍是 pending**：安装本插件时 Plugin Manager 报告 `better-sidebar: pending (waiting for service: webRuntime)`。这与本插件无依赖关系；重启 DSH 或升级/检查 better-sidebar 可恢复。原生 DSH 右侧栏的文件/终端 tab 不受影响。

@@ -1198,6 +1198,32 @@ window.__ModuleLoader__.load({
       return { data, error };
     }
 
+    function useInterfacesReference() {
+      const [data, setData] = useState(null);
+      const [error, setError] = useState(null);
+      useEffect(() => {
+        let stopped = false;
+        fetch(new URL(`${ROUTE}/interfaces`, document.baseURI), { cache: 'no-store' })
+          .then((response) => {
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            return response.json();
+          })
+          .then((body) => {
+            if (!stopped) {
+              setData(body);
+              setError(null);
+            }
+          })
+          .catch((cause) => {
+            if (!stopped) setError(errorText(cause));
+          });
+        return () => {
+          stopped = true;
+        };
+      }, []);
+      return { data, error };
+    }
+
     function NonUiRow({ item, regionInfo }) {
       return h(
         'details',
@@ -1336,8 +1362,230 @@ window.__ModuleLoader__.load({
       );
     }
 
+    function EventRow({ event, scope }) {
+      return h(
+        'details',
+        { className: 'sl-ref-row' },
+        h(
+          'summary',
+          null,
+          h('code', { className: 'sl-ref-name' }, event.name),
+          h('span', { className: 'sl-ref-mode' }, event.mode),
+          h('span', { className: 'sl-ref-desc' }, event.description),
+        ),
+        h(
+          'div',
+          { className: 'sl-ref-body' },
+          h('p', { className: 'sl-ref-desc-full' }, event.description),
+          h(
+            'dl',
+            { className: 'sl-kv' },
+            h('dt', null, 'scope'), h('dd', null, scope),
+            h('dt', null, 'mode'), h('dd', null, event.mode),
+            h('dt', null, 'signature'), h('dd', null, h('code', { className: 'sl-mono' }, event.signature)),
+          ),
+          h('div', { className: 'sl-ref-code' }, h(CodeBlock, { code: event.observe })),
+        ),
+      );
+    }
+
+    function EventsReference({ data, error }) {
+      const [query, setQuery] = useState('');
+      if (error) return h('div', { className: 'sl-error' }, `读取 /plugin-api-gallery/interfaces 失败：${error}`);
+      if (data === null) return h('div', { className: 'sl-muted' }, '读取 Events…');
+      const q = query.trim().toLowerCase();
+      const match = (event, scope) => q === ''
+        || `${event.name} ${event.mode} ${event.description} ${event.signature} ${scope}`.toLowerCase().includes(q);
+      const host = data.events.host.filter((event) => match(event, 'host'));
+      const client = data.events.client.filter((event) => match(event, 'client'));
+      const shown = host.length + client.length;
+      return h(
+        'div',
+        { className: 'sl-nonui' },
+        h(
+          'div',
+          { className: 'sl-nonui-summary' },
+          h('div', { className: 'sl-nonui-summary-title' }, `${data.counts.hostEvents} Host Events + ${data.counts.clientEvents} Client Events`),
+          h('div', { className: 'sl-nonui-summary-sub' }, '事件没有视觉座位：用 ctx.on 观察或改写；waterfall 必须 return next()，emit/serial/parallel 按各自语义。它们是“非 UI 接口”，但可以驱动 UI/日志/状态。'),
+          h('div', { className: 'sl-nonui-badges' },
+            h('span', { className: 'sl-tag' }, 'waterfall'),
+            h('span', { className: 'sl-tag' }, 'emit'),
+            h('span', { className: 'sl-tag' }, 'serial / parallel'),
+          ),
+        ),
+        h(
+          'div',
+          { className: 'sl-search' },
+          h('input', {
+            className: 'sl-input',
+            placeholder: '过滤事件名 / mode / 签名 / 描述…',
+            value: query,
+            onChange: (event) => setQuery(event.target.value),
+          }),
+          h('span', { className: 'sl-tag' }, `${shown} / ${data.events.host.length + data.events.client.length}`),
+        ),
+        host.length === 0 ? null : h(
+          'section',
+          { className: 'sl-nonui-group' },
+          h('div', { className: 'sl-nonui-group-head' }, h('h2', null, `Host Events（${host.length}）`), h('p', null, 'Host 侧事件；观察者通过 ctx.on 订阅。')),
+          h('div', { className: 'sl-nonui-list' }, host.map((event) => h(EventRow, { key: event.name, event, scope: 'host' }))),
+        ),
+        client.length === 0 ? null : h(
+          'section',
+          { className: 'sl-nonui-group' },
+          h('div', { className: 'sl-nonui-group-head' }, h('h2', null, `Client Events（${client.length}）`), h('p', null, '浏览器侧事件；插件在 Client half 用 ctx.on 订阅。')),
+          h('div', { className: 'sl-nonui-list' }, client.map((event) => h(EventRow, { key: event.name, event, scope: 'client' }))),
+        ),
+      );
+    }
+
+    function ServiceRow({ service, scope }) {
+      return h(
+        'details',
+        { className: 'sl-ref-row' },
+        h(
+          'summary',
+          null,
+          h('code', { className: 'sl-ref-name' }, service.key),
+          service.used ? h('span', { className: 'sl-ref-used' }, '图鉴已用') : null,
+          h('span', { className: 'sl-ref-desc' }, service.description),
+        ),
+        h(
+          'div',
+          { className: 'sl-ref-body' },
+          h('p', { className: 'sl-ref-desc-full' }, service.description),
+          h(
+            'dl',
+            { className: 'sl-kv' },
+            h('dt', null, 'scope'), h('dd', null, scope),
+            h('dt', null, 'methods'), h('dd', null, String(service.methods.length)),
+          ),
+          h('div', { className: 'sl-ref-code' }, h(CodeBlock, { code: service.use })),
+          h('div', { className: 'sl-ref-code' }, h(CodeBlock, { code: service.methods.join('\n') })),
+        ),
+      );
+    }
+
+    function ServicesReference({ data, error }) {
+      const [query, setQuery] = useState('');
+      if (error) return h('div', { className: 'sl-error' }, `读取 /plugin-api-gallery/interfaces 失败：${error}`);
+      if (data === null) return h('div', { className: 'sl-muted' }, '读取 Services…');
+      const q = query.trim().toLowerCase();
+      const match = (service, scope) => q === ''
+        || `${service.key} ${service.description} ${service.methods.join(' ')} ${scope}`.toLowerCase().includes(q);
+      const host = data.services.host.filter((service) => match(service, 'host'));
+      const client = data.services.client.filter((service) => match(service, 'client'));
+      const extra = data.services.extraClient.filter((service) => match(service, 'client'));
+      const shown = host.length + client.length + extra.length;
+      return h(
+        'div',
+        { className: 'sl-nonui' },
+        h(
+          'div',
+          { className: 'sl-nonui-summary' },
+          h('div', { className: 'sl-nonui-summary-title' }, `${data.counts.hostServices} Host Services + ${data.counts.clientServices} Client Services + ${data.counts.extraClientServices} source-verified extras`),
+          h('div', { className: 'sl-nonui-summary-sub' }, 'Service 没有视觉座位；用 ctx.get("key") 读取。UI 是另一层：同一个服务可以驱动 UI，但服务本身不是 Slot。标“图鉴已用”的是本插件实际消费的。'),
+          h('div', { className: 'sl-nonui-badges' },
+            h('span', { className: 'sl-tag' }, 'Host 98'),
+            h('span', { className: 'sl-tag' }, 'Client 8'),
+            h('span', { className: 'sl-tag' }, 'extra 4'),
+          ),
+        ),
+        h(
+          'div',
+          { className: 'sl-search' },
+          h('input', {
+            className: 'sl-input',
+            placeholder: '过滤 service key / 方法 / 描述…',
+            value: query,
+            onChange: (event) => setQuery(event.target.value),
+          }),
+          h('span', { className: 'sl-tag' }, `${shown} / ${data.counts.hostServices + data.counts.clientServices + data.counts.extraClientServices}`),
+        ),
+        host.length === 0 ? null : h(
+          'section',
+          { className: 'sl-nonui-group' },
+          h('div', { className: 'sl-nonui-group-head' }, h('h2', null, `Host Services（${host.length}）`), h('p', null, 'Host 侧 Service，通过 ctx.get 读取；强依赖才放进 inject。')),
+          h('div', { className: 'sl-nonui-list' }, host.map((service) => h(ServiceRow, { key: service.key, service, scope: 'host' }))),
+        ),
+        client.length === 0 ? null : h(
+          'section',
+          { className: 'sl-nonui-group' },
+          h('div', { className: 'sl-nonui-group-head' }, h('h2', null, `Client Services（${client.length}）`), h('p', null, 'Client 侧 Service，通过受限 ctx.get 读取。')),
+          h('div', { className: 'sl-nonui-list' }, client.map((service) => h(ServiceRow, { key: service.key, service, scope: 'client' }))),
+        ),
+        extra.length === 0 ? null : h(
+          'section',
+          { className: 'sl-nonui-group' },
+          h('div', { className: 'sl-nonui-group-head' }, h('h2', null, `Source-verified Client Services（${extra.length}）`), h('p', null, 'Inspect 的 Client Service 目录没有列出、但包内确实提供的服务（本插件直接消费了其中 3 个）。')),
+          h('div', { className: 'sl-nonui-list' }, extra.map((service) => h(ServiceRow, { key: service.key, service, scope: 'client' }))),
+        ),
+      );
+    }
+
+    function ToolsReference({ data, error, tools }) {
+      if (error) return h('div', { className: 'sl-error' }, `读取 /plugin-api-gallery/interfaces 失败：${error}`);
+      if (data === null) return h('div', { className: 'sl-muted' }, '读取 Tools / Builtins…');
+      return h(
+        'div',
+        { className: 'sl-nonui' },
+        h(
+          'div',
+          { className: 'sl-nonui-summary' },
+          h('div', { className: 'sl-nonui-summary-title' }, `当前模型可见 Tools（${tools.length}）+ ${data.counts.clientBuiltins} Client Builtins`),
+          h('div', { className: 'sl-nonui-summary-sub' }, 'Tool 是 model-facing 能力，不是 UI 席位；唯一 UI 是 Chat 里的工具结果卡片。Client Builtins 是浏览器半可直接使用的符号，也不是 Slot。'),
+        ),
+        h(
+          'section',
+          { className: 'sl-nonui-group' },
+          h('div', { className: 'sl-nonui-group-head' }, h('h2', null, '当前模型可见 Tools'), h('p', null, '来自 /plugin-api-gallery/state 的实时 tools 快照。')),
+          tools.length === 0
+            ? h('div', { className: 'sl-muted' }, '当前快照没有读到 tools。')
+            : h('div', { className: 'sl-nonui-list' }, tools.map((tool) => h(
+                'details',
+                { key: tool.name, className: 'sl-ref-row' },
+                h('summary', null, h('code', { className: 'sl-ref-name' }, tool.name), h('span', { className: 'sl-ref-desc' }, tool.description)),
+                h('div', { className: 'sl-ref-body' }, h('p', { className: 'sl-ref-desc-full' }, tool.description)),
+              ))),
+        ),
+        h(
+          'section',
+          { className: 'sl-nonui-group' },
+          h('div', { className: 'sl-nonui-group-head' }, h('h2', null, 'Client Builtins'), h('p', null, '动态 Client half 可直接使用的符号；持久化 bundle 只有 React + 浏览器全局。')),
+          h('div', { className: 'sl-nonui-list' }, data.builtins.map((builtin) => h(
+            'details',
+            { key: builtin.name, className: 'sl-ref-row' },
+            h('summary', null, h('code', { className: 'sl-ref-name' }, builtin.name), h('span', { className: 'sl-ref-desc' }, builtin.description)),
+            h('div', { className: 'sl-ref-body' },
+              h('p', { className: 'sl-ref-desc-full' }, builtin.description),
+              h('div', { className: 'sl-ref-code' }, h(CodeBlock, { code: builtin.signatures.join('\n') })),
+            ),
+          ))),
+        ),
+        h(
+          'details',
+          { className: 'sl-code-toggle' },
+          h('summary', null, `Theme tokens（${data.counts.themeTokens} 个 UI 令牌，不是事件/接口）`),
+          h('div', { className: 'sl-nonui-list' }, data.themeTokens.map((token) => h(
+            'div',
+            { key: token.name, className: 'sl-ref-row' },
+            h('div', { className: 'sl-ref-token' }, h('code', { className: 'sl-ref-name' }, token.name), h('span', { className: 'sl-ref-desc' }, token.description)),
+          ))),
+        ),
+      );
+    }
+
     function MainPanelDemo() {
       const { state, error } = useHostState();
+      const { data: interfaces, error: interfacesError } = useInterfacesReference();
+      const [tab, setTab] = useState('slots');
+      const counts = interfaces ? interfaces.counts : null;
+      const tabs = [
+        { id: 'slots', label: 'Slot / Factory (63)' },
+        { id: 'events', label: `Events (${counts ? counts.hostEvents + counts.clientEvents : 80})` },
+        { id: 'services', label: `Services (${counts ? counts.hostServices + counts.clientServices + counts.extraClientServices : 110})` },
+        { id: 'tools', label: 'Tools / Builtins' },
+      ];
       return h(
         'div',
         { className: 'sl-page' },
@@ -1345,14 +1593,31 @@ window.__ModuleLoader__.load({
           'div',
           { className: 'sl-page-head' },
           h('div', { className: 'sl-kicker' }, '图鉴demo · main + sidebar.panellist'),
-          h('h1', { className: 'sl-page-title' }, '不可见 Slot / Factory 参考'),
-          h('p', { className: 'sl-page-desc' }, '本页由 sidebar.panellist 的图鉴demo 图标打开；它本身是 main + sidebar.panellist 的 demo。下面收录 57 个不能安全做成可见 UI 的 Slot + 6 个 Factory；43 个可交互 Slot 仍在各自位置。'),
+          h('h1', { className: 'sl-page-title' }, '非 UI 接口参考'),
+          h('p', { className: 'sl-page-desc' }, '本页由 sidebar.panellist 的图鉴demo 图标打开；收录 57 个不可见 Slot + 6 个 Factory、Host/Client Events、Host/Client Services、Tools/Builtins。43 个可交互 Slot 仍在各自位置。'),
         ),
         h('div', { className: 'sl-actions' },
           h(Btn, { primary: true, onClick: openRightTab }, '打开右侧栏图鉴demo'),
           h(Btn, { onClick: () => showToast('main 页面里的 shell.overlay 通知') }, '触发通知'),
         ),
-        h(NonUiReference),
+        h('nav', { className: 'sl-tabs', role: 'tablist' },
+          tabs.map((entry) => h(
+            'button',
+            {
+              key: entry.id,
+              type: 'button',
+              className: 'sl-tab',
+              role: 'tab',
+              'aria-selected': tab === entry.id,
+              onClick: () => setTab(entry.id),
+            },
+            entry.label,
+          )),
+        ),
+        tab === 'slots' ? h(NonUiReference) : null,
+        tab === 'events' ? h(EventsReference, { data: interfaces, error: interfacesError }) : null,
+        tab === 'services' ? h(ServicesReference, { data: interfaces, error: interfacesError }) : null,
+        tab === 'tools' ? h(ToolsReference, { data: interfaces, error: interfacesError, tools: state ? state.tools : [] }) : null,
         h(
           'details',
           { className: 'sl-code-toggle' },
@@ -1744,6 +2009,27 @@ window.__ModuleLoader__.load({
 @media (max-width: 760px) {
   .sl-map-columns { grid-template-columns: 1fr; }
 }
+.sl-tabs { display: flex; gap: 2px; margin: 14px 0 10px; border-bottom: 1px solid var(--dsw-alias-border-l1); overflow-x: auto; }
+.sl-tab {
+  appearance: none; border: 0; background: transparent; color: var(--dsw-alias-label-secondary);
+  padding: 8px 12px; cursor: pointer; font: inherit; font-size: 12px; white-space: nowrap;
+  border-bottom: 2px solid transparent;
+}
+.sl-tab:hover { color: var(--dsw-alias-label-primary); }
+.sl-tab[aria-selected="true"] { color: var(--dsw-alias-label-primary); border-bottom-color: var(--dsw-alias-brand-primary); font-weight: 600; }
+.sl-ref-row { border-bottom: 1px solid var(--dsw-alias-border-l1); }
+.sl-ref-row:last-child { border-bottom: 0; }
+.sl-ref-row > summary { display: flex; align-items: baseline; gap: 10px; padding: 8px 12px; cursor: pointer; list-style: none; }
+.sl-ref-row > summary::-webkit-details-marker { display: none; }
+.sl-ref-row > summary:hover { background: var(--dsw-alias-bg-layer-2); }
+.sl-ref-name { flex: none; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; color: var(--dsw-alias-label-primary); }
+.sl-ref-mode { flex: none; font-size: 10px; color: var(--dsw-alias-label-secondary); border: 1px solid var(--dsw-alias-border-l1); border-radius: 999px; padding: 1px 7px; }
+.sl-ref-used { flex: none; font-size: 10px; color: var(--dsw-alias-brand-primary); border: 1px solid color-mix(in srgb, var(--dsw-alias-brand-primary) 35%, transparent); border-radius: 999px; padding: 1px 7px; }
+.sl-ref-desc { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--dsw-alias-label-secondary); font-size: 11px; }
+.sl-ref-body { padding: 2px 12px 12px; background: var(--dsw-alias-bg-base); }
+.sl-ref-desc-full { margin: 6px 0 8px; color: var(--dsw-alias-label-secondary); font-size: 12px; line-height: 1.6; }
+.sl-ref-code { margin-top: 8px; }
+.sl-ref-token { display: flex; align-items: baseline; gap: 10px; padding: 8px 12px; }
 .sl-backdrop { position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center; padding: 24px; background: rgba(0,0,0,.38); pointer-events: auto; }.sl-modal { width: min(700px, 100%); max-height: 86vh; overflow: auto; border-radius: 12px; padding: 20px 22px; background: var(--dsw-alias-bg-layer-1); border: 1px solid var(--dsw-alias-border-l2); box-shadow: 0 20px 60px rgba(0,0,0,.28); }
 .sl-modal-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; }
 .sl-modal-title { margin: 4px 0 2px; font-size: 16px; font-weight: 650; letter-spacing: -.01em; }
