@@ -1,4 +1,16 @@
-# DSH 插件接口图鉴 · 分布式 Slot Demo
+# DSH Plugin API Gallery · 插件接口图鉴
+
+**DSH 插件作者的地图。** 43 个 Slot 实测 demo，每个都长在真实 UI 位置上；另有全量接口图鉴：100 个 Slot（43 个可增量注册的全部实装）、98 个 Host Service、76 个 Host Event、6 个 Factory，逐项给出可注册性判断和注册代码。
+
+An API map for DSH (DeepSeek Harness) plugin authors: 43 Slot demos in their real UI positions, plus 100 Slots / 98 Host Services / 76 Host Events with copy-paste registration snippets — including the 57 Slots you can't register, and why.
+
+**装它解决三个问题：**这个位置能不能插 → 看 43 个实测；某个接口存不存在、怎么调 → 查 Service / Event 页；某个 Slot 为什么注册了不显示 → 看 57 个不可见 Slot 的逐项原因。
+
+> 会在 43 处真实位置插入入口，建议装在测试 profile。找具体 Slot 直接 Ctrl+F 下面的 slot key 索引。
+
+---
+
+## 43 个 Slot 都长在哪
 
 这不是一个“接口总览页”。它把 **43 个 Slot 注册的 demo 直接放进各自的真实位置**：15 个既有代表性 Slot + **A-新增 18 项 + C 子集 10 项**（会话 View 标签栏、会话右上角、原生右侧栏、输入框、消息动作、Session 行、Settings、Plugins 页/详情页、main 面板、tool/command 视图，以及 onboarding/review/plan-review 等少见状态）……另外在 composer 的 **+ 菜单「指令」分组**里加了一项 `图鉴demo · commandUi.register`（客户端服务，不是 Slot）。每个 Slot 入口的标题都写成：
 

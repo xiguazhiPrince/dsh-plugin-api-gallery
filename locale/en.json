@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "Plugin API Gallery",
-    "description": "15 distributed Slot demos: each entry lives in its real UI slot and is titled 图鉴demo · <slot-key>."
+    "description": "43 live Slot demos + a full API map: 100 Slots, 98 Host Services, 76 Host Events, each with register code."
   },
   "panel": {
     "title": "Plugin API Gallery",

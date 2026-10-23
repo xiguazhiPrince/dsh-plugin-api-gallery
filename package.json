@@ -3,7 +3,26 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "43 distributed Slot demos plus a non-UI interface reference page for DSH plugin authors.",
+  "description": "43 live Slot demos in their real DSH (DeepSeek Harness) UI positions, plus a searchable API map: 100 Slots, 98 Host Services, 76 Host Events, each with copy-paste register code.",
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "plugin-api",
+    "ui-slots",
+    "slot",
+    "slot-demo",
+    "plugin-development",
+    "interface-reference",
+    "host-services",
+    "host-events",
+    "api-gallery"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xiguazhiPrince/dsh-plugin-api-gallery.git"
+  },
+  "homepage": "https://github.com/xiguazhiPrince/dsh-plugin-api-gallery#readme",
   "exports": {
     ".": "./index.js",
     "./client": "./client.js",
