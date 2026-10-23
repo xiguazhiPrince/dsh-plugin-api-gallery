@@ -112,7 +112,7 @@
 - **Services（110）**：98 Host Services + 8 Client Services + 4 个 source-verified 但 Inspect 目录未列出的 Client Services（`sidebarRight` / `sidebarRightTabs` / `commandUi` / `inputTriggers`）；每行显示 methods、`ctx.get(...)` 片段，并标注“图鉴已用”。
 - **Tools / Builtins**：当前模型可见 Tools（来自 `/state`，当前 43 个）+ 5 个 Client Builtins；Theme tokens 收在折叠区，标注它们是 UI 令牌而不是事件/接口。
 
-页面顶部搜索可过滤当前 tab；所有数据来自只读 JSON 路由，不注册任何额外 UI。`main` + `sidebar.panellist` 自身的注册代码和 Host 快照在页面底部折叠区。
+页面顶部搜索可过滤当前 tab；所有数据来自只读 JSON 路由，不注册任何额外 UI。所有条目的**主描述使用中文**（Slot 原因、事件分类/用途、服务分类/用途、工具/内建符号说明）；原始英文 purpose/description 收在每行的「原文（English）」折叠里，方便核对来源。`main` + `sidebar.panellist` 自身的注册代码和 Host 快照在页面底部折叠区。
 
 > UI 位置示意图是**概念布局**，不是像素级截图；它用来回答“这个 Slot 管的是哪一栏/哪一块”，精确位置仍需对照实际界面。当前环境没有浏览器控制入口，无法生成带标注的真实截图。
 

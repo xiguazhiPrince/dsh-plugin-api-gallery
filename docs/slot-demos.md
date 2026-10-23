@@ -134,6 +134,8 @@ for (const entry of GENERIC_SLOTS) {
 
 `/non-ui` 已验证 200、total 63、counts 43/3/4/7/6；`/interfaces` 已验证 200，counts 76/4/98/8/4/5/14。UI 位置图是概念布局，不是真实截图。
 
+所有条目的主描述使用中文：Slot 用中文原因 + region 说明，Event 用中文分类/用途，Service 用中文分类/用途，Tool/Builtin/Token 用中文说明；原始英文 `purpose` / `description` 收在每行「原文（English）」折叠里。
+
 ## 通用注册方式
 
 除原生右侧栏外，全部是：

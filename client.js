@@ -1224,6 +1224,140 @@ window.__ModuleLoader__.load({
       return { data, error };
     }
 
+    const EVENT_CATEGORY_ZH = {
+      agent: 'Agent 生命周期/状态',
+      tools: '工具执行管线',
+      session: 'Session 日志',
+      llm: '模型请求/流',
+      goal: '目标',
+      schedule: '定时任务',
+      workspace: '工作区',
+      workflow: '工作流',
+      mcp: 'MCP',
+      credentials: '凭据',
+      connection: '连接',
+      plugin: '插件',
+      command: '命令',
+      subagent: '子 Agent',
+      user: '用户',
+      approval: '审批',
+      sandbox: '沙箱',
+      external: '外部',
+      client: '客户端',
+    };
+
+    function eventZh(event) {
+      const prefix = String(event.name).split('/')[0];
+      const category = EVENT_CATEGORY_ZH[prefix] ?? 'Host';
+      const tail = event.mode === 'waterfall'
+        ? 'waterfall 事件；用 ctx.on 观察或改写，必须 return next()。'
+        : `${event.mode} 事件；用 ctx.on 观察。`;
+      return `${category}事件：${tail}`;
+    }
+
+    const SERVICE_CATEGORY_ZH = [
+      ['sidebarRightTabs', '原生右侧栏 tab 注册'],
+      ['sidebarRight', '原生右侧栏导航'],
+      ['commandUi', 'composer/命令菜单 contribution'],
+      ['inputTriggers', '输入触发源'],
+      ['agentDefaultModel', '默认模型选择'],
+      ['agentLoop', 'Agent 工厂/驱动'],
+      ['agentPresets', 'Agent Preset 注册表'],
+      ['agents', '活跃 Agent 注册表'],
+      ['agentTeams', 'Agent Team'],
+      ['approval', '审批'],
+      ['attachments', '附件'],
+      ['authorization', '授权'],
+      ['browserUse', '浏览器操作'],
+      ['computerUse', '电脑操作'],
+      ['commands', '命令注册'],
+      ['configEditor', '配置编辑'],
+      ['connection', '连接/RPC'],
+      ['credentials', '凭据'],
+      ['deepseek', 'DeepSeek 账号/模型'],
+      ['directoryPicker', '目录选择器'],
+      ['fileReferences', '文件引用'],
+      ['fileUploads', '文件上传'],
+      ['fs', '文件系统'],
+      ['goals', '目标'],
+      ['hmr', '热更新'],
+      ['inspector', 'Inspect'],
+      ['job', '后台任务'],
+      ['llm', '模型/LLM'],
+      ['lsp', 'LSP'],
+      ['mcp', 'MCP'],
+      ['planMode', '计划模式'],
+      ['plugin', '插件'],
+      ['remoteAccess', '远程访问'],
+      ['sandbox', '沙箱'],
+      ['schedule', '定时任务'],
+      ['session', 'Session/会话'],
+      ['settings', '设置'],
+      ['shell', 'Shell'],
+      ['skills', '技能'],
+      ['speech', '语音'],
+      ['ssh', 'SSH'],
+      ['storage', '存储'],
+      ['subagent', '子 Agent'],
+      ['systemPrompt', '系统提示词'],
+      ['terminal', '终端'],
+      ['timer', '计时器'],
+      ['tools', '工具注册/执行'],
+      ['translator', '翻译'],
+      ['userQuestions', '用户提问'],
+      ['web', 'Web/HTTP/网页'],
+      ['workingDirectory', '工作目录'],
+      ['workspace', '工作区'],
+      ['worktree', 'Git worktree'],
+    ];
+
+    function serviceZh(service, scope) {
+      const match = SERVICE_CATEGORY_ZH.find(([prefix]) => service.key.startsWith(prefix));
+      const category = match ? match[1] : 'Host';
+      const used = service.used ? '；本插件已用' : '';
+      return `${category} Service（${scope} 侧）；通过 ctx.get('${service.key}') 读取${used}。`;
+    }
+
+    function toolZh(tool) {
+      return `模型可见工具「${tool.name}」：由 Host 注册，调用结果在 Chat 工具卡片里显示。`;
+    }
+
+    const BUILTIN_ZH = {
+      ctx: '受限 Cordis Context：用 ctx.get / ctx.on / ctx.effect。',
+      React: '页面共享的 React 运行时；无需单独安装。',
+      host: '动态 Client half 到 Host 的包内 RPC；持久化 bundle 用 webServer + fetch。',
+      styles: '包内样式插入；动态 Client half 专用。',
+      console: '带包标签的浏览器日志。',
+    };
+
+    function tokenZh(token) {
+      const name = token.name;
+      if (name.includes('bg-base')) return '应用底色';
+      if (name.includes('bg-layer-1')) return '一级抬升表面';
+      if (name.includes('bg-layer-2')) return '二级嵌套表面';
+      if (name.includes('bg-overlay')) return '浮层/弹窗背景';
+      if (name.includes('border-l1')) return '弱边框';
+      if (name.includes('border-l2')) return '强边框';
+      if (name.includes('brand-primary')) return '品牌主色';
+      if (name.includes('label-primary')) return '主文本色';
+      if (name.includes('label-secondary')) return '次文本色';
+      if (name.includes('state-error')) return '错误状态色';
+      if (name.includes('state-success')) return '成功状态色';
+      if (name.includes('state-warn')) return '警告状态色';
+      if (name.includes('state-idle')) return '空闲状态色';
+      if (name.includes('sidebar-fill')) return '侧栏背景';
+      return '主题令牌';
+    }
+
+    function SourceNote({ children }) {
+      return h(
+        'details',
+        { className: 'sl-ref-source' },
+        h('summary', null, '原文（English）'),
+        h('p', null, children),
+      );
+    }
+
     function NonUiRow({ item, regionInfo }) {
       return h(
         'details',
@@ -1240,8 +1374,9 @@ window.__ModuleLoader__.load({
           'div',
           { className: 'sl-nonui-body' },
           h('p', { className: 'sl-nonui-where' }, regionInfo ? `${regionInfo.title}：${regionInfo.where}` : ''),
-          h('p', { className: 'sl-note' }, item.purpose || '（无 purpose）'),
+          h('p', { className: 'sl-note' }, item.reason),
           h('p', { className: 'sl-nonui-breadcrumb' }, item.breadcrumb ?? '—'),
+          h(SourceNote, null, item.purpose || '（无原文）'),
           h(
             'dl',
             { className: 'sl-kv' },
@@ -1257,7 +1392,6 @@ window.__ModuleLoader__.load({
               ? h('dd', null, item.registration.map((option) => `${option.name}${option.required ? '*' : ''}`).join(', '))
               : null,
           ),
-          h('p', { className: 'sl-nonui-reason-full' }, item.reason),
         ),
       );
     }
@@ -1371,12 +1505,13 @@ window.__ModuleLoader__.load({
           null,
           h('code', { className: 'sl-ref-name' }, event.name),
           h('span', { className: 'sl-ref-mode' }, event.mode),
-          h('span', { className: 'sl-ref-desc' }, event.description),
+          h('span', { className: 'sl-ref-desc' }, eventZh(event)),
         ),
         h(
           'div',
           { className: 'sl-ref-body' },
-          h('p', { className: 'sl-ref-desc-full' }, event.description),
+          h('p', { className: 'sl-ref-desc-full' }, eventZh(event)),
+          h(SourceNote, null, event.description),
           h(
             'dl',
             { className: 'sl-kv' },
@@ -1395,7 +1530,7 @@ window.__ModuleLoader__.load({
       if (data === null) return h('div', { className: 'sl-muted' }, '读取 Events…');
       const q = query.trim().toLowerCase();
       const match = (event, scope) => q === ''
-        || `${event.name} ${event.mode} ${event.description} ${event.signature} ${scope}`.toLowerCase().includes(q);
+        || `${event.name} ${event.mode} ${eventZh(event)} ${event.description} ${event.signature} ${scope}`.toLowerCase().includes(q);
       const host = data.events.host.filter((event) => match(event, 'host'));
       const client = data.events.client.filter((event) => match(event, 'client'));
       const shown = host.length + client.length;
@@ -1405,8 +1540,8 @@ window.__ModuleLoader__.load({
         h(
           'div',
           { className: 'sl-nonui-summary' },
-          h('div', { className: 'sl-nonui-summary-title' }, `${data.counts.hostEvents} Host Events + ${data.counts.clientEvents} Client Events`),
-          h('div', { className: 'sl-nonui-summary-sub' }, '事件没有视觉座位：用 ctx.on 观察或改写；waterfall 必须 return next()，emit/serial/parallel 按各自语义。它们是“非 UI 接口”，但可以驱动 UI/日志/状态。'),
+          h('div', { className: 'sl-nonui-summary-title' }, `${data.counts.hostEvents} 个 Host 事件 + ${data.counts.clientEvents} 个 Client 事件`),
+          h('div', { className: 'sl-nonui-summary-sub' }, '事件没有视觉座位：用 ctx.on 观察或改写；waterfall 必须 return next()，emit/serial/parallel 按各自语义。它们是非 UI 接口，但可以驱动 UI、日志和状态。'),
           h('div', { className: 'sl-nonui-badges' },
             h('span', { className: 'sl-tag' }, 'waterfall'),
             h('span', { className: 'sl-tag' }, 'emit'),
@@ -1427,13 +1562,13 @@ window.__ModuleLoader__.load({
         host.length === 0 ? null : h(
           'section',
           { className: 'sl-nonui-group' },
-          h('div', { className: 'sl-nonui-group-head' }, h('h2', null, `Host Events（${host.length}）`), h('p', null, 'Host 侧事件；观察者通过 ctx.on 订阅。')),
+          h('div', { className: 'sl-nonui-group-head' }, h('h2', null, `Host 事件（${host.length}）`), h('p', null, 'Host 侧事件；观察者通过 ctx.on 订阅。')),
           h('div', { className: 'sl-nonui-list' }, host.map((event) => h(EventRow, { key: event.name, event, scope: 'host' }))),
         ),
         client.length === 0 ? null : h(
           'section',
           { className: 'sl-nonui-group' },
-          h('div', { className: 'sl-nonui-group-head' }, h('h2', null, `Client Events（${client.length}）`), h('p', null, '浏览器侧事件；插件在 Client half 用 ctx.on 订阅。')),
+          h('div', { className: 'sl-nonui-group-head' }, h('h2', null, `Client 事件（${client.length}）`), h('p', null, '浏览器侧事件；插件在 Client half 用 ctx.on 订阅。')),
           h('div', { className: 'sl-nonui-list' }, client.map((event) => h(EventRow, { key: event.name, event, scope: 'client' }))),
         ),
       );
@@ -1448,12 +1583,13 @@ window.__ModuleLoader__.load({
           null,
           h('code', { className: 'sl-ref-name' }, service.key),
           service.used ? h('span', { className: 'sl-ref-used' }, '图鉴已用') : null,
-          h('span', { className: 'sl-ref-desc' }, service.description),
+          h('span', { className: 'sl-ref-desc' }, serviceZh(service, scope)),
         ),
         h(
           'div',
           { className: 'sl-ref-body' },
-          h('p', { className: 'sl-ref-desc-full' }, service.description),
+          h('p', { className: 'sl-ref-desc-full' }, serviceZh(service, scope)),
+          h(SourceNote, null, service.description),
           h(
             'dl',
             { className: 'sl-kv' },
@@ -1472,7 +1608,7 @@ window.__ModuleLoader__.load({
       if (data === null) return h('div', { className: 'sl-muted' }, '读取 Services…');
       const q = query.trim().toLowerCase();
       const match = (service, scope) => q === ''
-        || `${service.key} ${service.description} ${service.methods.join(' ')} ${scope}`.toLowerCase().includes(q);
+        || `${service.key} ${serviceZh(service, scope)} ${service.description} ${service.methods.join(' ')} ${scope}`.toLowerCase().includes(q);
       const host = data.services.host.filter((service) => match(service, 'host'));
       const client = data.services.client.filter((service) => match(service, 'client'));
       const extra = data.services.extraClient.filter((service) => match(service, 'client'));
@@ -1483,7 +1619,7 @@ window.__ModuleLoader__.load({
         h(
           'div',
           { className: 'sl-nonui-summary' },
-          h('div', { className: 'sl-nonui-summary-title' }, `${data.counts.hostServices} Host Services + ${data.counts.clientServices} Client Services + ${data.counts.extraClientServices} source-verified extras`),
+          h('div', { className: 'sl-nonui-summary-title' }, `${data.counts.hostServices} 个 Host Service + ${data.counts.clientServices} 个 Client Service + ${data.counts.extraClientServices} 个源码确认的额外 Client Service`),
           h('div', { className: 'sl-nonui-summary-sub' }, 'Service 没有视觉座位；用 ctx.get("key") 读取。UI 是另一层：同一个服务可以驱动 UI，但服务本身不是 Slot。标“图鉴已用”的是本插件实际消费的。'),
           h('div', { className: 'sl-nonui-badges' },
             h('span', { className: 'sl-tag' }, 'Host 98'),
@@ -1505,19 +1641,19 @@ window.__ModuleLoader__.load({
         host.length === 0 ? null : h(
           'section',
           { className: 'sl-nonui-group' },
-          h('div', { className: 'sl-nonui-group-head' }, h('h2', null, `Host Services（${host.length}）`), h('p', null, 'Host 侧 Service，通过 ctx.get 读取；强依赖才放进 inject。')),
+          h('div', { className: 'sl-nonui-group-head' }, h('h2', null, `Host 服务（${host.length}）`), h('p', null, 'Host 侧 Service，通过 ctx.get 读取；强依赖才放进 inject。')),
           h('div', { className: 'sl-nonui-list' }, host.map((service) => h(ServiceRow, { key: service.key, service, scope: 'host' }))),
         ),
         client.length === 0 ? null : h(
           'section',
           { className: 'sl-nonui-group' },
-          h('div', { className: 'sl-nonui-group-head' }, h('h2', null, `Client Services（${client.length}）`), h('p', null, 'Client 侧 Service，通过受限 ctx.get 读取。')),
+          h('div', { className: 'sl-nonui-group-head' }, h('h2', null, `Client 服务（${client.length}）`), h('p', null, 'Client 侧 Service，通过受限 ctx.get 读取。')),
           h('div', { className: 'sl-nonui-list' }, client.map((service) => h(ServiceRow, { key: service.key, service, scope: 'client' }))),
         ),
         extra.length === 0 ? null : h(
           'section',
           { className: 'sl-nonui-group' },
-          h('div', { className: 'sl-nonui-group-head' }, h('h2', null, `Source-verified Client Services（${extra.length}）`), h('p', null, 'Inspect 的 Client Service 目录没有列出、但包内确实提供的服务（本插件直接消费了其中 3 个）。')),
+          h('div', { className: 'sl-nonui-group-head' }, h('h2', null, `源码确认的 Client 服务（${extra.length}）`), h('p', null, 'Inspect 的 Client Service 目录没有列出、但包内确实提供的服务（本插件直接消费了其中 3 个）。')),
           h('div', { className: 'sl-nonui-list' }, extra.map((service) => h(ServiceRow, { key: service.key, service, scope: 'client' }))),
         ),
       );
@@ -1532,32 +1668,36 @@ window.__ModuleLoader__.load({
         h(
           'div',
           { className: 'sl-nonui-summary' },
-          h('div', { className: 'sl-nonui-summary-title' }, `当前模型可见 Tools（${tools.length}）+ ${data.counts.clientBuiltins} Client Builtins`),
-          h('div', { className: 'sl-nonui-summary-sub' }, 'Tool 是 model-facing 能力，不是 UI 席位；唯一 UI 是 Chat 里的工具结果卡片。Client Builtins 是浏览器半可直接使用的符号，也不是 Slot。'),
+          h('div', { className: 'sl-nonui-summary-title' }, `当前模型可见工具（${tools.length}）+ ${data.counts.clientBuiltins} 个 Client 内建符号`),
+          h('div', { className: 'sl-nonui-summary-sub' }, '工具是 model-facing 能力，不是 UI 席位；唯一 UI 是 Chat 里的工具结果卡片。Client 内建符号是浏览器半可直接使用的符号，也不是 Slot。'),
         ),
         h(
           'section',
           { className: 'sl-nonui-group' },
-          h('div', { className: 'sl-nonui-group-head' }, h('h2', null, '当前模型可见 Tools'), h('p', null, '来自 /plugin-api-gallery/state 的实时 tools 快照。')),
+          h('div', { className: 'sl-nonui-group-head' }, h('h2', null, '当前模型可见工具'), h('p', null, '来自 /plugin-api-gallery/state 的实时 tools 快照。')),
           tools.length === 0
             ? h('div', { className: 'sl-muted' }, '当前快照没有读到 tools。')
             : h('div', { className: 'sl-nonui-list' }, tools.map((tool) => h(
                 'details',
                 { key: tool.name, className: 'sl-ref-row' },
-                h('summary', null, h('code', { className: 'sl-ref-name' }, tool.name), h('span', { className: 'sl-ref-desc' }, tool.description)),
-                h('div', { className: 'sl-ref-body' }, h('p', { className: 'sl-ref-desc-full' }, tool.description)),
+                h('summary', null, h('code', { className: 'sl-ref-name' }, tool.name), h('span', { className: 'sl-ref-desc' }, toolZh(tool))),
+                h('div', { className: 'sl-ref-body' },
+                  h('p', { className: 'sl-ref-desc-full' }, toolZh(tool)),
+                  h(SourceNote, null, tool.description),
+                ),
               ))),
         ),
         h(
           'section',
           { className: 'sl-nonui-group' },
-          h('div', { className: 'sl-nonui-group-head' }, h('h2', null, 'Client Builtins'), h('p', null, '动态 Client half 可直接使用的符号；持久化 bundle 只有 React + 浏览器全局。')),
+          h('div', { className: 'sl-nonui-group-head' }, h('h2', null, 'Client 内建符号'), h('p', null, '动态 Client half 可直接使用的符号；持久化 bundle 只有 React + 浏览器全局。')),
           h('div', { className: 'sl-nonui-list' }, data.builtins.map((builtin) => h(
             'details',
             { key: builtin.name, className: 'sl-ref-row' },
-            h('summary', null, h('code', { className: 'sl-ref-name' }, builtin.name), h('span', { className: 'sl-ref-desc' }, builtin.description)),
+            h('summary', null, h('code', { className: 'sl-ref-name' }, builtin.name), h('span', { className: 'sl-ref-desc' }, BUILTIN_ZH[builtin.name] ?? '客户端内建符号。')),
             h('div', { className: 'sl-ref-body' },
-              h('p', { className: 'sl-ref-desc-full' }, builtin.description),
+              h('p', { className: 'sl-ref-desc-full' }, BUILTIN_ZH[builtin.name] ?? '客户端内建符号。'),
+              h(SourceNote, null, builtin.description),
               h('div', { className: 'sl-ref-code' }, h(CodeBlock, { code: builtin.signatures.join('\n') })),
             ),
           ))),
@@ -1565,11 +1705,11 @@ window.__ModuleLoader__.load({
         h(
           'details',
           { className: 'sl-code-toggle' },
-          h('summary', null, `Theme tokens（${data.counts.themeTokens} 个 UI 令牌，不是事件/接口）`),
+          h('summary', null, `主题令牌（${data.counts.themeTokens} 个 UI 令牌，不是事件/接口）`),
           h('div', { className: 'sl-nonui-list' }, data.themeTokens.map((token) => h(
             'div',
             { key: token.name, className: 'sl-ref-row' },
-            h('div', { className: 'sl-ref-token' }, h('code', { className: 'sl-ref-name' }, token.name), h('span', { className: 'sl-ref-desc' }, token.description)),
+            h('div', { className: 'sl-ref-token' }, h('code', { className: 'sl-ref-name' }, token.name), h('span', { className: 'sl-ref-desc' }, tokenZh(token)), h(SourceNote, null, token.description)),
           ))),
         ),
       );
@@ -1581,10 +1721,10 @@ window.__ModuleLoader__.load({
       const [tab, setTab] = useState('slots');
       const counts = interfaces ? interfaces.counts : null;
       const tabs = [
-        { id: 'slots', label: 'Slot / Factory (63)' },
-        { id: 'events', label: `Events (${counts ? counts.hostEvents + counts.clientEvents : 80})` },
-        { id: 'services', label: `Services (${counts ? counts.hostServices + counts.clientServices + counts.extraClientServices : 110})` },
-        { id: 'tools', label: 'Tools / Builtins' },
+        { id: 'slots', label: '插槽 / Factory (63)' },
+        { id: 'events', label: `事件 (${counts ? counts.hostEvents + counts.clientEvents : 80})` },
+        { id: 'services', label: `服务 (${counts ? counts.hostServices + counts.clientServices + counts.extraClientServices : 110})` },
+        { id: 'tools', label: '工具 / 内建符号' },
       ];
       return h(
         'div',
@@ -2029,7 +2169,10 @@ window.__ModuleLoader__.load({
 .sl-ref-body { padding: 2px 12px 12px; background: var(--dsw-alias-bg-base); }
 .sl-ref-desc-full { margin: 6px 0 8px; color: var(--dsw-alias-label-secondary); font-size: 12px; line-height: 1.6; }
 .sl-ref-code { margin-top: 8px; }
-.sl-ref-token { display: flex; align-items: baseline; gap: 10px; padding: 8px 12px; }
+.sl-ref-token { display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px; padding: 8px 12px; }
+.sl-ref-source { margin-top: 6px; }
+.sl-ref-source summary { cursor: pointer; color: var(--dsw-alias-label-secondary); font-size: 10px; }
+.sl-ref-source p { margin: 4px 0 0; color: var(--dsw-alias-label-secondary); font-size: 11px; line-height: 1.6; }
 .sl-backdrop { position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center; padding: 24px; background: rgba(0,0,0,.38); pointer-events: auto; }.sl-modal { width: min(700px, 100%); max-height: 86vh; overflow: auto; border-radius: 12px; padding: 20px 22px; background: var(--dsw-alias-bg-layer-1); border: 1px solid var(--dsw-alias-border-l2); box-shadow: 0 20px 60px rgba(0,0,0,.28); }
 .sl-modal-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; }
 .sl-modal-title { margin: 4px 0 2px; font-size: 16px; font-weight: 650; letter-spacing: -.01em; }
