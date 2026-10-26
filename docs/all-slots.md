@@ -1,10 +1,10 @@
-# DSH Web Client Slot / Factory 全量清单（0.2.1-rc.2）
+# DSH Web Client Slot / Factory 全量清单（0.2.1-rc.3）
 
-> 数据来源：`catalog.json`（meta：DSH `0.2.1-rc.2`，scannedAt `2026-10-23`）+ `.scan/client-Slots-listSubTree.full.json`（无 root 的完整树）。
+> 数据来源：`catalog.json`（meta：DSH `0.2.1-rc.3`，scannedAt `2026-10-26`）+ `.scan/client-Slots-listSubTree.full.json`（无 root 的完整树）。
 > 实时 `cordis_inspect_query`（platform=client, provider=Slots, method=listSubTree）**全部超时**（见 §6），因此 occupants / ownerProps 只采用已有静态证据，不做猜测。
-> 口径：Inspect 树共 **106 个节点 = 100 个 Slot + 6 个 Factory**；本文所有统计除非注明，均指 Slot（Factory 单列）。
+> 口径：Inspect 树共 **109 个节点 = 103 个 Slot + 6 个 Factory**；本文所有统计除非注明，均指 Slot（Factory 单列）。
 >
-> **实现状态说明**：本文的“本插件已实现?”列是 task-1 时点的 15 个基线。最终实现阶段已把 43 个可增量 Slot（15 原有 + 18 A + 10 C）全部注册；最新矩阵见 `docs/slot-demos.md`，分类依据见 `docs/slot-classification.md`。B 类 57 + 6 Factory 仍不注册。
+> **实现状态说明**：本文的“本插件已实现?”列是 task-1 时点的 15 个基线。最终实现阶段已把 46 个可增量 Slot（15 原有 + 18 A + 10 C + 0.2.1-rc.3 新增 3 个 actions slot）全部注册；最新矩阵见 `docs/slot-demos.md`，分类依据见 `docs/slot-classification.md`。B 类 57 + 6 Factory 仍不注册。
 
 **图例**：注册 `id* / order? / label?` = list 的注册选项（`*` 必填）；`key*` = keyed；`select*` = chain；`—` = single/factory 由 owner 直接渲染、无注册选项。ownerProps 列 `—` = 静态快照未提供；occupants 列 `—` = 本次未采集（非“空”）。
 
@@ -16,10 +16,10 @@
 
 | 项 | 数量 |
 | --- | ---: |
-| Slot 总数 | 100 |
+| Slot 总数 | 103 |
 | Factory 总数 | 6 |
 | kind=single | 43 |
-| kind=list | 37 |
+| kind=list | 40 |
 | kind=keyed | 17 |
 | kind=chain | 3 |
 | kind=factory | 6 |
@@ -28,25 +28,25 @@
 
 | scope | Slot | Factory |
 | --- | ---: | ---: |
-| root | 46 | 3 |
+| root | 49 | 3 |
 | session | 49 | 2 |
 | session-maybe | 5 | 1 |
-| 合计 | 100 | 6 |
+| 合计 | 103 | 6 |
 
 ### 1.3 按 replaceRisk（Slot）
 
 | replaceRisk | 数量 | 说明 |
 | --- | ---: | --- |
-| none | 52 | 新 id/key 为增量，未见内置 UI 遮蔽 |
+| none | 55 | 新 id/key 为增量，未见内置 UI 遮蔽 |
 | shadows-shipped-ui | 48 | 复用内置 id/key 会替换内置 UI；新 id/key 通常仍是增量 |
-| 合计 | 100 | Factory 无该字段（6） |
+| 合计 | 103 | Factory 无该字段（6） |
 
 kind × replaceRisk：
 
 | kind | none | shadows-shipped-ui |
 | --- | ---: | ---: |
 | single | 2 | 41 |
-| list | 37 | 0 |
+| list | 40 | 0 |
 | keyed | 10 | 7 |
 | chain | 3 | 0 |
 
@@ -54,7 +54,7 @@ kind × replaceRisk：
 
 | 注册形态 | 数量 | 说明 |
 | --- | ---: | --- |
-| list：fresh `id` | 37 | 唯一可“加一项”的通用形态 |
+| list：fresh `id` | 40 | 唯一可“加一项”的通用形态 |
 | keyed：open keyDomain | 13 | 接受新 key，但 key 由 owner 派发 |
 | keyed：fixed keyDomain | 4 | key 集合由 owner 键表 / Client Guard 固定 |
 | chain：`select` | 3 | selector 路由替换，不是追加 |
@@ -78,7 +78,7 @@ fixed keyDomain（4）：`workspace.toast`（ToastKind）、`conversation.user.t
 | `shell.bottom` | slot | single | root | `root` | 三列下方通栏底部内容。 | — | — | — | shadows-shipped-ui | — | — |
 | `shell.leading` | slot | single | root | `root` | 框架左上角窗口 chrome 座位，覆盖所有主面板。 | — | — | — | shadows-shipped-ui | — | — |
 
-### 2.2 sidebar（7）
+### 2.2 sidebar（8）
 
 | Slot | type | kind | scope | parent | 用途 | 注册 | ownerProps | keyDomain | replaceRisk | occupants | 本插件已实现? |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -89,6 +89,7 @@ fixed keyDomain（4）：`workspace.toast`（ToastKind）、`conversation.user.t
 | `sidebar.settings` | slot | single | root | `sidebar` | 侧栏底部的 Settings 座位。 | — | — | — | shadows-shipped-ui | — | — |
 | `sidebar.footer.action` | slot | list | root | `sidebar` | Settings 旁的可选动作。 | id*, order?, label? | `{ wide }` | — | none | — | ✅ `api-gallery-footer` |
 | `sidebar.panellist` | slot | list | root | `sidebar` | 全局面板图标。 | id*, order?, label? | — | — | none | — | — |
+| `sidebar.panellist.actions` | slot | list | root | `sidebar` | 面板列表「更多」菜单的行容器；侧栏只在该 list 有注册项时显示「更多」。**0.2.1-rc.3 新增**。 | id*, order?, label? | `{ entries, onOpen, onPinnedChange, onDismiss }` | open（空） | none | entry-customization | ✅ `api-gallery-panellist-actions` |
 
 ### 2.3 workspaces / session rows（6）
 
@@ -133,7 +134,7 @@ fixed keyDomain（4）：`workspace.toast`（ToastKind）、`conversation.user.t
 | `plugins.detail.badge` | slot | list | root | `main` | 详情页标题旁标签，在版本/beta/问题标签之后。 | id*, order?, label? | — | — | none | — | — |
 | `plugins.detail.section` | slot | list | root | `main` | 详情页自有内容之下的区块。 | id*, order?, label? | — | — | none | — | — |
 
-### 2.6 conversation 外壳 / header（8）
+### 2.6 conversation 外壳 / header（9）
 
 | Slot | type | kind | scope | parent | 用途 | 注册 | ownerProps | keyDomain | replaceRisk | occupants | 本插件已实现? |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -145,6 +146,7 @@ fixed keyDomain（4）：`workspace.toast`（ToastKind）、`conversation.user.t
 | `conversation.session.header.corner` | slot | single | session | `conversation.session.header` | header 最右角，utilities 边缘之后、进入 header padding，供一个控件。 | — | — | — | shadows-shipped-ui | — | — |
 | `conversation.session.header.actions` | slot | list | session | `conversation.session.header` | 标题旁的 Session 动作，按 `order` 升序。 | id*, order?, label? | — | — | none | — | — |
 | `conversation.session.header.lineage` | slot | single | session | `conversation.session.header` | 可选，替换某条 Session 面包屑标题。 | — | — | — | shadows-shipped-ui | — | — |
+| `conversation.session.header.views.actions` | slot | list | root | `conversation.session.header` | View 标签行「更多」菜单的行容器；标签条只在该 list 有注册项时显示「更多」。**0.2.1-rc.3 新增**。 | id*, order?, label? | `{ entries, onOpen, onPinnedChange, onDismiss }` | open（空） | none | entry-customization | ✅ `api-gallery-views-actions` |
 
 ### 2.7 conversation view / chat（11）
 
@@ -199,7 +201,7 @@ fixed keyDomain（4）：`workspace.toast`（ToastKind）、`conversation.user.t
 | `conversation.user.text.node` | slot | keyed | session | `conversation.user.text` | 业务自有的纯 JSON 文本节点内联渲染器。 | key* | — | fixed：UserTextId（已占 7） | shadows-shipped-ui | — | — |
 | `conversation.chat.user.images` | slot | single | session | `conversation.chat.user.content` | 用户消息图片，含 pending 与 local-echo 预览。 | — | — | — | shadows-shipped-ui | — | — |
 
-### 2.11 右侧栏 / right sidebar（15）
+### 2.11 右侧栏 / right sidebar（16）
 
 | Slot | type | kind | scope | parent | 用途 | 注册 | ownerProps | keyDomain | replaceRisk | occupants | 本插件已实现? |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -218,6 +220,7 @@ fixed keyDomain（4）：`workspace.toast`（ToastKind）、`conversation.user.t
 | `sidebar.right.tab.document.action` | slot | keyed | session | `sidebar.right.pane.tab` | document 工具栏 reload 之前的 renderer 专属控件。 | key* | — | open（空） | none | — | — |
 | `sidebar.right.pane.tab.title` | slot | keyed | session | `rightbar.session` | tab 标题（chip 与浮动面板 header），同一 key + info hook。 | key* | — | open（空） | none | — | — |
 | `sidebar.right.tab.menu.item` | slot | list | session | `rightbar.session` | 某个 tab 动作菜单末尾的额外项，按注册顺序。 | id*, order?, label? | — | — | none | — | — |
+| `sidebar.right.tab.guide.actions` | slot | list | root | `sidebar.right.pane.tab` | 起始页 guide 卡片「更多」菜单的行容器；guide 只在该 list 有注册项时显示「更多」。**0.2.1-rc.3 新增**。 | id*, order?, label? | `{ entries, onOpen, onPinnedChange, onDismiss }` | open（空） | none | entry-customization | ✅ `api-gallery-guide-actions` |
 
 ### 2.12 tool views（3）
 
@@ -264,16 +267,16 @@ fixed keyDomain（4）：`workspace.toast`（ToastKind）、`conversation.user.t
 | — | `sidebarRightTabs.register` | `api-gallery:right-tab`（kind `api-gallery-demo`） | Client Service registry，**不是 Slot** | 右侧栏 tab 列表/guide | 既有确认已注册 |
 | — | `commandUi.register` | `api-gallery-demo`（`ui.kind: 'action'`） | Client Service，**不是 Slot** | composer “+” / “/” 菜单 | 既有确认已注册 |
 
-> 「既有确认」指 `docs/slot-demos.md` 记录的此前后端 active 状态；本次实时 `Slots.listSubTree` 全部超时，未能重新复核（见 §6）。本插件未占用任何 single Slot、fixed-key 或 chain Slot。
+> 「既有确认」指 `docs/slot-demos.md` 记录的 active 状态。2026-10-26 在 rc.3 的刷新页面重新抓取到完整 `Slots.listSubTree`，新增的 3 个 actions slot 已登记为 demo（见 §4.1）。本插件未占用任何 single Slot、fixed-key 或 chain Slot。
 
 ---
 
 ## 4. 增量注册候选
 
-判定：接受 fresh `id`（list）或 open keyDomain 的 fresh `key`，且不属 single / fixed-key。按此**结构口径**候选为 **37 + 13 = 50**。
-保守口径：剔除 key 只能由 owner 自身注册表派发、公开目录看不到通用注册入口的 7 个 open-keyed，得到 **37 + 6 = 43**（其中 `main` 需配合 `sidebar.panellist` 的 id 与 main key 对齐，属推断）。
+判定：接受 fresh `id`（list）或 open keyDomain 的 fresh `key`，且不属 single / fixed-key。按此**结构口径**候选为 **40 + 13 = 53**。
+保守口径：剔除 key 只能由 owner 自身注册表派发、公开目录看不到通用注册入口的 7 个 open-keyed，得到 **40 + 6 = 46**（其中 `main` 需配合 `sidebar.panellist` 的 id 与 main key 对齐，属推断）。
 
-### 4.1 list：接受 fresh id（37）
+### 4.1 list：接受 fresh id（40）
 
 | Slot | parent | 落点 |
 | --- | --- | --- |
@@ -314,6 +317,9 @@ fixed keyDomain（4）：`workspace.toast`（ToastKind）、`conversation.user.t
 | `conversation.composer.dock` | `conversation.composer.bar` | composer 下方条目 |
 | `conversation.input.dock` | `conversation.content` | composer 上方条目 |
 | `conversation.hero.options` | `conversation.content` | New Session 右侧选项 |
+| `sidebar.panellist.actions` | `sidebar` | 左侧栏「更多」菜单行（0.2.1-rc.3） |
+| `conversation.session.header.views.actions` | `conversation.session.header` | 会话头部 View「更多」菜单行（0.2.1-rc.3） |
+| `sidebar.right.tab.guide.actions` | `sidebar.right.pane.tab` | 右侧栏起始页「更多」菜单行（0.2.1-rc.3） |
 
 ### 4.2 keyed：open keyDomain（13）
 
@@ -400,8 +406,8 @@ keyDomain 标注 open，但 key 由 owner 自身注册表派发，公开目录�
 
 | 口径 | 可增量 | 不可增量 |
 | --- | ---: | ---: |
-| 结构口径（list + open-keyed） | 37 + 13 = **50** | 43 single + 3 chain + 4 fixed-keyed = **50** |
-| 保守口径（剔除 owner-dispatch-only） | 37 + 6 = **43** | 43 + 3 + 4 + 7 = **57** |
+| 结构口径（list + open-keyed） | 40 + 13 = **53** | 43 single + 3 chain + 4 fixed-keyed = **50** |
+| 保守口径（剔除 owner-dispatch-only） | 40 + 6 = **46** | 43 + 3 + 4 + 7 = **57** |
 
 ---
 
@@ -409,12 +415,12 @@ keyDomain 标注 open，但 key 由 owner 自身注册表派发，公开目录�
 
 | 来源 | 内容 | 状态 |
 | --- | --- | --- |
-| `catalog.json` | 106 节点：name/type/kind/scope/purpose/replaceRisk/parent/registration/keyDomain/allowedKeys，meta `0.2.1-rc.2` / `2026-10-23` | 已用 |
+| `catalog.json` | 109 节点：name/type/kind/scope/purpose/replaceRisk/parent/registration/keyDomain/allowedKeys/since，meta `0.2.1-rc.3` / `2026-10-26` | 已用 |
 | `.scan/client-Slots-listSubTree.full.json` | 无 root 的完整树（7 棵：1 Slot 根 + 6 Factory 根），字段与 catalog 一致；`referencedTypes` 为空数组 | 已用 |
 | `docs/slot-demos.md` | 15 个 Slot 的 ownerProps、本插件 id、既有 active 记录；原生右侧栏两段式注册 | 已用 |
 | `docs/interface-catalog.md` | 全量 Slot 表（与 catalog 同源）、已知边界 | 交叉核对 |
-| live `cordis_inspect_query` client/Slots/listSubTree | 期望补充精确 detail + occupants | **全部失败** |
-| live `cordis_inspect_query` client/Builtin/listBuiltins | 连通性对照 | **失败** |
+| live `cordis_inspect_query` client/Slots/listSubTree | 精确 detail + occupants | 2026-10-26 在 rc.3 刷新页面抓取成功 |
+| live `cordis_inspect_query` client/Builtin/listBuiltins | 连通性对照 | 2026-10-26 抓取成功 |
 
 失败的实时查询（均 `timed out after 10000ms`，已按“重试一次”执行并记录，未猜测）：
 

@@ -1,16 +1,17 @@
 {
   "meta": {
     "title": "DSH 插件接口目录",
-    "dshVersion": "0.2.1-rc.2",
-    "scannedAt": "2026-10-23",
+    "dshVersion": "0.2.1-rc.3",
+    "scannedAt": "2026-10-26",
     "source": "cordis_inspect_query (Service / Event / Slots / Theme / Builtin)",
+    "versionSource": "version-since.json（DSH 各 release tag 的生成式 inspect 目录）",
     "counts": {
       "hostServices": 98,
       "hostEvents": 76,
       "clientServices": 8,
       "clientEvents": 4,
       "clientBuiltins": 5,
-      "slots": 100,
+      "slots": 103,
       "factories": 6,
       "themeTokens": 14
     }
@@ -23,7 +24,9 @@
         "methods": [
           "currentSelection(): ModelSelection",
           "async saveSelection(next: ModelSelection): Promise<void>"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "agentLoop",
@@ -33,7 +36,9 @@
           "async create(id: SessionId, options: AgentOptions = {}, meta: Pick<SessionHeader, 'cwd'> = {}): Promise<Agent>",
           "async createAgent(ownerCtx: Context, options: CreateAgentOptions): Promise<AgentHandle>",
           "async resume(ownerCtx: Context, options: ResumeAgentOptions): Promise<AgentHandle>"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "agentPresets",
@@ -53,7 +58,9 @@
           "@Remote('select') async select(agent: Agent, agentPreset: string): Promise<string>",
           "async acquireScope(id?: string): Promise<{ key: ScopeKey } & AsyncDisposable>",
           "compositionInventory(): Promise<AgentPresetComposition[]>"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "agents",
@@ -73,7 +80,9 @@
           "isOwnedBy(id: SessionId, owner: Agent): boolean",
           "list(): Agent[]",
           "roots(): Agent[]"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "agentTeams",
@@ -90,7 +99,8 @@
           "async waitForChange(caller: Agent, timeoutMs: number, signal: AbortSignal): Promise<TeamWaitResult>",
           "interrupt(caller: Agent, targetName: string): { previousStatus: 'running' | 'inactive' }",
           "tryMembership(agent: Agent): TeamMembership | undefined"
-        ]
+        ],
+        "since": "0.1.0-rc.8"
       },
       {
         "key": "approval",
@@ -99,7 +109,9 @@
           "setPolicy(agent: Agent, policy: ApprovalPolicy): void",
           "async request(req: ApprovalRequest): Promise<ApprovalOutcome>",
           "overrideOf(session: Session): ApprovalPolicy | undefined"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "attachments",
@@ -119,7 +131,9 @@
           "async *readFileStream( ref: FileAttachmentRef, signal?: AbortSignal, ): AsyncIterable<Uint8Array>",
           "fileHostPath(ref: FileAttachmentRef): string | undefined",
           "readImageRequest( ref: ImageAttachmentRef, target: ImageRequestTarget, signal?: AbortSignal, ): Promise<RequestImageAttachment>"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "authorization",
@@ -130,14 +144,16 @@
           "describe(key: CredentialKey): AuthorizationEntry | undefined",
           "cancel(key: CredentialKey): void",
           "async begin(request: AuthorizationRequest): Promise<AuthorizationOutcome>"
-        ]
+        ],
+        "since": "0.1.1-rc.1"
       },
       {
         "key": "browserUse",
         "description": "Owns one optional provider registration in the shared browser-use service.",
         "methods": [
           "register(name: BrowserUseProviderName): () => Promise<void>"
-        ]
+        ],
+        "since": "0.1.6-alpha.1"
       },
       {
         "key": "claudeCodeMods",
@@ -146,7 +162,8 @@
           "@Remote({ mode: 'stream' }) watchBand(agent: Agent, signal: AbortSignal): AsyncIterable<SurfaceSnapshot>",
           "@Remote pressBand(agent: Agent, generation: number, actionId: string): Promise<SurfaceSnapshot>",
           "async add(definition: ModDefinition): Promise<() => Promise<void>>"
-        ]
+        ],
+        "since": "0.2.1-alpha.1"
       },
       {
         "key": "clientModules",
@@ -159,7 +176,9 @@
           "rebuilt(id: string): string | undefined",
           "onRebuilt(listener: (id: string, rev: string) => void): () => void",
           "onGraphChanged(listener: () => void): () => void"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "commands",
@@ -170,7 +189,9 @@
           "@Remote list(agent: Agent): readonly CommandDescriptor[]",
           "find(agent: Agent, name: string): CommandDefinition | undefined",
           "@Remote async execute( agent: Agent, line: string, submittedAttachments: readonly CommandSubmitAttachment[], signal: AbortSignal, ): Promise<CommandExecution | undefined>"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "compaction",
@@ -179,14 +200,17 @@
           "abstract compactIfNeeded( agent: CompactionAgentContext, trigger: CompactionTrigger, signal: AbortSignal, ): Promise<CompactionResult | null>",
           "abstract compactNow( agent: ManualCompactAgentContext, signal: AbortSignal, sourceCommandId?: CommandId, ): Promise<CompactionResult | null>",
           "abstract compactRegion( start: SessionSeq, end: SessionSeq, agent: CompactionAgentContext, signal?: AbortSignal, ): Promise<CompactionResult>"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "computerUse",
         "description": "Owns one optional provider registration in the shared computer-use service.",
         "methods": [
           "register(name: ComputerUseProviderName): () => Promise<void>"
-        ]
+        ],
+        "since": "0.1.6-alpha.1"
       },
       {
         "key": "configEditor",
@@ -195,7 +219,8 @@
           "entries(): Entry[]",
           "configuration(): Array<{ entry: Entry; inherited: Record<string, unknown>; override: Record<string, unknown> }>",
           "async edit( entry: Entry, change: (current: Record<string, unknown>, inherited: Record<string, unknown>) => Record<string, unknown>, ): Promise<void>"
-        ]
+        ],
+        "since": "0.1.7-alpha.1"
       },
       {
         "key": "connection",
@@ -212,7 +237,8 @@
           "admitConnection(request: ConnectionTrustRequest): ConnectionAdmission",
           "authorizeIndex(request: ConnectionIndexRequest, response: ConnectionIndexResponse): boolean",
           "authenticatedUrl(baseUrl: string): string"
-        ]
+        ],
+        "since": "0.1.6-alpha.2"
       },
       {
         "key": "cotTranslation",
@@ -220,7 +246,8 @@
         "methods": [
           "@Remote async limits(signal: AbortSignal): Promise<CotTranslationSnapshot>",
           "@Remote async translate(request: TranslationRequest, signal: AbortSignal): Promise<string>"
-        ]
+        ],
+        "since": "0.2.1-alpha.2"
       },
       {
         "key": "credentials",
@@ -235,7 +262,9 @@
           "abstract listRecords(): Promise<readonly CredentialRecordEntry[]>",
           "abstract modifyRecord( key: CredentialKey, mutate: (current: CredentialRecord | undefined) => Promise<CredentialRecord | undefined>, ): Promise<CredentialRecord | undefined>",
           "abstract deleteRecord(key: CredentialKey): Promise<void>"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "credentialsController",
@@ -244,7 +273,8 @@
           "@Remote async describe(refs: string[]): Promise<Record<string, CredentialInfo>>",
           "@Remote async set(ref: string, value: string): Promise<void>",
           "@Remote async unset(ref: string): Promise<void>"
-        ]
+        ],
+        "since": "0.1.2-alpha.1"
       },
       {
         "key": "deepseekAccount",
@@ -263,7 +293,8 @@
           "abstract rejectToken(token: string): Promise<void>",
           "abstract getPlatformSession(): Promise<PlatformSession | null>",
           "abstract getDeviceIdentity(): Promise<{ deviceId?: string; userId?: AccountUserId; osVersion: string }>"
-        ]
+        ],
+        "since": "0.1.7-alpha.1"
       },
       {
         "key": "deepseekLlmApiExtensions",
@@ -271,14 +302,17 @@
         "methods": [
           "register<K extends keyof DeepSeekLlmApiExtensionMap>( field: K, provider: DeepSeekLlmApiExtensionProvider<DeepSeekLlmApiExtensionMap[K]>, ): () => Promise<void>",
           "async prepare(request: DeepSeekLlmApiExtensionRequest): Promise<PreparedDeepSeekLlmApiExtensions>"
-        ]
+        ],
+        "since": "0.1.2-alpha.1"
       },
       {
         "key": "directoryPicker",
         "description": "Abstract directory-picking service.",
         "methods": [
           "abstract capability(): DirectoryPickerCapability"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "directoryPickerController",
@@ -287,14 +321,16 @@
           "@Remote('pick') async pick(signal: AbortSignal): Promise<string | null>",
           "@Remote('list') async list(path: string | undefined, signal: AbortSignal): Promise<DirectoryListing>",
           "@Remote('createDirectory') async createDirectory(path: string, name: string): Promise<string>"
-        ]
+        ],
+        "since": "0.1.2-alpha.1"
       },
       {
         "key": "fileReferences",
         "description": "Host capability for cancellable file-reference discovery.",
         "methods": [
           "abstract list( agent: Agent, query: string, signal: AbortSignal, ): Promise<FileReferenceCandidate[]>"
-        ]
+        ],
+        "since": "0.1.0-rc.8"
       },
       {
         "key": "fileUploads",
@@ -306,7 +342,8 @@
           "resolve(agent: Agent, receiptId: FileUploadReceiptId): FileAttachmentRef | undefined",
           "bindPrompt( agent: Agent, receiptIds: readonly FileUploadReceiptId[], requestId: string, ): PromptFileBinding",
           "retirePrompt(agent: Agent, requestId: string): void"
-        ]
+        ],
+        "since": "0.1.3-alpha.1"
       },
       {
         "key": "fs",
@@ -327,7 +364,9 @@
           "abstract listDir(target: FsTarget, signal?: AbortSignal): Promise<FsDirEntry[]>",
           "abstract writeText( target: FsTarget, content: string, expected?: FsWriteIntent, signal?: AbortSignal, sandboxPolicy?: SandboxExecutionPolicy, ): Promise<FsWriteOutcome>",
           "abstract editText( target: FsTarget, edit: FsEditRequest, expected?: { version: FsVersion }, signal?: AbortSignal, sandboxPolicy?: SandboxExecutionPolicy, ): Promise<FsEditOutcome>"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "goals",
@@ -343,7 +382,9 @@
           "block(agent: Agent, ref: GoalRef, reason: GoalBlockReason): GoalView",
           "@Remote('clear') clear(agent: Agent, ref: GoalRef): GoalRef",
           "@Remote('create') remoteExportCreate(agent: Agent, request: CreateGoalRequest): CreateGoalResult"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "hmr",
@@ -355,7 +396,8 @@
           "getOuterStack: () => string[] = () => []",
           "async getLinked(url: string): Promise<string[]>",
           "async reconcileProfile(requiredIds: readonly string[] = []): Promise<ProfileReconciliation>"
-        ]
+        ],
+        "since": "0.1.6-alpha.2"
       },
       {
         "key": "inspector",
@@ -363,7 +405,8 @@
         "methods": [
           "publish(topic: string, payload: InspectorJsonValue, monotonicMs?: number): void",
           "readonly cordis: CordisRuntimeTreeReader"
-        ]
+        ],
+        "since": "0.1.2-alpha.1"
       },
       {
         "key": "jobController",
@@ -372,7 +415,8 @@
           "@Remote({ mode: 'stream' }) list(request: JobListRequest, signal: AbortSignal): AsyncIterable<JobListFrame>",
           "@Remote({ mode: 'stream' }) follow(request: JobFollowRequest, signal: AbortSignal): AsyncIterable<JobFollowFrame>",
           "@Remote('kill') kill(request: JobKillRequest): JobKillValue"
-        ]
+        ],
+        "since": "0.1.7-alpha.1"
       },
       {
         "key": "jobs",
@@ -388,7 +432,9 @@
           "abstract wait(id: JobId, timeoutMs: number, caller?: SessionId, signal?: AbortSignal): Promise<JobView>",
           "abstract remove(id: JobId, caller?: SessionId): void",
           "abstract attachController(name: string): () => void"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "llm",
@@ -410,7 +456,9 @@
           "async resolveCallConfig(config: LlmCallConfig, signal?: AbortSignal): Promise<LlmCallConfig>",
           "async prepareCall( config: LlmCallConfig, signal?: AbortSignal, configure?: ConfigureCall, ): Promise<PreparedLlmCall>",
           "stream(options: GenerateOptions): AsyncIterable<StreamChunk>"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "lsp",
@@ -418,14 +466,17 @@
         "methods": [
           "registerProvider(provider: LspProvider): () => void",
           "query(request: LspQueryRequest, signal?: AbortSignal): Promise<LspQueryResult>"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "mcpResources",
         "description": "Scoped resource access plus three tools shared by configured MCP servers.",
         "methods": [
           "register(server: string, provider: McpResourceProvider): () => void"
-        ]
+        ],
+        "since": "0.1.6-alpha.1"
       },
       {
         "key": "messageFeedback",
@@ -434,7 +485,9 @@
           "@Remote('list') list(request: MessageFeedbackListRequest): Promise<MessageFeedbackListResult>",
           "@Remote('put') put(request: MessageFeedbackPutRequest): Promise<MessageFeedbackPutResult>",
           "@Remote('delete') delete(request: MessageFeedbackDeleteRequest): Promise<MessageFeedbackDeleteResult>"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "officeToPdf",
@@ -444,7 +497,8 @@
           "convert(request: OfficeToPdfRequest, signal?: AbortSignal): Promise<OfficeToPdfResult>",
           "@Remote async render( workspaceFileScope: WorkspaceFileScope, path: string, priority: OfficeToPdfPriority, signal: AbortSignal, ): Promise<RenderedDocumentBytes>",
           "@Remote('generation') getGeneration(signal: AbortSignal): OfficeToPdfGeneration"
-        ]
+        ],
+        "since": "0.1.6-alpha.2"
       },
       {
         "key": "otel",
@@ -452,7 +506,8 @@
         "methods": [
           "createEventReporter(options: EventLogOptions): EventLogReporter",
           "createSessionLogReporter(options: SessionLogOptions): SessionLogReporter"
-        ]
+        ],
+        "since": "0.2.0-rc.1"
       },
       {
         "key": "permissionPresets",
@@ -464,7 +519,9 @@
           "resolve(name: string): PresetSpec",
           "optionOf(name: string): PresetOption",
           "set(session: Session, name: string): void"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "planMode",
@@ -472,7 +529,9 @@
         "methods": [
           "get(agent: Agent): { active: boolean; pending?: boolean }",
           "set(agent: Agent, active: boolean): 'committed' | 'queued' | 'cancelled' | 'noop'"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "pluginManager",
@@ -490,7 +549,8 @@
           "@Remote async waitForInstall(requestId: PluginInstallRequestId): Promise<ChangeResult | null>",
           "@Remote async cancelInstall(requestId: PluginInstallRequestId): Promise<PluginInstallCancellation>",
           "@Remote removeBundle(name: string): Promise<ChangeResult>"
-        ]
+        ],
+        "since": "0.1.6-alpha.2"
       },
       {
         "key": "pluginMarket",
@@ -500,14 +560,16 @@
           "@Remote async setIndexes(urls: string[]): Promise<void>",
           "@Remote async search(url: string, query: MarketQuery): Promise<MarketSearchResult>",
           "async entry(url: string, name: string): Promise<MarketListingEntry | undefined>"
-        ]
+        ],
+        "since": "0.2.1-alpha.4"
       },
       {
         "key": "pluginRegistryProbe",
         "description": "Compares public registry responses on the Host; the Client owns the initial selection.",
         "methods": [
           "@Remote async fastest(): Promise<string | null>"
-        ]
+        ],
+        "since": "0.1.7-alpha.2"
       },
       {
         "key": "productAnalytics",
@@ -516,14 +578,16 @@
           "@Remote enabled(): boolean",
           "@Remote({ mode: 'stream' }) async *watchPolicy(signal: AbortSignal): AsyncIterable<boolean>",
           "@Remote async report(event: ProductEvent): Promise<void>"
-        ]
+        ],
+        "since": "0.2.0-rc.1"
       },
       {
         "key": "productTelemetry",
         "description": "Host analytics sender.",
         "methods": [
           "emit(record: ProductTelemetryRecord): void"
-        ]
+        ],
+        "since": "0.1.7-alpha.1"
       },
       {
         "key": "profileContext",
@@ -533,7 +597,8 @@
           "readonly startedBundles: readonly string[]",
           "readonly overlays: readonly PatchOptions[]",
           "readonly telemetryDisabledEnv: string | undefined"
-        ]
+        ],
+        "since": "0.1.6-alpha.2"
       },
       {
         "key": "ptcRuntime",
@@ -544,7 +609,8 @@
           "release(owner: object): Promise<void>",
           "abstract resolve(request: PtcRunRequest): PtcRunSpec",
           "abstract run(spec: PtcRunSpec): Promise<PtcRunResult>"
-        ]
+        ],
+        "since": "0.1.6-alpha.1"
       },
       {
         "key": "remoteAccess",
@@ -556,14 +622,17 @@
           "allows(resource: RemoteAccessResource): boolean",
           "snapshotFor(principal: Principal): RemoteAccessBaseline",
           "@Remote({ mode: 'stream' }) async *follow(signal: AbortSignal): AsyncIterable<RemoteAccessFrame>"
-        ]
+        ],
+        "since": "0.2.1-alpha.3"
       },
       {
         "key": "sandbox",
         "description": "Abstract process-sandbox service.",
         "methods": [
           "abstract confine(argv: readonly string[], policy: SandboxPolicy, signal?: AbortSignal): Promise<ConfinedArgv>"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "sandboxPolicy",
@@ -573,7 +642,9 @@
           "readonly workspaceRoot: string",
           "resolve(request: SandboxPolicyRequest = {}): SandboxExecutionPolicy",
           "overrideOf(session: Session): SandboxMode | undefined"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "schedule",
@@ -585,7 +656,8 @@
           "@Remote('history') async history(request: ScheduleDeliveryHistoryRequest): Promise<ScheduleDeliveryHistoryResult>",
           "@Remote('delete') async delete(request: ScheduleDeleteRequest, signal?: AbortSignal): Promise<ScheduleDeleteResult>",
           "@Remote('update') async update(request: ScheduleUpdateRequest, signal?: AbortSignal): Promise<ScheduleUpdateResult>"
-        ]
+        ],
+        "since": "0.1.7-rc.2"
       },
       {
         "key": "sessionController",
@@ -613,21 +685,24 @@
           "@Remote({ mode: 'stream', resources: { session: addressedSession } }) follow(request: SessionFollowRequest, signal: AbortSignal): AsyncIterable<SessionFollowFrame>",
           "@Remote('projections') async projections(request: SessionProjectionsRequest, signal: AbortSignal): Promise<SessionProjectionsValue>",
           "@Remote({ mode: 'stream' }) async *control(signal: AbortSignal): AsyncIterable<SessionControlFrame>"
-        ]
+        ],
+        "since": "0.1.2-alpha.1"
       },
       {
         "key": "sessionFeedback",
         "description": "Host Remote through which a product surface records a Session-level remark.",
         "methods": [
           "@Remote('record') record(request: SessionFeedbackRecordRequest): Promise<SessionFeedbackRecordResult>"
-        ]
+        ],
+        "since": "0.1.5-alpha.2"
       },
       {
         "key": "sessionFileReferences",
         "description": "Host Remote adapter over the composed file-reference provider.",
         "methods": [
           "@Remote list( agent: Agent, query: string, signal: AbortSignal, ): Promise<FileReferenceCandidate[]>"
-        ]
+        ],
+        "since": "0.1.2-alpha.1"
       },
       {
         "key": "sessionPersistence",
@@ -639,7 +714,9 @@
           "abstract flush(): Promise<void>",
           "abstract stat(id: SessionId, options?: SessionPersistenceStatOptions): Promise<SessionPersistenceSnapshot | undefined>",
           "abstract list(options?: SessionPersistenceListOptions): Promise<readonly SessionPersistenceSnapshot[]>"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "sessionProjectionCache",
@@ -650,7 +727,9 @@
           "hydratePrepared( session: Session, events: readonly SessionEvent[], ): ProjectionSnapshot",
           "async write(session: Session): Promise<void>",
           "coldSnapshot( meta: SessionHeader, inheritedEventCount: SessionLogOffset, events: readonly SessionEvent[], ): ProjectionSnapshot"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "sessionProjections",
@@ -667,7 +746,9 @@
           "viewCheckpoint( checkpoint: ProjectionCheckpoint, keys?: readonly Extract<keyof SessionProjectionMap, string>[], ): Partial<SessionProjectionMap>",
           "restore( checkpoint: ProjectionCheckpoint, events: readonly SessionEvent[], baseSeq: SessionLogOffset, header: SessionHeader, inheritedEventCount: SessionLogOffset, ): { snapshot: ProjectionSnapshot; checkpoint: ProjectionCheckpoint }",
           "hydrate( session: Session, checkpoint: ProjectionCheckpoint, events: readonly SessionEvent[], baseSeq: SessionLogOffset, ): ProjectionSnapshot"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "sessionQuery",
@@ -688,7 +769,9 @@
           "async traceSession(sessionId: SessionId, signal?: AbortSignal): Promise<SessionLineageTrace>",
           "async traceEvent(request: SessionEventTraceRequest, signal?: AbortSignal): Promise<SessionEventTraceObservation>",
           "async readEvent(request: SessionEventReadRequest, signal?: AbortSignal): Promise<SessionEventWindow>"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "sessionReferenceResolver",
@@ -697,7 +780,9 @@
           "async listCandidates( agent: Agent, query: string = '', limit: number = this.config.candidateLimit, signal?: AbortSignal, ): Promise<SessionReferenceCandidate[]>",
           "@Remote('candidates') async remoteExportCandidates( agent: Agent, query: string, signal: AbortSignal, ): Promise<SessionReferenceMentionCandidate[]>",
           "async prepare( agent: Agent, content: ContentBlock[], references: SessionReferenceInput[], signal?: AbortSignal, ): Promise<PreparedReferencedMessage>"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "sessions",
@@ -712,14 +797,17 @@
           "get(id: SessionId): Session | undefined",
           "list(): Session[]",
           "fork(source: SessionForkSource, boundary?: SessionSeq, childSessionId?: SessionId): Session"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "sessionSkillCatalog",
         "description": "Host service backing `ctx.remote.skills` without activating a cold Agent.",
         "methods": [
           "@Remote async list(request: SkillListRequest, signal: AbortSignal): Promise<SkillListValue>"
-        ]
+        ],
+        "since": "0.1.2-alpha.1"
       },
       {
         "key": "sessionTelemetry",
@@ -729,7 +817,9 @@
           "abstract emit(record: SessionTelemetryRecord): void",
           "flush?(): void",
           "abstract shutdown(): Promise<void>"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "sessionTitle",
@@ -739,7 +829,9 @@
           "rename(session: Session, title: string): SessionTitleSnapshot",
           "async refresh(session: Session, signal?: AbortSignal): Promise<SessionTitleSnapshot | undefined>",
           "register(provider: SessionTitleProvider): () => Promise<void>"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "settings",
@@ -751,7 +843,9 @@
           "async update(ns: string, patch: object, expectedRevision?: number): Promise<void>",
           "async replace(ns: string, section: object, expectedRevision?: number): Promise<void>",
           "async mutate(ns: string, ops: readonly SettingsPathOp[], expectedRevision?: number): Promise<void>"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "settingsController",
@@ -762,7 +856,8 @@
           "@Remote replace( ns: string, section: Record<string, JsonValue>, expectedRevision: number | undefined, ): Promise<SettingsNamespaceView>",
           "@Remote async mutate( ns: string, ops: SettingsPathOpView[], expectedRevision: number | undefined, ): Promise<SettingsNamespaceView>",
           "@Remote async openSettingsDocument(signal: AbortSignal): Promise<SettingsDocumentOpenValue>"
-        ]
+        ],
+        "since": "0.1.2-alpha.1"
       },
       {
         "key": "shell",
@@ -770,7 +865,9 @@
         "methods": [
           "abstract resolve(request: ShellExecRequest): ShellExecSpec",
           "abstract execute(spec: ShellExecSpec): Promise<ShellExecution>"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "shellEnv",
@@ -779,7 +876,9 @@
           "register(contributor: BashEnvContributor): () => void",
           "collect(execution: ToolExecution): DshEnvironment",
           "list(): BashEnvVariableInfo[]"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "skills",
@@ -790,7 +889,9 @@
           "async list(options: SkillViewOptions = {}): Promise<SkillSummary[]>",
           "async snapshot(options: SkillViewOptions = {}): Promise<SkillCatalogSnapshot>",
           "async get(name: string, options: SkillViewOptions = {}): Promise<SkillDefinition | undefined>"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "speechController",
@@ -802,7 +903,8 @@
           "@Remote prepare(providerId: SpeechProviderId, options?: SpeechPreparationOptions): void",
           "@Remote cancelPreparation(providerId: SpeechProviderId): Promise<void>",
           "@Remote async transcribe(request: TranscriptionRequest, signal: AbortSignal): Promise<Transcript>"
-        ]
+        ],
+        "since": "0.1.7-alpha.1"
       },
       {
         "key": "speechToText",
@@ -817,14 +919,17 @@
           "async cancelPreparation(id: SpeechProviderId): Promise<void>",
           "resolve(request: SpeechRequest): SpeechSpec",
           "async transcribe(spec: SpeechSpec, signal: AbortSignal): Promise<Transcript>"
-        ]
+        ],
+        "since": "0.1.7-alpha.1"
       },
       {
         "key": "spillStore",
         "description": "Abstract spill storage service.",
         "methods": [
           "abstract saveText(input: SaveTextSpill): Promise<SpillRef>"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "ssh",
@@ -834,7 +939,8 @@
           "async request<T>(method: string, params: unknown, result: z.ZodType<T>, signal?: AbortSignal, wait: boolean = false): Promise<T>",
           "async connectStream(endpoint: SshStreamEndpoint, signal?: AbortSignal): Promise<Socket>",
           "dispose(): Promise<void>"
-        ]
+        ],
+        "since": "0.1.6-alpha.1"
       },
       {
         "key": "storage",
@@ -843,7 +949,9 @@
           "readonly backend: BackendRegistry = new BackendRegistry()",
           "mount<K extends keyof StorageForms>(form: K, facility: StorageForms[K]): () => void",
           "form<K extends keyof StorageForms>(form: K): StorageForms[K]"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "storageDomain",
@@ -852,14 +960,17 @@
           "async open<S extends DomainSpec>(spec: S): Promise<Domain<S>>",
           "get(name: string): DomainImpl | undefined",
           "async closeAll(): Promise<void>"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "subagentModelSelection",
         "description": "Singleton settings owner read when delegation tools are composed for a Session.",
         "methods": [
           "current(): SubagentModelSelectionSettings"
-        ]
+        ],
+        "since": "0.1.2-alpha.1"
       },
       {
         "key": "subagents",
@@ -880,7 +991,9 @@
           "registerProvider(provider: SubagentProvider): () => void",
           "getProvider(name: string): SubagentProvider | undefined",
           "list(): string[]"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "subprocess",
@@ -890,7 +1003,9 @@
           "abstract terminalEnvironment(signal?: AbortSignal): Promise<SubprocessTerminalEnvironment>",
           "abstract spawn(spec: SubprocessSpawnSpec): SubprocessHandle",
           "abstract spawnTerminal(spec: SubprocessTerminalSpawnSpec): Promise<SubprocessTerminalHandle>"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "systemPrompt",
@@ -905,7 +1020,9 @@
           "variable(name: string, provider: (context: AssembleContext) => string | undefined): () => void",
           "refreshContext(assembly: PromptAssembly, context: AssembleContext = {}): PromptAssembly",
           "async assemble(context: AssembleContext = {}): Promise<PromptAssembly>"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "terminalController",
@@ -919,7 +1036,8 @@
           "@Remote({ mode: 'stream' }) attach(agent: Agent, id: WebTerminalId, signal: AbortSignal): RemoteStream<TerminalFrame, TerminalInput>",
           "@Remote rename(agent: Agent, id: WebTerminalId, title: string): void",
           "@Remote async close(agent: Agent, id: WebTerminalId): Promise<void>"
-        ]
+        ],
+        "since": "0.1.6-alpha.1"
       },
       {
         "key": "terminals",
@@ -934,7 +1052,9 @@
           "signal(owner: Agent, id: TerminalSessionId, signal: TerminalSignal): Promise<TerminalSignalResult>",
           "async kill(owner: Agent, id: TerminalSessionId, reason: string = 'model request'): Promise<boolean>",
           "list(owner: Agent): TerminalSessionSnapshot[]"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "timer",
@@ -946,7 +1066,9 @@
           "interval<R = any>(delay: number): AsyncIterableIterator<void, R, void>",
           "throttle<F extends (...args: any[]) => void>(callback: F, delay: number, noTrailing?: boolean): F & { dispose: () => void }",
           "debounce<F extends (...args: any[]) => void>(callback: F, delay: number): F & { dispose: () => void }"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "tokenMeter",
@@ -954,7 +1076,9 @@
         "methods": [
           "measure(session: Session, requestHeader?: EpochHeader): TokenMeasurement",
           "estimateMessage(message: Message): number"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "toolResultPruner",
@@ -964,7 +1088,9 @@
           "measureContent(blocks: readonly ContentBlock[]): number",
           "pruneContent(blocks: readonly ContentBlock[]): ContentBlock[] | null",
           "pruneSession(session: Session): PruneResult"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "tools",
@@ -978,7 +1104,9 @@
           "schemas(scope?: ScopeKey): ToolSchema[]",
           "executionMode(exec: ToolExecutionInput): ToolExecutionMode",
           "async execute(exec: ToolExecutionInput): Promise<ToolExecutionResult>"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "translator",
@@ -987,7 +1115,8 @@
           "async availableProviders(signal?: AbortSignal): Promise<readonly TranslationProvider[]>",
           "resolve(request: TranslationRequest): TranslationSpec",
           "async translate(spec: TranslationSpec, signal?: AbortSignal): Promise<string>"
-        ]
+        ],
+        "since": "0.2.1-alpha.2"
       },
       {
         "key": "typert",
@@ -1000,7 +1129,9 @@
           "getPackage(packageName: string, face: TypertFace = 'host'): TypertPackageRecord | undefined",
           "listPackages(filter: TypertPackageFilter = {}): TypertPackageRecord[]",
           "toJSONSchema(key: string, params?: z.core.ToJSONSchemaParams): z.core.JSONSchema.BaseSchema"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "typertGateway",
@@ -1011,7 +1142,9 @@
           "registerRemoteEvents( source: TypertRemoteEventSource, host: RemoteEventHostInfo, ): () => Promise<void>",
           "async invoke(request: InvokeRemoteRequest): Promise<unknown>",
           "async stream(request: InvokeRemoteRequest): Promise<AsyncIterable<unknown>>"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "userQuestions",
@@ -1021,7 +1154,9 @@
           "@Remote({ mode: 'stream' }) async *attachWait(agent: Agent, callId: ToolCallId, signal: AbortSignal): AsyncIterable<{ remainingMs: number }>",
           "async askTimed( request: AskUserQuestionRequest & { agent: Agent }, callId: ToolCallId, timeoutMs: number, ): Promise<TimedUserQuestionResult>",
           "async ask(request: AskUserQuestionRequest): Promise<AskUserQuestionAnswer>"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "web",
@@ -1031,14 +1166,17 @@
           "registerFetchProvider(provider: WebFetchProvider): () => void",
           "async search(request: WebSearchRequest, signal?: AbortSignal): Promise<WebSearchResult>",
           "async fetch(request: WebFetchRequest, signal?: AbortSignal): Promise<WebFetchResult>"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "webApp",
         "description": "The Web GUI this process serves, provided by the `web-runtime` row.",
         "methods": [
           "getAdvertisedUrl(): string"
-        ]
+        ],
+        "since": "0.2.1-alpha.3"
       },
       {
         "key": "webhookRuntime",
@@ -1046,7 +1184,8 @@
         "methods": [
           "register<K extends string>(rule: WebhookRule<K>): () => Promise<void>",
           "dispatch<K extends string>(delivery: VerifiedWebhookDelivery<K>): void"
-        ]
+        ],
+        "since": "0.1.2-alpha.1"
       },
       {
         "key": "webServer",
@@ -1060,14 +1199,18 @@
           "applyIndexTaps(html: string): string",
           "collectIndexInjections(): IndexInjection[]",
           "renderIndex(html: string): string"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "workflowEngine",
         "description": "Workflow Service Definition contract.",
         "methods": [
           "abstract start(request: WorkflowStartRequest): WorkflowRun"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "workingDirectory",
@@ -1077,7 +1220,8 @@
           "get(session: Session): string",
           "ensure(agent: Agent, signal?: AbortSignal): Promise<string>",
           "set(agent: Agent, path: string, signal?: AbortSignal): Promise<string>"
-        ]
+        ],
+        "since": "0.2.1-alpha.2"
       },
       {
         "key": "workspaceChanges",
@@ -1085,7 +1229,8 @@
         "methods": [
           "summary(sessionId: SessionId, seq: number): WorkspaceChangesSummary | undefined",
           "diff(sessionId: SessionId, seq: number, index: number, signal: AbortSignal): Promise<WorkspaceFileDiff | undefined>"
-        ]
+        ],
+        "since": "0.1.6-alpha.2"
       },
       {
         "key": "workspaceController",
@@ -1102,7 +1247,8 @@
           "@Remote('pinSession') pinSession(request: WorkspacePinSessionRequest): Promise<WorkspacePinValue>",
           "@Remote('unpinSession') unpinSession(request: WorkspaceUnpinSessionRequest): Promise<WorkspacePinValue>",
           "@Remote({ mode: 'stream' }) async *follow(signal: AbortSignal): AsyncIterable<WorkspaceFollowFrame>"
-        ]
+        ],
+        "since": "0.1.2-alpha.1"
       },
       {
         "key": "workspaceFiles",
@@ -1113,7 +1259,8 @@
           "@Remote async stat(workspaceFileScope: WorkspaceFileScope, path: string, signal: AbortSignal): Promise<WorkspaceFileStat>",
           "@Remote async list(workspaceFileScope: WorkspaceFileScope, path: string, signal: AbortSignal): Promise<WorkspaceDirectoryListing>",
           "@Remote({ mode: 'stream' }) changes(workspaceFileScope: WorkspaceFileScope, path: string, signal: AbortSignal): AsyncIterable<WorkspaceFileWatchFrame>"
-        ]
+        ],
+        "since": "0.1.5-alpha.1"
       },
       {
         "key": "workspaceRegistry",
@@ -1130,14 +1277,17 @@
           "pinSession(sessionId: SessionId): Promise<void>",
           "unpinSession(sessionId: SessionId): Promise<void>",
           "async resolveByPath(path: string): Promise<Workspace | undefined>"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "worktrees",
         "description": "Creates retained Git worktrees under the mounted filesystem and sandbox providers.",
         "methods": [
           "async create(agent: Agent, request: CreateWorktreeRequest = {}, signal?: AbortSignal): Promise<CreatedWorktree>"
-        ]
+        ],
+        "since": "0.2.1-alpha.2"
       }
     ],
     "events": [
@@ -1145,457 +1295,579 @@
         "name": "agent-loop/config-start-failed",
         "mode": "emit",
         "description": "A declarative agent entry failed before it could publish a live agent.",
-        "signature": "'agent-loop/config-start-failed'(payload: { sessionId: SessionId; error: unknown }): void"
+        "signature": "'agent-loop/config-start-failed'(payload: { sessionId: SessionId; error: unknown }): void",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "agent-preset/selected",
         "mode": "emit",
         "description": "One session committed a different agent preset to its durable log.",
-        "signature": "'agent-preset/selected'(sessionId: SessionId, agentPreset: string): void"
+        "signature": "'agent-preset/selected'(sessionId: SessionId, agentPreset: string): void",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "agent/assistant-stream",
         "mode": "emit",
         "description": "Process-local assistant-stream publication.",
-        "signature": "'agent/assistant-stream'(this: Scoped<Agent>, payload: { agent: Agent; frame: AssistantStreamFrame }): void"
+        "signature": "'agent/assistant-stream'(this: Scoped<Agent>, payload: { agent: Agent; frame: AssistantStreamFrame }): void",
+        "since": "0.1.3-alpha.1"
       },
       {
         "name": "agent/created",
         "mode": "serial",
         "description": "An entered agent is ready for per-agent initialization after factory setup.",
-        "signature": "'agent/created'(this: Scoped<Agent>, payload: { agent: Agent; source: SessionStartSource; signal?: AbortSignal }): undefined | Promise<undefined>"
+        "signature": "'agent/created'(this: Scoped<Agent>, payload: { agent: Agent; source: SessionStartSource; signal?: AbortSignal }): undefined | Promise<undefined>",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "agent/disposed",
         "mode": "emit",
         "description": "An agent left the registry; AgentLoop emits this after driver quiescence and scoped-registration unwind, but before session detachment.",
-        "signature": "'agent/disposed'(this: Scoped<Agent>, payload: { agent: Agent }): void"
+        "signature": "'agent/disposed'(this: Scoped<Agent>, payload: { agent: Agent }): void",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "agent/error",
         "mode": "emit",
         "description": "A step or turn errored.",
-        "signature": "'agent/error'(this: Scoped<Agent>, payload: { agent: Agent; turn: number; step: number; error: unknown }): void"
+        "signature": "'agent/error'(this: Scoped<Agent>, payload: { agent: Agent; turn: number; step: number; error: unknown }): void",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "agent/inbox/claimed",
         "mode": "emit",
         "description": "One message left the inbox inside its open turn.",
-        "signature": "'agent/inbox/claimed'(this: Scoped<Agent>, payload: { agent: Agent; message: UserMessage; turn: number }): void"
+        "signature": "'agent/inbox/claimed'(this: Scoped<Agent>, payload: { agent: Agent; message: UserMessage; turn: number }): void",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "agent/inbox/discarded",
         "mode": "emit",
         "description": "One message was discarded from the live inbox.",
-        "signature": "'agent/inbox/discarded'(this: Scoped<Agent>, payload: { agent: Agent; message: UserMessage }): void"
+        "signature": "'agent/inbox/discarded'(this: Scoped<Agent>, payload: { agent: Agent; message: UserMessage }): void",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "agent/inbox/inserted",
         "mode": "emit",
         "description": "One message entered the live inbox.",
-        "signature": "'agent/inbox/inserted'(this: Scoped<Agent>, payload: { agent: Agent; message: UserMessage }): void"
+        "signature": "'agent/inbox/inserted'(this: Scoped<Agent>, payload: { agent: Agent; message: UserMessage }): void",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "agent/pre-step",
         "mode": "waterfall",
         "description": "Reject a proposed step or replace the messages that enter it.",
-        "signature": "'agent/pre-step'(this: Scoped<Agent>, payload: { agent: Agent; messages: UserMessage[]; turn: number; step: number; signal: AbortSignal }, next: () => Promise<PreStepDecision>): Promise<PreStepDecision>"
+        "signature": "'agent/pre-step'(this: Scoped<Agent>, payload: { agent: Agent; messages: UserMessage[]; turn: number; step: number; signal: AbortSignal }, next: () => Promise<PreStepDecision>): Promise<PreStepDecision>",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "agent/request",
         "mode": "waterfall",
         "description": "Replace the frozen call configuration.",
-        "signature": "'agent/request'(this: Scoped<Agent>, payload: { agent: Agent; turn: number; step: number; signal: AbortSignal }, next: () => Promise<LlmCallConfig>): Promise<LlmCallConfig>"
+        "signature": "'agent/request'(this: Scoped<Agent>, payload: { agent: Agent; turn: number; step: number; signal: AbortSignal }, next: () => Promise<LlmCallConfig>): Promise<LlmCallConfig>",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "agent/request-error",
         "mode": "waterfall",
         "description": "Handle one failed model-request attempt before the loop retries or closes its step.",
-        "signature": "'agent/request-error'(this: Scoped<Agent>, payload: { agent: Agent; turn: number; step: number; provider: string; failure: LlmFailure; retryPolicy: ResolvedRetryPolicy | undefined; signal: AbortSignal }, next: () => Promise<RequestErrorAction>): Promise<RequestErrorAction>"
+        "signature": "'agent/request-error'(this: Scoped<Agent>, payload: { agent: Agent; turn: number; step: number; provider: string; failure: LlmFailure; retryPolicy: ResolvedRetryPolicy | undefined; signal: AbortSignal }, next: () => Promise<RequestErrorAction>): Promise<RequestErrorAction>",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "agent/status",
         "mode": "emit",
         "description": "Agent status changed (`idle` ⇄ `running`).",
-        "signature": "'agent/status'(this: Scoped<Agent>, payload: { agent: Agent; status: AgentStatus }): void"
+        "signature": "'agent/status'(this: Scoped<Agent>, payload: { agent: Agent; status: AgentStatus }): void",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "agent/turn-stopping",
         "mode": "serial",
         "description": "The turn is about to close: the model owes no response (no live tool calls, no fresh steering).",
-        "signature": "'agent/turn-stopping'(this: Scoped<Agent>, payload: { agent: Agent; turn: number; signal: AbortSignal }): Promise<void> | void"
+        "signature": "'agent/turn-stopping'(this: Scoped<Agent>, payload: { agent: Agent; turn: number; signal: AbortSignal }): Promise<void> | void",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "api-session/activity",
         "mode": "emit",
         "description": "One user-authored durable message advanced Session list activity.",
-        "signature": "'api-session/activity'(sessionId: SessionId, updatedAt: number): void"
+        "signature": "'api-session/activity'(sessionId: SessionId, updatedAt: number): void",
+        "since": "0.1.2-alpha.1"
       },
       {
         "name": "api-session/added",
         "mode": "emit",
         "description": "A Session became visible or its Agent was created or disposed.",
-        "signature": "'api-session/added'(summary: SessionSummary): void"
+        "signature": "'api-session/added'(summary: SessionSummary): void",
+        "since": "0.1.2-alpha.1"
       },
       {
         "name": "api-session/error",
         "mode": "emit",
         "description": "One Agent failed outside a durable turn position.",
-        "signature": "'api-session/error'(sessionId: SessionId, message: string): void"
+        "signature": "'api-session/error'(sessionId: SessionId, message: string): void",
+        "since": "0.1.2-alpha.1"
       },
       {
         "name": "api-session/removed",
         "mode": "emit",
         "description": "A Session left the live Host registry.",
-        "signature": "'api-session/removed'(sessionId: SessionId): void"
+        "signature": "'api-session/removed'(sessionId: SessionId): void",
+        "since": "0.1.2-alpha.1"
       },
       {
         "name": "api-session/status",
         "mode": "emit",
         "description": "One Agent changed running state.",
-        "signature": "'api-session/status'(sessionId: SessionId, running: boolean): void"
+        "signature": "'api-session/status'(sessionId: SessionId, running: boolean): void",
+        "since": "0.1.2-alpha.1"
       },
       {
         "name": "app-boot/config-reload",
         "mode": "emit",
         "description": "Profile patches were reconciled into the running Loader tree: every entry update settled and no new inactive entry was introduced.",
-        "signature": "'app-boot/config-reload'(): void"
+        "signature": "'app-boot/config-reload'(): void",
+        "since": "0.1.7-alpha.1"
       },
       {
         "name": "approval/request",
         "mode": "waterfall",
         "description": "Ask composed answerers for one decision.",
-        "signature": "'approval/request'( this: Scoped<Agent>, req: ApprovalRequestEvent, next: () => Promise<ApprovalOutcome>, ): Promise<ApprovalOutcome>"
+        "signature": "'approval/request'( this: Scoped<Agent>, req: ApprovalRequestEvent, next: () => Promise<ApprovalOutcome>, ): Promise<ApprovalOutcome>",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "authorization/settled",
         "mode": "emit",
         "description": "One authorization attempt has finished and released its key.",
-        "signature": "'authorization/settled'(key: CredentialKey, settlement: AuthorizationSettlement): void"
+        "signature": "'authorization/settled'(key: CredentialKey, settlement: AuthorizationSettlement): void",
+        "since": "0.1.1-rc.1"
       },
       {
         "name": "commands/change",
         "mode": "emit",
         "description": "A command was registered or unregistered.",
-        "signature": "'commands/change'(): void"
+        "signature": "'commands/change'(): void",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "compaction/summary-error",
         "mode": "waterfall",
         "description": "Recover a failed summary request by synchronously recording a durable change to its selected input.",
-        "signature": "'compaction/summary-error'(payload: { session: Session; sourceEventSeqs: readonly SessionSeq[]; error: unknown; signal?: AbortSignal }, next: () => boolean): boolean"
+        "signature": "'compaction/summary-error'(payload: { session: Session; sourceEventSeqs: readonly SessionSeq[]; error: unknown; signal?: AbortSignal }, next: () => boolean): boolean",
+        "since": "0.1.6-alpha.1"
       },
       {
         "name": "connection/request",
         "mode": "waterfall",
         "description": "Admit or wrap an authenticated shared API request, including body transfer.",
-        "signature": "'connection/request'(request: IncomingMessage, response: ServerResponse, next: () => Promise<void>): Promise<void>"
+        "signature": "'connection/request'(request: IncomingMessage, response: ServerResponse, next: () => Promise<void>): Promise<void>",
+        "since": "0.1.6-alpha.2"
       },
       {
         "name": "credentials/record-updated",
         "mode": "emit",
         "description": "Committed change to a stored credential record: a `modifyRecord` that wrote, a `deleteRecord` that removed, or an external edit observed in storage.",
-        "signature": "'credentials/record-updated'(key: CredentialKey): void"
+        "signature": "'credentials/record-updated'(key: CredentialKey): void",
+        "since": "0.1.1-rc.1"
       },
       {
         "name": "credentials/reference-updated",
         "mode": "emit",
         "description": "Committed change to a provider-managed credential source: a `set`, an `unset`, or an external edit observed in storage.",
-        "signature": "'credentials/reference-updated'(ref: CredentialRef): void"
+        "signature": "'credentials/reference-updated'(ref: CredentialRef): void",
+        "since": "0.1.1-rc.1"
       },
       {
         "name": "deepseek-account/model-sign-in-required",
         "mode": "emit",
         "description": "An account model request requires the user to sign in.",
-        "signature": "'deepseek-account/model-sign-in-required'(): void"
+        "signature": "'deepseek-account/model-sign-in-required'(): void",
+        "since": "0.1.7-rc.2"
       },
       {
         "name": "deepseek-account/session-expired",
         "mode": "emit",
         "description": "Server rejection removed the current account credential; this notification is not replayed.",
-        "signature": "'deepseek-account/session-expired'(): void"
+        "signature": "'deepseek-account/session-expired'(): void",
+        "since": "0.1.7-rc.2"
       },
       {
         "name": "deepseek-account/signed-out",
         "mode": "emit",
         "description": "Local grant removal has completed.",
-        "signature": "'deepseek-account/signed-out'(): void"
+        "signature": "'deepseek-account/signed-out'(): void",
+        "since": "0.1.7-rc.2"
       },
       {
         "name": "domain/changed",
         "mode": "emit",
         "description": "A domain record or the global singleton changed, emitted once per write strictly after the backend acknowledged durability.",
-        "signature": "'domain/changed'(change: DomainChanged): void"
+        "signature": "'domain/changed'(change: DomainChanged): void",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "feedback/committed",
         "mode": "parallel",
         "description": "Observe a durable cold feedback mutation without publishing a live Session.",
-        "signature": "'feedback/committed'(inspection: SessionInspection): void"
+        "signature": "'feedback/committed'(inspection: SessionInspection): void",
+        "since": "0.1.3-alpha.2"
       },
       {
         "name": "fs/edit-intent",
         "mode": "waterfall",
         "description": "Single-slot decision for the next FileSystem.editText.",
-        "signature": "'fs/edit-intent'(target: FsTarget, actor: object | undefined, next: () => { version: FsVersion } | undefined | Promise<{ version: FsVersion } | undefined>): Promise<{ version: FsVersion } | undefined>"
+        "signature": "'fs/edit-intent'(target: FsTarget, actor: object | undefined, next: () => { version: FsVersion } | undefined | Promise<{ version: FsVersion } | undefined>): Promise<{ version: FsVersion } | undefined>",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "fs/observed",
         "mode": "emit",
         "description": "Record an authoritative positive or negative observation.",
-        "signature": "'fs/observed'(target: FsTarget, observation: FsObservation, actor: object | undefined): void"
+        "signature": "'fs/observed'(target: FsTarget, observation: FsObservation, actor: object | undefined): void",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "fs/write-intent",
         "mode": "waterfall",
         "description": "Single-slot decision for the next FileSystem.writeText.",
-        "signature": "'fs/write-intent'(target: FsTarget, actor: object | undefined, next: () => FsWriteIntent | undefined | Promise<FsWriteIntent | undefined>): Promise<FsWriteIntent | undefined>"
+        "signature": "'fs/write-intent'(target: FsTarget, actor: object | undefined, next: () => FsWriteIntent | undefined | Promise<FsWriteIntent | undefined>): Promise<FsWriteIntent | undefined>",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "goal/activation-changed",
         "mode": "emit",
         "description": "Process-local goal activation changed for one session.",
-        "signature": "'goal/activation-changed'(payload: GoalActivationChanged): void"
+        "signature": "'goal/activation-changed'(payload: GoalActivationChanged): void",
+        "since": "0.1.5-alpha.1"
       },
       {
         "name": "goal/changed",
         "mode": "emit",
         "description": "Goal mutation accepted by one live agent.",
-        "signature": "'goal/changed'(this: import('@deepseek-ai/dsh-scope').Scoped<Agent>, payload: { agent: Agent; change: GoalChanged }): void"
+        "signature": "'goal/changed'(this: import('@deepseek-ai/dsh-scope').Scoped<Agent>, payload: { agent: Agent; change: GoalChanged }): void",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "hmr/change",
         "mode": "emit",
         "description": "A watched file has no module or configuration handler.",
-        "signature": "'hmr/change'(url: string): void"
+        "signature": "'hmr/change'(url: string): void",
+        "since": "0.1.6-alpha.2"
       },
       {
         "name": "hmr/reload",
         "mode": "emit",
         "description": "Module replacements have finished loading.",
-        "signature": "'hmr/reload'(reloads: Map<Plugin, Reload>): void"
+        "signature": "'hmr/reload'(reloads: Map<Plugin, Reload>): void",
+        "since": "0.1.6-alpha.2"
       },
       {
         "name": "llm/adapters-updated",
         "mode": "emit",
         "description": "The provider topology changed: an adapter registered or unregistered routes, or the configurable-provider directory gained or lost entries.",
-        "signature": "'llm/adapters-updated'(): void"
+        "signature": "'llm/adapters-updated'(): void",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "llm/stream",
         "mode": "waterfall",
         "description": "Waterfall around every streaming model call (retry, replay, routing).",
-        "signature": "'llm/stream'(this: LlmRuntime, options: GenerateOptions, next: () => AsyncIterable<StreamChunk>): AsyncIterable<StreamChunk>"
+        "signature": "'llm/stream'(this: LlmRuntime, options: GenerateOptions, next: () => AsyncIterable<StreamChunk>): AsyncIterable<StreamChunk>",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "permission-presets/catalog-changed",
         "mode": "emit",
         "description": "The selectable process catalog changed.",
-        "signature": "'permission-presets/catalog-changed'(): void"
+        "signature": "'permission-presets/catalog-changed'(): void",
+        "since": "0.1.6-alpha.1"
       },
       {
         "name": "plugin-manager/changed",
         "mode": "emit",
         "description": "The profile's plugins, bundles, or composition changed: a manager operation completed.",
-        "signature": "'plugin-manager/changed'(change: PluginChange): void"
+        "signature": "'plugin-manager/changed'(change: PluginChange): void",
+        "since": "0.1.6-alpha.2"
       },
       {
         "name": "plugin-manager/install-log",
         "mode": "emit",
         "description": "One chunk of a pnpm run's output, streamed as the run produces it.",
-        "signature": "'plugin-manager/install-log'(chunk: PluginInstallLogChunk): void"
+        "signature": "'plugin-manager/install-log'(chunk: PluginInstallLogChunk): void",
+        "since": "0.1.6-alpha.2"
       },
       {
         "name": "plugin-manager/install-state",
         "mode": "emit",
         "description": "An installation moved between its Host phases.",
-        "signature": "'plugin-manager/install-state'(progress: PluginInstallProgress): void"
+        "signature": "'plugin-manager/install-state'(progress: PluginInstallProgress): void",
+        "since": "0.1.6-alpha.2"
       },
       {
         "name": "plugin-market/changed",
         "mode": "emit",
         "description": "The configured index sources changed.",
-        "signature": "'plugin-market/changed'(): void"
+        "signature": "'plugin-market/changed'(): void",
+        "since": "0.2.1-alpha.4"
       },
       {
         "name": "schedule/changed",
         "mode": "emit",
         "description": "Durable task set changed; clients refetch global task and Session-active catalogs.",
-        "signature": "'schedule/changed'(): void"
+        "signature": "'schedule/changed'(): void",
+        "since": "0.1.7-rc.2"
       },
       {
         "name": "session-telemetry/record",
         "mode": "waterfall",
         "description": "Transform one outbound record before it reaches the backend.",
-        "signature": "'session-telemetry/record'(record: SessionTelemetryRecord, next: () => SessionTelemetryRecord): SessionTelemetryRecord"
+        "signature": "'session-telemetry/record'(record: SessionTelemetryRecord, next: () => SessionTelemetryRecord): SessionTelemetryRecord",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "session/created",
         "mode": "emit",
         "description": "Creation announcement during session publication.",
-        "signature": "'session/created'(this: Scoped<Session>, session: Session): void"
+        "signature": "'session/created'(this: Scoped<Session>, session: Session): void",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "session/disposed",
         "mode": "emit",
         "description": "Emitted once when an announced session leaves the store, including publication rollback, but never for an entry whose creation announcement did not begin.",
-        "signature": "'session/disposed'(this: Scoped<Session>, session: Session): void"
+        "signature": "'session/disposed'(this: Scoped<Session>, session: Session): void",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "session/event",
         "mode": "emit",
         "description": "Post-commit, fire-and-forget append feed.",
-        "signature": "'session/event'(this: Scoped<Session>, session: Session, event: SessionEvent): void"
+        "signature": "'session/event'(this: Scoped<Session>, session: Session, event: SessionEvent): void",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "session/flush",
         "mode": "parallel",
         "description": "Awaited parallel durability checkpoint: every listener runs and the caller awaits all of them, with no waterfall veto.",
-        "signature": "'session/flush'(this: Scoped<Session>, session: Session): Promise<void> | void"
+        "signature": "'session/flush'(this: Scoped<Session>, session: Session): Promise<void> | void",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "settings/document-updated",
         "mode": "emit",
         "description": "One profile entry's form values, availability, or page policy changed.",
-        "signature": "'settings/document-updated'(ns: SettingsNamespace, revision: number): void"
+        "signature": "'settings/document-updated'(ns: SettingsNamespace, revision: number): void",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "skills/change",
         "mode": "emit",
         "description": "A skill provider, runtime contribution, or provider-backed catalog may have changed.",
-        "signature": "'skills/change'(): void"
+        "signature": "'skills/change'(): void",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "subagent/end",
         "mode": "emit",
         "description": "A published child settled.",
-        "signature": "'subagent/end'(this: Scoped<SubagentRuntime>, info: SubagentRunEndInfo): void"
+        "signature": "'subagent/end'(this: Scoped<SubagentRuntime>, info: SubagentRunEndInfo): void",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "subagent/provider-added",
         "mode": "emit",
         "description": "A provider became resolvable in the registry.",
-        "signature": "'subagent/provider-added'(provider: SubagentProvider): void"
+        "signature": "'subagent/provider-added'(provider: SubagentProvider): void",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "subagent/provider-removed",
         "mode": "emit",
         "description": "A provider left the registry.",
-        "signature": "'subagent/provider-removed'(name: string): void"
+        "signature": "'subagent/provider-removed'(name: string): void",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "subagent/start",
         "mode": "emit",
         "description": "A provider established a published child.",
-        "signature": "'subagent/start'(this: Scoped<SubagentRuntime>, info: SubagentRunInfo): void"
+        "signature": "'subagent/start'(this: Scoped<SubagentRuntime>, info: SubagentRunInfo): void",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "system-prompt/assemble",
         "mode": "waterfall",
         "description": "Expert waterfall over the assembled sections, contexts, tools, and variables.",
-        "signature": "'system-prompt/assemble'(this: Scoped<SystemPrompt>, assembly: PromptAssembly, context: AssembleContext, next: () => Promise<PromptAssembly>): Promise<PromptAssembly>"
+        "signature": "'system-prompt/assemble'(this: Scoped<SystemPrompt>, assembly: PromptAssembly, context: AssembleContext, next: () => Promise<PromptAssembly>): Promise<PromptAssembly>",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "system-prompt/change",
         "mode": "emit",
         "description": "Emitted when any prompt provider changes.",
-        "signature": "'system-prompt/change'(): void"
+        "signature": "'system-prompt/change'(): void",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "tools/change",
         "mode": "emit",
         "description": "A tool was registered or unregistered, or a scoped restriction changed (the available tool set changed — possibly for one scope only).",
-        "signature": "'tools/change'(): void"
+        "signature": "'tools/change'(): void",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "tools/execute",
         "mode": "waterfall",
         "description": "Around-dispatch waterfall for timeout, retry, or metrics.",
-        "signature": "'tools/execute'(this: Scoped<ToolRuntime>, exec: ToolDispatchExecution, next: () => Promise<ToolExecutionResult>): Promise<ToolExecutionResult>"
+        "signature": "'tools/execute'(this: Scoped<ToolRuntime>, exec: ToolDispatchExecution, next: () => Promise<ToolExecutionResult>): Promise<ToolExecutionResult>",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "tools/post-execute",
         "mode": "waterfall",
         "description": "Accept, replace, enrich, or block a normalized dispatch result.",
-        "signature": "'tools/post-execute'(this: Scoped<ToolRuntime>, exec: ToolExecution, result: Readonly<ToolExecutionResult>, next: () => Promise<PostToolDecision>): Promise<PostToolDecision>"
+        "signature": "'tools/post-execute'(this: Scoped<ToolRuntime>, exec: ToolExecution, result: Readonly<ToolExecutionResult>, next: () => Promise<PostToolDecision>): Promise<PostToolDecision>",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "tools/pre-execute",
         "mode": "waterfall",
         "description": "Allow, deny, cancel, or ask before dispatch.",
-        "signature": "'tools/pre-execute'(this: Scoped<ToolRuntime>, exec: ToolExecution, next: () => Promise<PreToolDecision>): Promise<PreToolDecision>"
+        "signature": "'tools/pre-execute'(this: Scoped<ToolRuntime>, exec: ToolExecution, next: () => Promise<PreToolDecision>): Promise<PreToolDecision>",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "tools/ptc-dispatch-log",
         "mode": "waterfall",
         "description": "Allow a listener to replace content in the DURABLE LOG COPY of one `run_code` sub-dispatch outcome before the bridge appends its `tool/ptc-dispatch` event.",
-        "signature": "'tools/ptc-dispatch-log'(this: Scoped<ToolRuntime>, dispatch: PtcDispatchLog, next: () => Promise<ContentBlock[]>): Promise<ContentBlock[]>"
+        "signature": "'tools/ptc-dispatch-log'(this: Scoped<ToolRuntime>, dispatch: PtcDispatchLog, next: () => Promise<ContentBlock[]>): Promise<ContentBlock[]>",
+        "since": "0.1.2-alpha.1"
       },
       {
         "name": "tools/result",
         "mode": "emit",
         "description": "Observe the frozen, lossless-JSON final outcome.",
-        "signature": "'tools/result'(this: Scoped<ToolRuntime>, exec: Readonly<ToolExecution>, result: Readonly<ToolExecutionResult>): undefined"
+        "signature": "'tools/result'(this: Scoped<ToolRuntime>, exec: Readonly<ToolExecution>, result: Readonly<ToolExecutionResult>): undefined",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "user-questions/request",
         "mode": "waterfall",
         "description": "Ask composed answerers for structured user input.",
-        "signature": "'user-questions/request'( this: Scoped<Agent>, request: AskUserQuestionRequestEvent, next: () => Promise<AskUserQuestionAnswer>, ): Promise<AskUserQuestionAnswer>"
+        "signature": "'user-questions/request'( this: Scoped<Agent>, request: AskUserQuestionRequestEvent, next: () => Promise<AskUserQuestionAnswer>, ): Promise<AskUserQuestionAnswer>",
+        "since": "0.1.2-alpha.1"
       },
       {
         "name": "webserver/index-inject",
         "mode": "emit",
         "description": "Collect the structured index injection table.",
-        "signature": "'webserver/index-inject'(table: IndexInjection[]): void"
+        "signature": "'webserver/index-inject'(table: IndexInjection[]): void",
+        "since": "0.1.1-rc.1"
       },
       {
         "name": "workflow/agent-end",
         "mode": "emit",
         "description": "One `agent()` call settled (clean result, child failure, or run cancellation).",
-        "signature": "'workflow/agent-end'(info: WorkflowRunInfo, agent: WorkflowAgentEndInfo): void"
+        "signature": "'workflow/agent-end'(info: WorkflowRunInfo, agent: WorkflowAgentEndInfo): void",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "workflow/agent-start",
         "mode": "emit",
         "description": "One `agent()` call established a published child run.",
-        "signature": "'workflow/agent-start'(info: WorkflowRunInfo, agent: WorkflowAgentInfo): void"
+        "signature": "'workflow/agent-start'(info: WorkflowRunInfo, agent: WorkflowAgentInfo): void",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "workflow/end",
         "mode": "emit",
         "description": "A workflow run settled (any stop reason).",
-        "signature": "'workflow/end'(info: WorkflowRunInfo, result: WorkflowResultInfo): void"
+        "signature": "'workflow/end'(info: WorkflowRunInfo, result: WorkflowResultInfo): void",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "workflow/log",
         "mode": "emit",
         "description": "The script emitted a narration line (a `log(message)` call).",
-        "signature": "'workflow/log'(info: WorkflowRunInfo, message: string): void"
+        "signature": "'workflow/log'(info: WorkflowRunInfo, message: string): void",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "workflow/phase",
         "mode": "emit",
         "description": "The script entered a phase (a `phase(title)` call) — progress grouping for observers; no execution semantics.",
-        "signature": "'workflow/phase'(info: WorkflowRunInfo, title: string): void"
+        "signature": "'workflow/phase'(info: WorkflowRunInfo, title: string): void",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "workflow/start",
         "mode": "emit",
         "description": "A workflow run started — the script's meta block validated, the body about to execute.",
-        "signature": "'workflow/start'(info: WorkflowRunInfo): void"
+        "signature": "'workflow/start'(info: WorkflowRunInfo): void",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "workspace/session-activity",
         "mode": "waterfall",
         "description": "Ask the composed providers what still runs for a session before it is archived.",
-        "signature": "'workspace/session-activity'( request: SessionActivityRequest, next: () => Promise<readonly SessionActivity[]>, ): Promise<readonly SessionActivity[]>"
+        "signature": "'workspace/session-activity'( request: SessionActivityRequest, next: () => Promise<readonly SessionActivity[]>, ): Promise<readonly SessionActivity[]>",
+        "since": "0.1.7-alpha.1"
       },
       {
         "name": "workspace/session-stop",
         "mode": "parallel",
         "description": "Stop a session's running work because the caller archived it with `stopActivity`; the archive set is durable when this dispatches.",
-        "signature": "'workspace/session-stop'(request: SessionActivityRequest): Promise<void> | void"
+        "signature": "'workspace/session-stop'(request: SessionActivityRequest): Promise<void> | void",
+        "since": "0.1.7-alpha.1"
       }
     ]
   },
@@ -1610,7 +1882,9 @@
           "toggleSidebar(): void",
           "openRightbar(track: boolean, fullscreen: boolean): void",
           "closeRightbar(): void"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "locale",
@@ -1625,7 +1899,9 @@
           "register(ns: string, locale: string, dict: LocaleDict): () => void",
           "bind<N extends Extract<keyof LocaleNamespaceMap, string>>(ns: N): TranslateNS<N>",
           "bind(ns: string): Translate"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "sessions",
@@ -1639,7 +1915,9 @@
           "fork(opts: { sessionId: SessionId atSeq?: number increaseTitle?: boolean onCreated?: (childId: SessionId) => void /** False refuses source migration; omission preserves the Host default. */ allowMigration?: boolean }): Promise<SessionId>",
           "scope(id: SessionId): AgentContext | undefined",
           "binding(id: SessionId): SessionBinding | undefined"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "slots",
@@ -1648,7 +1926,9 @@
           "declare readonly register: SlotCore['register']",
           "declare readonly registerFactory: RegisterFactory",
           "inject(key: keyof SlotMap & string, callback: () => SlotInjectionEffect): () => void"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "theme",
@@ -1659,7 +1939,9 @@
           "setFontSize(role: FontRole, px: number): void",
           "register(definition: ThemeDefinition): () => void",
           "overrideTokens(source: string, tokens: ThemeTokenOverrides): () => void"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "timer",
@@ -1671,7 +1953,9 @@
           "interval<R = any>(delay: number): AsyncIterableIterator<void, R, void>",
           "throttle<F extends (...args: any[]) => void>(callback: F, delay: number, noTrailing?: boolean): F & { dispose: () => void }",
           "debounce<F extends (...args: any[]) => void>(callback: F, delay: number): F & { dispose: () => void }"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "uiWorkspace",
@@ -1687,7 +1971,8 @@
           "pickDirectory(): Promise<string | null>",
           "listDirectory(path?: string, signal?: AbortSignal): Promise<DirectoryListing>",
           "createDirectory(path: string, name: string): Promise<string>"
-        ]
+        ],
+        "since": "0.1.2-alpha.1"
       },
       {
         "key": "workspaces",
@@ -1699,7 +1984,9 @@
           "archiveSession(sessionId: SessionId, options?: { readonly stopActivity?: boolean }): Promise<void>",
           "unarchiveSession(sessionId: SessionId): Promise<void>",
           "insertSessionBefore( workspaceId: WorkspaceId, sessionId: SessionId, beforeSessionId?: SessionId, ): Promise<WorkspaceView>"
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       }
     ],
     "events": [
@@ -1707,25 +1994,33 @@
         "name": "connection/reset",
         "mode": "emit",
         "description": "A connection generation was established.",
-        "signature": "'connection/reset'(): void"
+        "signature": "'connection/reset'(): void",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "locale/change",
         "mode": "emit",
         "description": "The active locale switched.",
-        "signature": "'locale/change'(snapshot: LocaleSnapshot): void"
+        "signature": "'locale/change'(snapshot: LocaleSnapshot): void",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "slots/changed",
         "mode": "emit",
         "description": "An ordinary Slot declaration or entry registration set changed.",
-        "signature": "'slots/changed'(key: string): void"
+        "signature": "'slots/changed'(key: string): void",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "theme/change",
         "mode": "emit",
         "description": "Theme state changed (preference switched, registry updated, or the OS color scheme changed while the preference is `system`).",
-        "signature": "'theme/change'(snapshot: ThemeSnapshot): void"
+        "signature": "'theme/change'(snapshot: ThemeSnapshot): void",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       }
     ],
     "builtins": [
@@ -1851,7 +2146,9 @@
         "scope": "root",
         "purpose": "The built-in render-tree root hole (seeded by SlotCore): the one slot the shell itself renders, and the ancestor of every other seat.",
         "replaceRisk": "shadows-shipped-ui",
-        "parent": null
+        "parent": null,
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "type": "slot",
@@ -1877,7 +2174,9 @@
             "type": "string | (() => string)",
             "required": false
           }
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "type": "slot",
@@ -1893,7 +2192,8 @@
             "type": "(owner) => unknown | null",
             "required": true
           }
-        ]
+        ],
+        "since": "0.1.7-rc.2"
       },
       {
         "type": "slot",
@@ -1910,444 +2210,8 @@
             "required": true
           }
         ],
-        "keyDomain": "fixed by the owner's key table { [K in ToastKind]: ToastNotice<K> }, already taken: archived, archivedNotOpenable, createFailed, defaultWorkspaceFailed, forkRequiresOpen, pinFailed, sessionIdCopied, sessionIdCopyFailed, shortcutForkFailed, stoppedAndArchived, unpinFailed"
-      },
-      {
-        "type": "slot",
-        "name": "sidebar",
-        "kind": "single",
-        "scope": "root",
-        "purpose": "The whole left column.",
-        "replaceRisk": "shadows-shipped-ui",
-        "parent": "root"
-      },
-      {
-        "type": "slot",
-        "name": "sidebar.brand.mark",
-        "kind": "single",
-        "scope": "root",
-        "purpose": "Brand mark rendered in the expanded brand row and collapsed rail.",
-        "replaceRisk": "shadows-shipped-ui",
-        "parent": "sidebar"
-      },
-      {
-        "type": "slot",
-        "name": "sidebar.toggle.badge",
-        "kind": "single",
-        "scope": "root",
-        "purpose": "Non-interactive notification inside the collapsed sidebar expand button.",
-        "replaceRisk": "shadows-shipped-ui",
-        "parent": "sidebar"
-      },
-      {
-        "type": "slot",
-        "name": "sidebar.settings",
-        "kind": "single",
-        "scope": "root",
-        "purpose": "The settings seat at the sidebar foot.",
-        "replaceRisk": "shadows-shipped-ui",
-        "parent": "sidebar"
-      },
-      {
-        "type": "slot",
-        "name": "settings.section",
-        "kind": "list",
-        "scope": "root",
-        "purpose": "One settings page per list entry.",
-        "replaceRisk": "none",
-        "parent": "sidebar.settings",
-        "registration": [
-          {
-            "name": "id",
-            "type": "string",
-            "required": true
-          },
-          {
-            "name": "order",
-            "type": "number",
-            "required": false
-          },
-          {
-            "name": "label",
-            "type": "string | (() => string)",
-            "required": false
-          }
-        ]
-      },
-      {
-        "type": "slot",
-        "name": "settings.general.item",
-        "kind": "list",
-        "scope": "root",
-        "purpose": "One preference row inside the General section — the additive seat for a single setting that needs no page of its own (a whole page is `settings.section`), contributed by the feature plugin that owns the preference (locale → Language, ui-theme → Appearance, ui-conversation → Composer Enter).",
-        "replaceRisk": "none",
-        "parent": "settings.section",
-        "registration": [
-          {
-            "name": "id",
-            "type": "string",
-            "required": true
-          },
-          {
-            "name": "order",
-            "type": "number",
-            "required": false
-          },
-          {
-            "name": "label",
-            "type": "string | (() => string)",
-            "required": false
-          }
-        ]
-      },
-      {
-        "type": "slot",
-        "name": "settings.plugins.tab",
-        "kind": "list",
-        "scope": "root",
-        "purpose": "One page inside the Plugins settings section.",
-        "replaceRisk": "none",
-        "parent": "settings.section",
-        "registration": [
-          {
-            "name": "id",
-            "type": "string",
-            "required": true
-          },
-          {
-            "name": "order",
-            "type": "number",
-            "required": false
-          },
-          {
-            "name": "label",
-            "type": "string | (() => string)",
-            "required": false
-          }
-        ]
-      },
-      {
-        "type": "slot",
-        "name": "settings.models.provider-card",
-        "kind": "keyed",
-        "scope": "root",
-        "purpose": "One provider card's adapter extension area, dispatched with `entryKey = settingsNs` on every card that renders a directory row: a saved row's card (its first-run setup posture included) and the add-provider draft card.",
-        "replaceRisk": "none",
-        "parent": "settings.section",
-        "registration": [
-          {
-            "name": "key",
-            "type": "string",
-            "required": true
-          }
-        ],
-        "keyDomain": "open: any string the owner dispatches (no compile-time key set), none are taken yet"
-      },
-      {
-        "type": "slot",
-        "name": "settings.models.footer",
-        "kind": "list",
-        "scope": "root",
-        "purpose": "Ordered extension area after the provider rows and the add controls.",
-        "replaceRisk": "none",
-        "parent": "settings.section",
-        "registration": [
-          {
-            "name": "id",
-            "type": "string",
-            "required": true
-          },
-          {
-            "name": "order",
-            "type": "number",
-            "required": false
-          },
-          {
-            "name": "label",
-            "type": "string | (() => string)",
-            "required": false
-          }
-        ]
-      },
-      {
-        "type": "slot",
-        "name": "settings.trigger",
-        "kind": "single",
-        "scope": "root",
-        "purpose": "The sidebar-foot trigger row content: icon + label, supplied as slot content (the accessible name comes from the content — rail state renders the label visually hidden).",
-        "replaceRisk": "shadows-shipped-ui",
-        "parent": "sidebar.settings"
-      },
-      {
-        "type": "slot",
-        "name": "settings.header",
-        "kind": "single",
-        "scope": "root",
-        "purpose": "The panel title text seat.",
-        "replaceRisk": "shadows-shipped-ui",
-        "parent": "sidebar.settings"
-      },
-      {
-        "type": "slot",
-        "name": "settings.action",
-        "kind": "list",
-        "scope": "root",
-        "purpose": "Optional actions rendered in the content-column header before Close.",
-        "replaceRisk": "none",
-        "parent": "sidebar.settings",
-        "registration": [
-          {
-            "name": "id",
-            "type": "string",
-            "required": true
-          },
-          {
-            "name": "order",
-            "type": "number",
-            "required": false
-          },
-          {
-            "name": "label",
-            "type": "string | (() => string)",
-            "required": false
-          }
-        ]
-      },
-      {
-        "type": "slot",
-        "name": "settings.close",
-        "kind": "single",
-        "scope": "root",
-        "purpose": "The close button's visually-hidden label text (the button itself — icon, geometry, focus — is shell chrome).",
-        "replaceRisk": "shadows-shipped-ui",
-        "parent": "sidebar.settings"
-      },
-      {
-        "type": "slot",
-        "name": "settings.onboarding",
-        "kind": "list",
-        "scope": "root",
-        "purpose": "Root-scoped onboarding steps contributed by settings features.",
-        "replaceRisk": "none",
-        "parent": "sidebar.settings",
-        "registration": [
-          {
-            "name": "id",
-            "type": "string",
-            "required": true
-          },
-          {
-            "name": "order",
-            "type": "number",
-            "required": false
-          },
-          {
-            "name": "label",
-            "type": "string | (() => string)",
-            "required": false
-          }
-        ]
-      },
-      {
-        "type": "slot",
-        "name": "settings.models.sign-in",
-        "kind": "single",
-        "scope": "root",
-        "purpose": "Optional account login choice before the credential editor.",
-        "replaceRisk": "shadows-shipped-ui",
-        "parent": "settings.onboarding"
-      },
-      {
-        "type": "slot",
-        "name": "settings.launcher",
-        "kind": "single",
-        "scope": "root",
-        "purpose": "Optional sidebar account launcher; opens the shell-owned settings panel.",
-        "replaceRisk": "shadows-shipped-ui",
-        "parent": "sidebar.settings"
-      },
-      {
-        "type": "slot",
-        "name": "sidebar.footer.action",
-        "kind": "list",
-        "scope": "root",
-        "purpose": "Optional actions beside Settings at the sidebar foot.",
-        "replaceRisk": "none",
-        "parent": "sidebar",
-        "registration": [
-          {
-            "name": "id",
-            "type": "string",
-            "required": true
-          },
-          {
-            "name": "order",
-            "type": "number",
-            "required": false
-          },
-          {
-            "name": "label",
-            "type": "string | (() => string)",
-            "required": false
-          }
-        ]
-      },
-      {
-        "type": "slot",
-        "name": "sidebar.panellist",
-        "kind": "list",
-        "scope": "root",
-        "purpose": "Global panel icons.",
-        "replaceRisk": "none",
-        "parent": "sidebar",
-        "registration": [
-          {
-            "name": "id",
-            "type": "string",
-            "required": true
-          },
-          {
-            "name": "order",
-            "type": "number",
-            "required": false
-          },
-          {
-            "name": "label",
-            "type": "string | (() => string)",
-            "required": false
-          }
-        ]
-      },
-      {
-        "type": "slot",
-        "name": "sidebar.workspaces",
-        "kind": "single",
-        "scope": "root",
-        "purpose": "The workspace/session browsing region: section header, search, the grouped/flat session list, and every workspace dialog.",
-        "replaceRisk": "shadows-shipped-ui",
-        "parent": "sidebar"
-      },
-      {
-        "type": "slot",
-        "name": "sidebar.workspaces.session.menu.item",
-        "kind": "list",
-        "scope": "root",
-        "purpose": "The rows of one Session's \"...\" menu, in ascending `order`.",
-        "replaceRisk": "none",
-        "parent": "sidebar.workspaces",
-        "registration": [
-          {
-            "name": "id",
-            "type": "string",
-            "required": true
-          },
-          {
-            "name": "order",
-            "type": "number",
-            "required": false
-          },
-          {
-            "name": "label",
-            "type": "string | (() => string)",
-            "required": false
-          }
-        ]
-      },
-      {
-        "type": "slot",
-        "name": "sidebar.workspaces.session.row.action",
-        "kind": "list",
-        "scope": "root",
-        "purpose": "The hover buttons at the end of one Session row, in ascending `order`, after the \"...\" menu trigger.",
-        "replaceRisk": "none",
-        "parent": "sidebar.workspaces",
-        "registration": [
-          {
-            "name": "id",
-            "type": "string",
-            "required": true
-          },
-          {
-            "name": "order",
-            "type": "number",
-            "required": false
-          },
-          {
-            "name": "label",
-            "type": "string | (() => string)",
-            "required": false
-          }
-        ]
-      },
-      {
-        "type": "slot",
-        "name": "sidebar.workspaces.directoryFlow",
-        "kind": "single",
-        "scope": "root",
-        "purpose": "Directory-flow hole under the sidebar browsing region (declared by the WorkspaceBrowser entry).",
-        "replaceRisk": "shadows-shipped-ui",
-        "parent": "sidebar.workspaces"
-      },
-      {
-        "type": "slot",
-        "name": "sidebar.session.row.leading",
-        "kind": "list",
-        "scope": "root",
-        "purpose": "Leading decoration of one Session row, in the 16px cell before the title that the row's own state dot otherwise occupies.",
-        "replaceRisk": "none",
-        "parent": "sidebar.workspaces",
-        "registration": [
-          {
-            "name": "id",
-            "type": "string",
-            "required": true
-          },
-          {
-            "name": "order",
-            "type": "number",
-            "required": false
-          },
-          {
-            "name": "label",
-            "type": "string | (() => string)",
-            "required": false
-          }
-        ]
-      },
-      {
-        "type": "slot",
-        "name": "sidebar.session.row.hover",
-        "kind": "list",
-        "scope": "root",
-        "purpose": "Section of the Session row's hover card between its relative time and its trailing status line.",
-        "replaceRisk": "none",
-        "parent": "sidebar.workspaces",
-        "registration": [
-          {
-            "name": "id",
-            "type": "string",
-            "required": true
-          },
-          {
-            "name": "order",
-            "type": "number",
-            "required": false
-          },
-          {
-            "name": "label",
-            "type": "string | (() => string)",
-            "required": false
-          }
-        ]
-      },
-      {
-        "type": "slot",
-        "name": "sidebar.brand.name",
-        "kind": "single",
-        "scope": "root",
-        "purpose": "Brand name rendered beside the expanded mark.",
-        "replaceRisk": "shadows-shipped-ui",
-        "parent": "sidebar"
+        "keyDomain": "fixed by the owner's key table { [K in ToastKind]: ToastNotice<K> }, already taken: archived, archivedNotOpenable, createFailed, defaultWorkspaceFailed, forkRequiresOpen, pinFailed, sessionIdCopied, sessionIdCopyFailed, shortcutForkFailed, stoppedAndArchived, unpinFailed",
+        "since": "0.2.1-alpha.3"
       },
       {
         "type": "slot",
@@ -2364,76 +2228,8 @@
             "required": true
           }
         ],
-        "keyDomain": "open: any string the owner dispatches (no compile-time key set), already taken: conversation"
-      },
-      {
-        "type": "slot",
-        "name": "plugins.bundle.config",
-        "kind": "keyed",
-        "scope": "root",
-        "purpose": "A bundle's own configuration, keyed by the bundle's package name and rendered on the bundle's page between its description and its rows (`view: 'page'` only).",
-        "replaceRisk": "shadows-shipped-ui",
-        "parent": "main",
-        "registration": [
-          {
-            "name": "key",
-            "type": "string",
-            "required": true
-          }
-        ],
-        "keyDomain": "open: any string the owner dispatches (no compile-time key set), already taken: @deepseek-ai/dsh-experimental-cot-translation-bundle, @deepseek-ai/dsh-experimental-voice-input-bundle"
-      },
-      {
-        "type": "slot",
-        "name": "plugins.add.actions",
-        "kind": "list",
-        "scope": "root",
-        "purpose": "Additional MenuItemButton rows after installation: 72px high, with a title and a description capped at two lines.",
-        "replaceRisk": "none",
-        "parent": "main",
-        "registration": [
-          {
-            "name": "id",
-            "type": "string",
-            "required": true
-          },
-          {
-            "name": "order",
-            "type": "number",
-            "required": false
-          },
-          {
-            "name": "label",
-            "type": "string | (() => string)",
-            "required": false
-          }
-        ]
-      },
-      {
-        "type": "slot",
-        "name": "plugins.tab",
-        "kind": "list",
-        "scope": "root",
-        "purpose": "Tabs after the page's own Installed tab, such as Discover: `label` names the tab and `order` places it.",
-        "replaceRisk": "none",
-        "parent": "main",
-        "registration": [
-          {
-            "name": "id",
-            "type": "string",
-            "required": true
-          },
-          {
-            "name": "order",
-            "type": "number",
-            "required": false
-          },
-          {
-            "name": "label",
-            "type": "string | (() => string)",
-            "required": false
-          }
-        ]
+        "keyDomain": "open: any string the owner dispatches (no compile-time key set), already taken: conversation",
+        "since": "0.1.5-alpha.2"
       },
       {
         "type": "slot",
@@ -2459,41 +2255,8 @@
             "type": "string | (() => string)",
             "required": false
           }
-        ]
-      },
-      {
-        "type": "slot",
-        "name": "plugins.bundle.activation",
-        "kind": "keyed",
-        "scope": "root",
-        "purpose": "Optional guidance after the user enables a bundle from the list, keyed by npm package name.",
-        "replaceRisk": "shadows-shipped-ui",
-        "parent": "main",
-        "registration": [
-          {
-            "name": "key",
-            "type": "string",
-            "required": true
-          }
         ],
-        "keyDomain": "open: any string the owner dispatches (no compile-time key set), already taken: @deepseek-ai/dsh-experimental-voice-input-bundle"
-      },
-      {
-        "type": "slot",
-        "name": "plugins.row.config",
-        "kind": "keyed",
-        "scope": "root",
-        "purpose": "The configuration of one row a bundle declares, keyed by `<package name>#<row id>` with the row id as the bundle's patch declares it: the row on the bundle's page gains a configure control that opens the entry's page, headed by the plugin's display title and description.",
-        "replaceRisk": "none",
-        "parent": "main",
-        "registration": [
-          {
-            "name": "key",
-            "type": "string",
-            "required": true
-          }
-        ],
-        "keyDomain": "open: any string the owner dispatches (no compile-time key set), none are taken yet"
+        "since": "0.1.6-alpha.2"
       },
       {
         "type": "slot",
@@ -2519,7 +2282,8 @@
             "type": "string | (() => string)",
             "required": false
           }
-        ]
+        ],
+        "since": "0.1.7-alpha.1"
       },
       {
         "type": "slot",
@@ -2545,7 +2309,62 @@
             "type": "string | (() => string)",
             "required": false
           }
-        ]
+        ],
+        "since": "0.1.7-alpha.1"
+      },
+      {
+        "type": "slot",
+        "name": "plugins.add.actions",
+        "kind": "list",
+        "scope": "root",
+        "purpose": "Additional MenuItemButton rows after installation: 72px high, with a title and a description capped at two lines.",
+        "replaceRisk": "none",
+        "parent": "main",
+        "registration": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "order",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "label",
+            "type": "string | (() => string)",
+            "required": false
+          }
+        ],
+        "since": "0.2.1-alpha.1"
+      },
+      {
+        "type": "slot",
+        "name": "plugins.tab",
+        "kind": "list",
+        "scope": "root",
+        "purpose": "Tabs after the page's own Installed tab, such as Discover: `label` names the tab and `order` places it.",
+        "replaceRisk": "none",
+        "parent": "main",
+        "registration": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "order",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "label",
+            "type": "string | (() => string)",
+            "required": false
+          }
+        ],
+        "since": "0.2.1-alpha.4"
       },
       {
         "type": "slot",
@@ -2571,7 +2390,62 @@
             "type": "string | (() => string)",
             "required": false
           }
-        ]
+        ],
+        "since": "0.1.7-alpha.1"
+      },
+      {
+        "type": "slot",
+        "name": "plugins.bundle.activation",
+        "kind": "keyed",
+        "scope": "root",
+        "purpose": "Optional guidance after the user enables a bundle from the list, keyed by npm package name.",
+        "replaceRisk": "shadows-shipped-ui",
+        "parent": "main",
+        "registration": [
+          {
+            "name": "key",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "keyDomain": "open: any string the owner dispatches (no compile-time key set), already taken: @deepseek-ai/dsh-experimental-voice-input-bundle",
+        "since": "0.1.7-alpha.1"
+      },
+      {
+        "type": "slot",
+        "name": "plugins.bundle.config",
+        "kind": "keyed",
+        "scope": "root",
+        "purpose": "A bundle's own configuration, keyed by the bundle's package name and rendered on the bundle's page between its description and its rows (`view: 'page'` only).",
+        "replaceRisk": "shadows-shipped-ui",
+        "parent": "main",
+        "registration": [
+          {
+            "name": "key",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "keyDomain": "open: any string the owner dispatches (no compile-time key set), already taken: @deepseek-ai/dsh-experimental-cot-translation-bundle, @deepseek-ai/dsh-experimental-voice-input-bundle",
+        "since": "0.1.6-alpha.2"
+      },
+      {
+        "type": "slot",
+        "name": "plugins.row.config",
+        "kind": "keyed",
+        "scope": "root",
+        "purpose": "The configuration of one row a bundle declares, keyed by `<package name>#<row id>` with the row id as the bundle's patch declares it: the row on the bundle's page gains a configure control that opens the entry's page, headed by the plugin's display title and description.",
+        "replaceRisk": "none",
+        "parent": "main",
+        "registration": [
+          {
+            "name": "key",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "keyDomain": "open: any string the owner dispatches (no compile-time key set), none are taken yet",
+        "since": "0.1.6-alpha.2"
       },
       {
         "type": "slot",
@@ -2580,7 +2454,8 @@
         "scope": "session-maybe",
         "purpose": "Conversation shell beneath its root-scoped main-panel entry.",
         "replaceRisk": "shadows-shipped-ui",
-        "parent": "main"
+        "parent": "main",
+        "since": "0.1.5-alpha.2"
       },
       {
         "type": "slot",
@@ -2589,7 +2464,8 @@
         "scope": "session-maybe",
         "purpose": "Resident navigation container, including when no Session is selected.",
         "replaceRisk": "shadows-shipped-ui",
-        "parent": "main.conversation"
+        "parent": "main.conversation",
+        "since": "0.1.7-alpha.1"
       },
       {
         "type": "slot",
@@ -2598,7 +2474,8 @@
         "scope": "root",
         "purpose": "Global navigation before the Session title, available without a Session.",
         "replaceRisk": "none",
-        "parent": "conversation.header"
+        "parent": "conversation.header",
+        "since": "0.1.7-alpha.1"
       },
       {
         "type": "slot",
@@ -2607,7 +2484,9 @@
         "scope": "session",
         "purpose": "Strict per-Session title, actions, and View navigation.",
         "replaceRisk": "shadows-shipped-ui",
-        "parent": "conversation.header"
+        "parent": "conversation.header",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "type": "slot",
@@ -2633,16 +2512,9 @@
             "type": "string | (() => string)",
             "required": false
           }
-        ]
-      },
-      {
-        "type": "slot",
-        "name": "conversation.session.header.corner",
-        "kind": "single",
-        "scope": "session",
-        "purpose": "The header's far-right corner, past the utilities' edge and into the header's own padding, for one control.",
-        "replaceRisk": "shadows-shipped-ui",
-        "parent": "conversation.session.header"
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "type": "slot",
@@ -2668,7 +2540,19 @@
             "type": "string | (() => string)",
             "required": false
           }
-        ]
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
+      },
+      {
+        "type": "slot",
+        "name": "conversation.session.header.corner",
+        "kind": "single",
+        "scope": "session",
+        "purpose": "The header's far-right corner, past the utilities' edge and into the header's own padding, for one control.",
+        "replaceRisk": "shadows-shipped-ui",
+        "parent": "conversation.session.header",
+        "since": "0.1.5-alpha.1"
       },
       {
         "type": "slot",
@@ -2677,7 +2561,537 @@
         "scope": "session",
         "purpose": "Optional replacement for one Session breadcrumb title.",
         "replaceRisk": "shadows-shipped-ui",
-        "parent": "conversation.session.header"
+        "parent": "conversation.session.header",
+        "since": "0.1.1-rc.1"
+      },
+      {
+        "type": "slot",
+        "name": "conversation.session.header.views.actions",
+        "kind": "list",
+        "scope": "root",
+        "purpose": "Rows of the View tab row's More menu; the header shows More only while this list has registrations.",
+        "replaceRisk": "none",
+        "parent": "conversation.session.header",
+        "registration": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "order",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "label",
+            "type": "string | (() => string)",
+            "required": false
+          }
+        ],
+        "since": "0.2.1-rc.3"
+      },
+      {
+        "type": "slot",
+        "name": "sidebar",
+        "kind": "single",
+        "scope": "root",
+        "purpose": "The whole left column.",
+        "replaceRisk": "shadows-shipped-ui",
+        "parent": "root",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
+      },
+      {
+        "type": "slot",
+        "name": "sidebar.footer.action",
+        "kind": "list",
+        "scope": "root",
+        "purpose": "Optional actions beside Settings at the sidebar foot.",
+        "replaceRisk": "none",
+        "parent": "sidebar",
+        "registration": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "order",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "label",
+            "type": "string | (() => string)",
+            "required": false
+          }
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
+      },
+      {
+        "type": "slot",
+        "name": "sidebar.panellist",
+        "kind": "list",
+        "scope": "root",
+        "purpose": "Global panel icons.",
+        "replaceRisk": "none",
+        "parent": "sidebar",
+        "registration": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "order",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "label",
+            "type": "string | (() => string)",
+            "required": false
+          }
+        ],
+        "since": "0.1.5-alpha.2"
+      },
+      {
+        "type": "slot",
+        "name": "sidebar.brand.mark",
+        "kind": "single",
+        "scope": "root",
+        "purpose": "Brand mark rendered in the expanded brand row and collapsed rail.",
+        "replaceRisk": "shadows-shipped-ui",
+        "parent": "sidebar",
+        "since": "0.1.0-rc.8"
+      },
+      {
+        "type": "slot",
+        "name": "sidebar.toggle.badge",
+        "kind": "single",
+        "scope": "root",
+        "purpose": "Non-interactive notification inside the collapsed sidebar expand button.",
+        "replaceRisk": "shadows-shipped-ui",
+        "parent": "sidebar",
+        "since": "0.1.6-alpha.2"
+      },
+      {
+        "type": "slot",
+        "name": "sidebar.settings",
+        "kind": "single",
+        "scope": "root",
+        "purpose": "The settings seat at the sidebar foot.",
+        "replaceRisk": "shadows-shipped-ui",
+        "parent": "sidebar",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
+      },
+      {
+        "type": "slot",
+        "name": "settings.section",
+        "kind": "list",
+        "scope": "root",
+        "purpose": "One settings page per list entry.",
+        "replaceRisk": "none",
+        "parent": "sidebar.settings",
+        "registration": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "order",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "label",
+            "type": "string | (() => string)",
+            "required": false
+          }
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
+      },
+      {
+        "type": "slot",
+        "name": "settings.general.item",
+        "kind": "list",
+        "scope": "root",
+        "purpose": "One preference row inside the General section — the additive seat for a single setting that needs no page of its own (a whole page is `settings.section`), contributed by the feature plugin that owns the preference (locale → Language, ui-theme → Appearance, ui-conversation → Composer Enter).",
+        "replaceRisk": "none",
+        "parent": "settings.section",
+        "registration": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "order",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "label",
+            "type": "string | (() => string)",
+            "required": false
+          }
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
+      },
+      {
+        "type": "slot",
+        "name": "settings.plugins.tab",
+        "kind": "list",
+        "scope": "root",
+        "purpose": "One page inside the Plugins settings section.",
+        "replaceRisk": "none",
+        "parent": "settings.section",
+        "registration": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "order",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "label",
+            "type": "string | (() => string)",
+            "required": false
+          }
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
+      },
+      {
+        "type": "slot",
+        "name": "settings.models.footer",
+        "kind": "list",
+        "scope": "root",
+        "purpose": "Ordered extension area after the provider rows and the add controls.",
+        "replaceRisk": "none",
+        "parent": "settings.section",
+        "registration": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "order",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "label",
+            "type": "string | (() => string)",
+            "required": false
+          }
+        ],
+        "since": "0.1.2-alpha.1"
+      },
+      {
+        "type": "slot",
+        "name": "settings.models.provider-card",
+        "kind": "keyed",
+        "scope": "root",
+        "purpose": "One provider card's adapter extension area, dispatched with `entryKey = settingsNs` on every card that renders a directory row: a saved row's card (its first-run setup posture included) and the add-provider draft card.",
+        "replaceRisk": "none",
+        "parent": "settings.section",
+        "registration": [
+          {
+            "name": "key",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "keyDomain": "open: any string the owner dispatches (no compile-time key set), none are taken yet",
+        "since": "0.1.2-alpha.1"
+      },
+      {
+        "type": "slot",
+        "name": "settings.action",
+        "kind": "list",
+        "scope": "root",
+        "purpose": "Optional actions rendered in the content-column header before Close.",
+        "replaceRisk": "none",
+        "parent": "sidebar.settings",
+        "registration": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "order",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "label",
+            "type": "string | (() => string)",
+            "required": false
+          }
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
+      },
+      {
+        "type": "slot",
+        "name": "settings.onboarding",
+        "kind": "list",
+        "scope": "root",
+        "purpose": "Root-scoped onboarding steps contributed by settings features.",
+        "replaceRisk": "none",
+        "parent": "sidebar.settings",
+        "registration": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "order",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "label",
+            "type": "string | (() => string)",
+            "required": false
+          }
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
+      },
+      {
+        "type": "slot",
+        "name": "settings.models.sign-in",
+        "kind": "single",
+        "scope": "root",
+        "purpose": "Optional account login choice before the credential editor.",
+        "replaceRisk": "shadows-shipped-ui",
+        "parent": "settings.onboarding",
+        "since": "0.1.7-alpha.1"
+      },
+      {
+        "type": "slot",
+        "name": "settings.trigger",
+        "kind": "single",
+        "scope": "root",
+        "purpose": "The sidebar-foot trigger row content: icon + label, supplied as slot content (the accessible name comes from the content — rail state renders the label visually hidden).",
+        "replaceRisk": "shadows-shipped-ui",
+        "parent": "sidebar.settings",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
+      },
+      {
+        "type": "slot",
+        "name": "settings.header",
+        "kind": "single",
+        "scope": "root",
+        "purpose": "The panel title text seat.",
+        "replaceRisk": "shadows-shipped-ui",
+        "parent": "sidebar.settings",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
+      },
+      {
+        "type": "slot",
+        "name": "settings.close",
+        "kind": "single",
+        "scope": "root",
+        "purpose": "The close button's visually-hidden label text (the button itself — icon, geometry, focus — is shell chrome).",
+        "replaceRisk": "shadows-shipped-ui",
+        "parent": "sidebar.settings",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
+      },
+      {
+        "type": "slot",
+        "name": "settings.launcher",
+        "kind": "single",
+        "scope": "root",
+        "purpose": "Optional sidebar account launcher; opens the shell-owned settings panel.",
+        "replaceRisk": "shadows-shipped-ui",
+        "parent": "sidebar.settings",
+        "since": "0.1.7-alpha.1"
+      },
+      {
+        "type": "slot",
+        "name": "sidebar.workspaces",
+        "kind": "single",
+        "scope": "root",
+        "purpose": "The workspace/session browsing region: section header, search, the grouped/flat session list, and every workspace dialog.",
+        "replaceRisk": "shadows-shipped-ui",
+        "parent": "sidebar",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
+      },
+      {
+        "type": "slot",
+        "name": "sidebar.session.row.leading",
+        "kind": "list",
+        "scope": "root",
+        "purpose": "Leading decoration of one Session row, in the 16px cell before the title that the row's own state dot otherwise occupies.",
+        "replaceRisk": "none",
+        "parent": "sidebar.workspaces",
+        "registration": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "order",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "label",
+            "type": "string | (() => string)",
+            "required": false
+          }
+        ],
+        "since": "0.1.7-rc.2"
+      },
+      {
+        "type": "slot",
+        "name": "sidebar.workspaces.session.menu.item",
+        "kind": "list",
+        "scope": "root",
+        "purpose": "The rows of one Session's \"...\" menu, in ascending `order`.",
+        "replaceRisk": "none",
+        "parent": "sidebar.workspaces",
+        "registration": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "order",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "label",
+            "type": "string | (() => string)",
+            "required": false
+          }
+        ],
+        "since": "0.1.7-alpha.1"
+      },
+      {
+        "type": "slot",
+        "name": "sidebar.workspaces.session.row.action",
+        "kind": "list",
+        "scope": "root",
+        "purpose": "The hover buttons at the end of one Session row, in ascending `order`, after the \"...\" menu trigger.",
+        "replaceRisk": "none",
+        "parent": "sidebar.workspaces",
+        "registration": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "order",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "label",
+            "type": "string | (() => string)",
+            "required": false
+          }
+        ],
+        "since": "0.1.7-alpha.1"
+      },
+      {
+        "type": "slot",
+        "name": "sidebar.session.row.hover",
+        "kind": "list",
+        "scope": "root",
+        "purpose": "Section of the Session row's hover card between its relative time and its trailing status line.",
+        "replaceRisk": "none",
+        "parent": "sidebar.workspaces",
+        "registration": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "order",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "label",
+            "type": "string | (() => string)",
+            "required": false
+          }
+        ],
+        "since": "0.1.7-rc.2"
+      },
+      {
+        "type": "slot",
+        "name": "sidebar.workspaces.directoryFlow",
+        "kind": "single",
+        "scope": "root",
+        "purpose": "Directory-flow hole under the sidebar browsing region (declared by the WorkspaceBrowser entry).",
+        "replaceRisk": "shadows-shipped-ui",
+        "parent": "sidebar.workspaces",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
+      },
+      {
+        "type": "slot",
+        "name": "sidebar.brand.name",
+        "kind": "single",
+        "scope": "root",
+        "purpose": "Brand name rendered beside the expanded mark.",
+        "replaceRisk": "shadows-shipped-ui",
+        "parent": "sidebar",
+        "since": "0.1.0-rc.8"
+      },
+      {
+        "type": "slot",
+        "name": "sidebar.panellist.actions",
+        "kind": "list",
+        "scope": "root",
+        "purpose": "Rows of the panel list's More menu; the sidebar shows More only while this list has registrations.",
+        "replaceRisk": "none",
+        "parent": "sidebar",
+        "registration": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "order",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "label",
+            "type": "string | (() => string)",
+            "required": false
+          }
+        ],
+        "since": "0.2.1-rc.3"
       },
       {
         "type": "slot",
@@ -2686,7 +3100,8 @@
         "scope": "root",
         "purpose": "The right column: a track the centre makes room for, or nothing.",
         "replaceRisk": "shadows-shipped-ui",
-        "parent": "root"
+        "parent": "root",
+        "since": "0.1.5-alpha.1"
       },
       {
         "type": "slot",
@@ -2695,238 +3110,8 @@
         "scope": "session",
         "purpose": "Session content selected by the root-scoped right Sidebar controller.",
         "replaceRisk": "shadows-shipped-ui",
-        "parent": "rightbar"
-      },
-      {
-        "type": "slot",
-        "name": "sidebar.right.pane.tab",
-        "kind": "keyed",
-        "scope": "session",
-        "purpose": "One tab's body, dispatched with the `id` of the type in force for `tab.kind`.",
-        "replaceRisk": "none",
-        "parent": "rightbar.session",
-        "registration": [
-          {
-            "name": "key",
-            "type": "string",
-            "required": true
-          }
-        ],
-        "keyDomain": "open: any string the owner dispatches (no compile-time key set), none are taken yet"
-      },
-      {
-        "type": "slot",
-        "name": "sidebar.right.tab.files.actions",
-        "kind": "list",
-        "scope": "session",
-        "purpose": "Workspace directory actions after the file tree's reload control.",
-        "replaceRisk": "none",
-        "parent": "sidebar.right.pane.tab",
-        "registration": [
-          {
-            "name": "id",
-            "type": "string",
-            "required": true
-          },
-          {
-            "name": "order",
-            "type": "number",
-            "required": false
-          },
-          {
-            "name": "label",
-            "type": "string | (() => string)",
-            "required": false
-          }
-        ]
-      },
-      {
-        "type": "slot",
-        "name": "sidebar.right.tab.document.actions",
-        "kind": "list",
-        "scope": "session",
-        "purpose": "Header toolbar contributions acting on the previewed file, rendered after the preview's own controls once the file's Host path is known.",
-        "replaceRisk": "none",
-        "parent": "sidebar.right.pane.tab",
-        "registration": [
-          {
-            "name": "id",
-            "type": "string",
-            "required": true
-          },
-          {
-            "name": "order",
-            "type": "number",
-            "required": false
-          },
-          {
-            "name": "label",
-            "type": "string | (() => string)",
-            "required": false
-          }
-        ]
-      },
-      {
-        "type": "slot",
-        "name": "sidebar.right.tab.document.unpreviewable",
-        "kind": "list",
-        "scope": "session",
-        "purpose": "Empty-state contributions for a file this preview cannot render, offered where Retry would stand once the file's Host path is known.",
-        "replaceRisk": "none",
-        "parent": "sidebar.right.pane.tab",
-        "registration": [
-          {
-            "name": "id",
-            "type": "string",
-            "required": true
-          },
-          {
-            "name": "order",
-            "type": "number",
-            "required": false
-          },
-          {
-            "name": "label",
-            "type": "string | (() => string)",
-            "required": false
-          }
-        ]
-      },
-      {
-        "type": "slot",
-        "name": "deliverables.review.file.actions",
-        "kind": "list",
-        "scope": "session",
-        "purpose": "The same file actions owned by a changed-file review tab.",
-        "replaceRisk": "none",
-        "parent": "sidebar.right.pane.tab",
-        "registration": [
-          {
-            "name": "id",
-            "type": "string",
-            "required": true
-          },
-          {
-            "name": "order",
-            "type": "number",
-            "required": false
-          },
-          {
-            "name": "label",
-            "type": "string | (() => string)",
-            "required": false
-          }
-        ]
-      },
-      {
-        "type": "slot",
-        "name": "sidebar.right.tab.guide.entry",
-        "kind": "keyed",
-        "scope": "session",
-        "purpose": "One provider's guide card, with the standard card as the owner's fallback.",
-        "replaceRisk": "none",
-        "parent": "sidebar.right.pane.tab",
-        "registration": [
-          {
-            "name": "key",
-            "type": "string",
-            "required": true
-          }
-        ],
-        "keyDomain": "open: any string the owner dispatches (no compile-time key set), none are taken yet"
-      },
-      {
-        "type": "slot",
-        "name": "sidebar.right.tab.guide",
-        "kind": "chain",
-        "scope": "session",
-        "purpose": "The guide tab's body.",
-        "replaceRisk": "none",
-        "parent": "sidebar.right.pane.tab",
-        "registration": [
-          {
-            "name": "select",
-            "type": "(owner) => unknown | null",
-            "required": true
-          }
-        ]
-      },
-      {
-        "type": "slot",
-        "name": "sidebar.chat.conversation",
-        "kind": "single",
-        "scope": "session",
-        "purpose": "Session-scoped Conversation occurrence hosted by one Sidebar chat tab.",
-        "replaceRisk": "shadows-shipped-ui",
-        "parent": "sidebar.right.pane.tab"
-      },
-      {
-        "type": "slot",
-        "name": "sidebar.right.tab.document",
-        "kind": "keyed",
-        "scope": "session",
-        "purpose": "Document body selected by a registered implementation id.",
-        "replaceRisk": "none",
-        "parent": "sidebar.right.pane.tab",
-        "registration": [
-          {
-            "name": "key",
-            "type": "string",
-            "required": true
-          }
-        ],
-        "keyDomain": "open: any string the owner dispatches (no compile-time key set), none are taken yet"
-      },
-      {
-        "type": "slot",
-        "name": "sidebar.right.tab.document.office.pdf",
-        "kind": "keyed",
-        "scope": "session",
-        "purpose": "PDF presentation supplied with Office-owned converted bytes.",
-        "replaceRisk": "none",
-        "parent": "sidebar.right.tab.document",
-        "registration": [
-          {
-            "name": "key",
-            "type": "string",
-            "required": true
-          }
-        ],
-        "keyDomain": "open: any string the owner dispatches (no compile-time key set), none are taken yet"
-      },
-      {
-        "type": "slot",
-        "name": "sidebar.right.tab.document.action",
-        "kind": "keyed",
-        "scope": "session",
-        "purpose": "Renderer-specific controls before the document toolbar's reload button.",
-        "replaceRisk": "none",
-        "parent": "sidebar.right.pane.tab",
-        "registration": [
-          {
-            "name": "key",
-            "type": "string",
-            "required": true
-          }
-        ],
-        "keyDomain": "open: any string the owner dispatches (no compile-time key set), none are taken yet"
-      },
-      {
-        "type": "slot",
-        "name": "sidebar.right.pane.tab.title",
-        "kind": "keyed",
-        "scope": "session",
-        "purpose": "A tab's title as its chip (and a floating panel's header) shows it, dispatched with the same key and information hook as the body.",
-        "replaceRisk": "none",
-        "parent": "rightbar.session",
-        "registration": [
-          {
-            "name": "key",
-            "type": "string",
-            "required": true
-          }
-        ],
-        "keyDomain": "open: any string the owner dispatches (no compile-time key set), none are taken yet"
+        "parent": "rightbar",
+        "since": "0.1.5-alpha.2"
       },
       {
         "type": "slot",
@@ -2952,7 +3137,278 @@
             "type": "string | (() => string)",
             "required": false
           }
-        ]
+        ],
+        "since": "0.1.5-alpha.1"
+      },
+      {
+        "type": "slot",
+        "name": "sidebar.right.pane.tab",
+        "kind": "keyed",
+        "scope": "session",
+        "purpose": "One tab's body, dispatched with the `id` of the type in force for `tab.kind`.",
+        "replaceRisk": "none",
+        "parent": "rightbar.session",
+        "registration": [
+          {
+            "name": "key",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "keyDomain": "open: any string the owner dispatches (no compile-time key set), none are taken yet",
+        "since": "0.1.5-alpha.1"
+      },
+      {
+        "type": "slot",
+        "name": "sidebar.right.tab.files.actions",
+        "kind": "list",
+        "scope": "session",
+        "purpose": "Workspace directory actions after the file tree's reload control.",
+        "replaceRisk": "none",
+        "parent": "sidebar.right.pane.tab",
+        "registration": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "order",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "label",
+            "type": "string | (() => string)",
+            "required": false
+          }
+        ],
+        "since": "0.2.0-rc.2"
+      },
+      {
+        "type": "slot",
+        "name": "sidebar.right.tab.document.actions",
+        "kind": "list",
+        "scope": "session",
+        "purpose": "Header toolbar contributions acting on the previewed file, rendered after the preview's own controls once the file's Host path is known.",
+        "replaceRisk": "none",
+        "parent": "sidebar.right.pane.tab",
+        "registration": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "order",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "label",
+            "type": "string | (() => string)",
+            "required": false
+          }
+        ],
+        "since": "0.1.7-alpha.1"
+      },
+      {
+        "type": "slot",
+        "name": "sidebar.right.tab.document.unpreviewable",
+        "kind": "list",
+        "scope": "session",
+        "purpose": "Empty-state contributions for a file this preview cannot render, offered where Retry would stand once the file's Host path is known.",
+        "replaceRisk": "none",
+        "parent": "sidebar.right.pane.tab",
+        "registration": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "order",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "label",
+            "type": "string | (() => string)",
+            "required": false
+          }
+        ],
+        "since": "0.1.7-alpha.1"
+      },
+      {
+        "type": "slot",
+        "name": "deliverables.review.file.actions",
+        "kind": "list",
+        "scope": "session",
+        "purpose": "The same file actions owned by a changed-file review tab.",
+        "replaceRisk": "none",
+        "parent": "sidebar.right.pane.tab",
+        "registration": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "order",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "label",
+            "type": "string | (() => string)",
+            "required": false
+          }
+        ],
+        "since": "0.1.7-alpha.1"
+      },
+      {
+        "type": "slot",
+        "name": "sidebar.right.tab.guide.actions",
+        "kind": "list",
+        "scope": "root",
+        "purpose": "Rows of the guide's More menu; the guide shows More only while this list has registrations.",
+        "replaceRisk": "none",
+        "parent": "sidebar.right.pane.tab",
+        "registration": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "order",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "label",
+            "type": "string | (() => string)",
+            "required": false
+          }
+        ],
+        "since": "0.2.1-rc.3"
+      },
+      {
+        "type": "slot",
+        "name": "sidebar.right.tab.guide.entry",
+        "kind": "keyed",
+        "scope": "session",
+        "purpose": "One provider's guide card, with the standard card as the owner's fallback.",
+        "replaceRisk": "none",
+        "parent": "sidebar.right.pane.tab",
+        "registration": [
+          {
+            "name": "key",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "keyDomain": "open: any string the owner dispatches (no compile-time key set), none are taken yet",
+        "since": "0.1.6-alpha.1"
+      },
+      {
+        "type": "slot",
+        "name": "sidebar.right.tab.guide",
+        "kind": "chain",
+        "scope": "session",
+        "purpose": "The guide tab's body.",
+        "replaceRisk": "none",
+        "parent": "sidebar.right.pane.tab",
+        "registration": [
+          {
+            "name": "select",
+            "type": "(owner) => unknown | null",
+            "required": true
+          }
+        ],
+        "since": "0.1.5-alpha.1"
+      },
+      {
+        "type": "slot",
+        "name": "sidebar.chat.conversation",
+        "kind": "single",
+        "scope": "session",
+        "purpose": "Session-scoped Conversation occurrence hosted by one Sidebar chat tab.",
+        "replaceRisk": "shadows-shipped-ui",
+        "parent": "sidebar.right.pane.tab",
+        "since": "0.1.6-alpha.2"
+      },
+      {
+        "type": "slot",
+        "name": "sidebar.right.tab.document",
+        "kind": "keyed",
+        "scope": "session",
+        "purpose": "Document body selected by a registered implementation id.",
+        "replaceRisk": "none",
+        "parent": "sidebar.right.pane.tab",
+        "registration": [
+          {
+            "name": "key",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "keyDomain": "open: any string the owner dispatches (no compile-time key set), none are taken yet",
+        "since": "0.1.5-alpha.2"
+      },
+      {
+        "type": "slot",
+        "name": "sidebar.right.tab.document.office.pdf",
+        "kind": "keyed",
+        "scope": "session",
+        "purpose": "PDF presentation supplied with Office-owned converted bytes.",
+        "replaceRisk": "none",
+        "parent": "sidebar.right.tab.document",
+        "registration": [
+          {
+            "name": "key",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "keyDomain": "open: any string the owner dispatches (no compile-time key set), none are taken yet",
+        "since": "0.1.6-alpha.2"
+      },
+      {
+        "type": "slot",
+        "name": "sidebar.right.tab.document.action",
+        "kind": "keyed",
+        "scope": "session",
+        "purpose": "Renderer-specific controls before the document toolbar's reload button.",
+        "replaceRisk": "none",
+        "parent": "sidebar.right.pane.tab",
+        "registration": [
+          {
+            "name": "key",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "keyDomain": "open: any string the owner dispatches (no compile-time key set), none are taken yet",
+        "since": "0.1.7-alpha.1"
+      },
+      {
+        "type": "slot",
+        "name": "sidebar.right.pane.tab.title",
+        "kind": "keyed",
+        "scope": "session",
+        "purpose": "A tab's title as its chip (and a floating panel's header) shows it, dispatched with the same key and information hook as the body.",
+        "replaceRisk": "none",
+        "parent": "rightbar.session",
+        "registration": [
+          {
+            "name": "key",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "keyDomain": "open: any string the owner dispatches (no compile-time key set), none are taken yet",
+        "since": "0.1.5-alpha.1"
       },
       {
         "type": "slot",
@@ -2961,7 +3417,8 @@
         "scope": "root",
         "purpose": "Full-width bottom content below all three columns.",
         "replaceRisk": "shadows-shipped-ui",
-        "parent": "root"
+        "parent": "root",
+        "since": "0.2.1-alpha.1"
       },
       {
         "type": "slot",
@@ -2970,28 +3427,35 @@
         "scope": "root",
         "purpose": "Window-chrome seat at the frame's top-left, over every main panel.",
         "replaceRisk": "shadows-shipped-ui",
-        "parent": "root"
+        "parent": "root",
+        "since": "0.1.7-alpha.1"
       },
       {
         "type": "factory",
         "name": "conversation.images.content",
         "kind": "factory",
         "scope": "root",
-        "parent": null
+        "parent": null,
+        "since": "0.2.1-alpha.3",
+        "sinceBase": true
       },
       {
         "type": "factory",
         "name": "workspace.toast.content",
         "kind": "factory",
         "scope": "root",
-        "parent": null
+        "parent": null,
+        "since": "0.2.1-alpha.3",
+        "sinceBase": true
       },
       {
         "type": "factory",
         "name": "conversation.user.text",
         "kind": "factory",
         "scope": "session",
-        "parent": null
+        "parent": null,
+        "since": "0.2.1-alpha.3",
+        "sinceBase": true
       },
       {
         "type": "slot",
@@ -3008,526 +3472,17 @@
             "required": true
           }
         ],
-        "keyDomain": "fixed by the owner's key table { [Id in UserTextId]: { node: UserTextNode<Id> } }, already taken: command, file, folder, secret, session, skill, text"
+        "keyDomain": "fixed by the owner's key table { [Id in UserTextId]: { node: UserTextNode<Id> } }, already taken: command, file, folder, secret, session, skill, text",
+        "since": "0.2.1-alpha.3"
       },
       {
         "type": "factory",
         "name": "conversation.content",
         "kind": "factory",
         "scope": "session-maybe",
-        "parent": null
-      },
-      {
-        "type": "slot",
-        "name": "conversation.composer",
-        "kind": "chain",
-        "scope": "session",
-        "purpose": "Selector-routed replacements for the current Session's resident composer.",
-        "replaceRisk": "none",
-        "parent": "conversation.content",
-        "registration": [
-          {
-            "name": "select",
-            "type": "(owner) => unknown | null",
-            "required": true
-          }
-        ]
-      },
-      {
-        "type": "slot",
-        "name": "conversation.approval.detail",
-        "kind": "single",
-        "scope": "session",
-        "purpose": "Optional detail for the Tool call correlated with an approval request.",
-        "replaceRisk": "shadows-shipped-ui",
-        "parent": "conversation.composer"
-      },
-      {
-        "type": "slot",
-        "name": "conversation.plan-review.actions",
-        "kind": "list",
-        "scope": "session",
-        "purpose": "Actions for the exact plan under review; approval remains with the question composer.",
-        "replaceRisk": "none",
-        "parent": "conversation.composer",
-        "registration": [
-          {
-            "name": "id",
-            "type": "string",
-            "required": true
-          },
-          {
-            "name": "order",
-            "type": "number",
-            "required": false
-          },
-          {
-            "name": "label",
-            "type": "string | (() => string)",
-            "required": false
-          }
-        ]
-      },
-      {
-        "type": "slot",
-        "name": "conversation.hero.workspace",
-        "kind": "single",
-        "scope": "root",
-        "purpose": "Workspace picker shown by the blank-session Hero.",
-        "replaceRisk": "shadows-shipped-ui",
-        "parent": "conversation.content"
-      },
-      {
-        "type": "slot",
-        "name": "conversation.hero.workspace.directoryFlow",
-        "kind": "single",
-        "scope": "root",
-        "purpose": "Directory-flow hole under the conversation empty-state picker (declared by the WorkspacePicker entry).",
-        "replaceRisk": "shadows-shipped-ui",
-        "parent": "conversation.hero.workspace"
-      },
-      {
-        "type": "slot",
-        "name": "conversation.session",
-        "kind": "single",
-        "scope": "session",
-        "purpose": "Strict per-Session Conversation body.",
-        "replaceRisk": "shadows-shipped-ui",
-        "parent": "conversation.content"
-      },
-      {
-        "type": "slot",
-        "name": "conversation.view",
-        "kind": "list",
-        "scope": "session",
-        "purpose": "Registered Conversation target Views, rendered one at a time.",
-        "replaceRisk": "none",
-        "parent": "conversation.session",
-        "registration": [
-          {
-            "name": "id",
-            "type": "string",
-            "required": true
-          },
-          {
-            "name": "order",
-            "type": "number",
-            "required": false
-          },
-          {
-            "name": "label",
-            "type": "string | (() => string)",
-            "required": false
-          }
-        ]
-      },
-      {
-        "type": "slot",
-        "name": "conversation.trajectory.images",
-        "kind": "single",
-        "scope": "session",
-        "purpose": "Renderer for one group of durable record images in the Trajectory ledger.",
-        "replaceRisk": "shadows-shipped-ui",
-        "parent": "conversation.view"
-      },
-      {
-        "type": "slot",
-        "name": "conversation.chat.flow",
-        "kind": "single",
-        "scope": "session",
-        "purpose": "Ordered Chat rows and local echoes with viewport-bound visibility hooks.",
-        "replaceRisk": "shadows-shipped-ui",
-        "parent": "conversation.view"
-      },
-      {
-        "type": "slot",
-        "name": "conversation.chat.node",
-        "kind": "keyed",
-        "scope": "session",
-        "purpose": "Final Chat node renderer, keyed by `ChatNodeKind`.",
-        "replaceRisk": "shadows-shipped-ui",
-        "parent": "conversation.chat.flow",
-        "registration": [
-          {
-            "name": "key",
-            "type": "string",
-            "required": true
-          }
-        ],
-        "keyDomain": "fixed by the owner's key table { [Kind in ChatNodeKind]: { node: ChatNode<Kind> } }, already taken: assistant-step, command, command-input, compaction, context, manual-compaction, model-retry, question-reply, steering, system-prompt, tool-call, turn-error, turn-max-tokens, turn-process, turn-tail, turn-trigger, unknown, user, workflow-run"
-      },
-      {
-        "type": "slot",
-        "name": "tool.call.toolview",
-        "kind": "keyed",
-        "scope": "session",
-        "purpose": "Keyed Tool call view dispatched by wire Tool name.",
-        "replaceRisk": "shadows-shipped-ui",
-        "parent": "conversation.chat.node",
-        "registration": [
-          {
-            "name": "key",
-            "type": "string",
-            "required": true
-          }
-        ],
-        "keyDomain": "open: any string the owner dispatches (no compile-time key set), already taken: ask_user_question, bash, cordis_define, cordis_inspect_list, cordis_inspect_query, cordis_inspect_self, cordis_run, cordis_stop, cordis_undefine, create_goal, edit, get_goal, glob, grep, interrupt_agent, job_kill, job_list, job_output, list_agents, list_subagent_models, lsp, present, ralph, read, read_image, schedule_create, schedule_delete, schedule_list, schedule_update, send_message, session_event_read, session_event_search, session_event_trace, session_search, session_trace, skill, spawn_teammate, subagent, team_task_create, team_task_get, team_task_list, team_task_update, terminal_close, terminal_list, terminal_open, terminal_read, terminal_signal, todo_write, update_goal, wait_agent, web_fetch, web_search, workflow, write"
-      },
-      {
-        "type": "slot",
-        "name": "tool.call.images",
-        "kind": "single",
-        "scope": "session",
-        "purpose": "Durable images of a settled image-bearing Tool call, rendered through the attachment presentation plugin.",
-        "replaceRisk": "shadows-shipped-ui",
-        "parent": "tool.call.toolview"
-      },
-      {
-        "type": "slot",
-        "name": "tool.view.cordis",
-        "kind": "keyed",
-        "scope": "session",
-        "purpose": "Interactive Package-owned region rendered inside the latest eligible `cordis_run` card in the conversation flow.",
-        "replaceRisk": "none",
-        "parent": "tool.call.toolview",
-        "registration": [
-          {
-            "name": "key",
-            "type": "string",
-            "required": true
-          }
-        ],
-        "keyDomain": "fixed by the dynamic Client Guard",
-        "allowedKeys": [
-          {
-            "value": "self",
-            "description": "The only accepted key. The Guard binds it to this Package's pluginId and packageId."
-          }
-        ]
-      },
-      {
-        "type": "slot",
-        "name": "conversation.chat.message.images",
-        "kind": "single",
-        "scope": "session",
-        "purpose": "Renderer for one consecutive group of durable message images.",
-        "replaceRisk": "shadows-shipped-ui",
-        "parent": "conversation.chat.node"
-      },
-      {
-        "type": "slot",
-        "name": "conversation.chat.assistant-actions",
-        "kind": "list",
-        "scope": "session",
-        "purpose": "Ordered actions for one finalized assistant message.",
-        "replaceRisk": "none",
-        "parent": "conversation.chat.node",
-        "registration": [
-          {
-            "name": "id",
-            "type": "string",
-            "required": true
-          },
-          {
-            "name": "order",
-            "type": "number",
-            "required": false
-          },
-          {
-            "name": "label",
-            "type": "string | (() => string)",
-            "required": false
-          }
-        ]
-      },
-      {
-        "type": "slot",
-        "name": "conversation.chat.reasoning.body",
-        "kind": "single",
-        "scope": "session",
-        "purpose": "Expanded reasoning body with the unchanged model text.",
-        "replaceRisk": "shadows-shipped-ui",
-        "parent": "conversation.chat.node"
-      },
-      {
-        "type": "slot",
-        "name": "conversation.chat.commandview",
-        "kind": "keyed",
-        "scope": "session",
-        "purpose": "Command row keyed by the command name.",
-        "replaceRisk": "none",
-        "parent": "conversation.chat.node",
-        "registration": [
-          {
-            "name": "key",
-            "type": "string",
-            "required": true
-          }
-        ],
-        "keyDomain": "open: any string the owner dispatches (no compile-time key set), none are taken yet"
-      },
-      {
-        "type": "slot",
-        "name": "conversation.chat.turnTail",
-        "kind": "list",
-        "scope": "session",
-        "purpose": "Ordered feature contributions before a completed Turn's action row.",
-        "replaceRisk": "none",
-        "parent": "conversation.chat.node",
-        "registration": [
-          {
-            "name": "id",
-            "type": "string",
-            "required": true
-          },
-          {
-            "name": "order",
-            "type": "number",
-            "required": false
-          },
-          {
-            "name": "label",
-            "type": "string | (() => string)",
-            "required": false
-          }
-        ]
-      },
-      {
-        "type": "slot",
-        "name": "deliverables.file.actions",
-        "kind": "list",
-        "scope": "session",
-        "purpose": "Open one file through its authorized Session event coordinates.",
-        "replaceRisk": "none",
-        "parent": "conversation.chat.turnTail",
-        "registration": [
-          {
-            "name": "id",
-            "type": "string",
-            "required": true
-          },
-          {
-            "name": "order",
-            "type": "number",
-            "required": false
-          },
-          {
-            "name": "label",
-            "type": "string | (() => string)",
-            "required": false
-          }
-        ]
-      },
-      {
-        "type": "slot",
-        "name": "conversation.composer.bar",
-        "kind": "single",
-        "scope": "session-maybe",
-        "purpose": "Resident composer body, including the no-Session inert state.",
-        "replaceRisk": "shadows-shipped-ui",
-        "parent": "conversation.content"
-      },
-      {
-        "type": "slot",
-        "name": "conversation.input.attachments",
-        "kind": "single",
-        "scope": "session-maybe",
-        "purpose": "Optional draft-attachment rail and drop target.",
-        "replaceRisk": "shadows-shipped-ui",
-        "parent": "conversation.composer.bar"
-      },
-      {
-        "type": "slot",
-        "name": "conversation.input.overlay",
-        "kind": "list",
-        "scope": "session",
-        "purpose": "Floating entries rendered inside the resident composer card.",
-        "replaceRisk": "none",
-        "parent": "conversation.composer.bar",
-        "registration": [
-          {
-            "name": "id",
-            "type": "string",
-            "required": true
-          },
-          {
-            "name": "order",
-            "type": "number",
-            "required": false
-          },
-          {
-            "name": "label",
-            "type": "string | (() => string)",
-            "required": false
-          }
-        ]
-      },
-      {
-        "type": "slot",
-        "name": "conversation.input.permission",
-        "kind": "single",
-        "scope": "session",
-        "purpose": "Current-session permission control inside the composer tool row.",
-        "replaceRisk": "shadows-shipped-ui",
-        "parent": "conversation.composer.bar"
-      },
-      {
-        "type": "slot",
-        "name": "conversation.input.model",
-        "kind": "single",
-        "scope": "session",
-        "purpose": "Model selector inside the composer tool row.",
-        "replaceRisk": "shadows-shipped-ui",
-        "parent": "conversation.composer.bar"
-      },
-      {
-        "type": "slot",
-        "name": "conversation.input.model.label",
-        "kind": "single",
-        "scope": "session",
-        "purpose": "Non-interactive inline model label; selection controls remain owner-managed.",
-        "replaceRisk": "shadows-shipped-ui",
-        "parent": "conversation.input.model"
-      },
-      {
-        "type": "slot",
-        "name": "conversation.input.left",
-        "kind": "list",
-        "scope": "session",
-        "purpose": "Compact controls at the left of the composer tool row.",
-        "replaceRisk": "none",
-        "parent": "conversation.composer.bar",
-        "registration": [
-          {
-            "name": "id",
-            "type": "string",
-            "required": true
-          },
-          {
-            "name": "order",
-            "type": "number",
-            "required": false
-          },
-          {
-            "name": "label",
-            "type": "string | (() => string)",
-            "required": false
-          }
-        ]
-      },
-      {
-        "type": "slot",
-        "name": "conversation.input.plan",
-        "kind": "single",
-        "scope": "session",
-        "purpose": "Plan control inside the composer tool row.",
-        "replaceRisk": "shadows-shipped-ui",
-        "parent": "conversation.composer.bar"
-      },
-      {
-        "type": "slot",
-        "name": "conversation.input.right",
-        "kind": "list",
-        "scope": "session",
-        "purpose": "Compact controls before the composer submit action.",
-        "replaceRisk": "none",
-        "parent": "conversation.composer.bar",
-        "registration": [
-          {
-            "name": "id",
-            "type": "string",
-            "required": true
-          },
-          {
-            "name": "order",
-            "type": "number",
-            "required": false
-          },
-          {
-            "name": "label",
-            "type": "string | (() => string)",
-            "required": false
-          }
-        ]
-      },
-      {
-        "type": "slot",
-        "name": "conversation.input.activity",
-        "kind": "single",
-        "scope": "session",
-        "purpose": "Compact action after the model selector; it can expand across the toolbar while retaining the editor and submit action.",
-        "replaceRisk": "shadows-shipped-ui",
-        "parent": "conversation.composer.bar"
-      },
-      {
-        "type": "slot",
-        "name": "conversation.composer.dock",
-        "kind": "list",
-        "scope": "session",
-        "purpose": "Ambient entries below the composer card.",
-        "replaceRisk": "none",
-        "parent": "conversation.composer.bar",
-        "registration": [
-          {
-            "name": "id",
-            "type": "string",
-            "required": true
-          },
-          {
-            "name": "order",
-            "type": "number",
-            "required": false
-          },
-          {
-            "name": "label",
-            "type": "string | (() => string)",
-            "required": false
-          }
-        ]
-      },
-      {
-        "type": "slot",
-        "name": "conversation.input.dock",
-        "kind": "list",
-        "scope": "session",
-        "purpose": "Full-width entries above the composer card.",
-        "replaceRisk": "none",
-        "parent": "conversation.content",
-        "registration": [
-          {
-            "name": "id",
-            "type": "string",
-            "required": true
-          },
-          {
-            "name": "order",
-            "type": "number",
-            "required": false
-          },
-          {
-            "name": "label",
-            "type": "string | (() => string)",
-            "required": false
-          }
-        ]
-      },
-      {
-        "type": "slot",
-        "name": "conversation.hero.brand.mark",
-        "kind": "single",
-        "scope": "root",
-        "purpose": "Brand mark shown before the blank-session headline.",
-        "replaceRisk": "none",
-        "parent": "conversation.content"
-      },
-      {
-        "type": "slot",
-        "name": "conversation.hero.agentPreset",
-        "kind": "single",
-        "scope": "session-maybe",
-        "purpose": "Agent-preset control staged for a New Session.",
-        "replaceRisk": "shadows-shipped-ui",
-        "parent": "conversation.content"
+        "parent": null,
+        "since": "0.1.6-alpha.2",
+        "sinceBase": true
       },
       {
         "type": "slot",
@@ -3553,21 +3508,591 @@
             "type": "string | (() => string)",
             "required": false
           }
-        ]
+        ],
+        "since": "0.2.1-alpha.3"
+      },
+      {
+        "type": "slot",
+        "name": "conversation.input.dock",
+        "kind": "list",
+        "scope": "session",
+        "purpose": "Full-width entries above the composer card.",
+        "replaceRisk": "none",
+        "parent": "conversation.content",
+        "registration": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "order",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "label",
+            "type": "string | (() => string)",
+            "required": false
+          }
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
+      },
+      {
+        "type": "slot",
+        "name": "conversation.composer",
+        "kind": "chain",
+        "scope": "session",
+        "purpose": "Selector-routed replacements for the current Session's resident composer.",
+        "replaceRisk": "none",
+        "parent": "conversation.content",
+        "registration": [
+          {
+            "name": "select",
+            "type": "(owner) => unknown | null",
+            "required": true
+          }
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
+      },
+      {
+        "type": "slot",
+        "name": "conversation.plan-review.actions",
+        "kind": "list",
+        "scope": "session",
+        "purpose": "Actions for the exact plan under review; approval remains with the question composer.",
+        "replaceRisk": "none",
+        "parent": "conversation.composer",
+        "registration": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "order",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "label",
+            "type": "string | (() => string)",
+            "required": false
+          }
+        ],
+        "since": "0.1.6-alpha.2"
+      },
+      {
+        "type": "slot",
+        "name": "conversation.approval.detail",
+        "kind": "single",
+        "scope": "session",
+        "purpose": "Optional detail for the Tool call correlated with an approval request.",
+        "replaceRisk": "shadows-shipped-ui",
+        "parent": "conversation.composer",
+        "since": "0.1.2-alpha.1"
+      },
+      {
+        "type": "slot",
+        "name": "conversation.hero.workspace",
+        "kind": "single",
+        "scope": "root",
+        "purpose": "Workspace picker shown by the blank-session Hero.",
+        "replaceRisk": "shadows-shipped-ui",
+        "parent": "conversation.content",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
+      },
+      {
+        "type": "slot",
+        "name": "conversation.hero.workspace.directoryFlow",
+        "kind": "single",
+        "scope": "root",
+        "purpose": "Directory-flow hole under the conversation empty-state picker (declared by the WorkspacePicker entry).",
+        "replaceRisk": "shadows-shipped-ui",
+        "parent": "conversation.hero.workspace",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
+      },
+      {
+        "type": "slot",
+        "name": "conversation.session",
+        "kind": "single",
+        "scope": "session",
+        "purpose": "Strict per-Session Conversation body.",
+        "replaceRisk": "shadows-shipped-ui",
+        "parent": "conversation.content",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
+      },
+      {
+        "type": "slot",
+        "name": "conversation.view",
+        "kind": "list",
+        "scope": "session",
+        "purpose": "Registered Conversation target Views, rendered one at a time.",
+        "replaceRisk": "none",
+        "parent": "conversation.session",
+        "registration": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "order",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "label",
+            "type": "string | (() => string)",
+            "required": false
+          }
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
+      },
+      {
+        "type": "slot",
+        "name": "conversation.trajectory.images",
+        "kind": "single",
+        "scope": "session",
+        "purpose": "Renderer for one group of durable record images in the Trajectory ledger.",
+        "replaceRisk": "shadows-shipped-ui",
+        "parent": "conversation.view",
+        "since": "0.1.2-alpha.1"
+      },
+      {
+        "type": "slot",
+        "name": "conversation.chat.flow",
+        "kind": "single",
+        "scope": "session",
+        "purpose": "Ordered Chat rows and local echoes with viewport-bound visibility hooks.",
+        "replaceRisk": "shadows-shipped-ui",
+        "parent": "conversation.view",
+        "since": "0.2.1-alpha.2"
+      },
+      {
+        "type": "slot",
+        "name": "conversation.chat.node",
+        "kind": "keyed",
+        "scope": "session",
+        "purpose": "Final Chat node renderer, keyed by `ChatNodeKind`.",
+        "replaceRisk": "shadows-shipped-ui",
+        "parent": "conversation.chat.flow",
+        "registration": [
+          {
+            "name": "key",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "keyDomain": "fixed by the owner's key table { [Kind in ChatNodeKind]: { node: ChatNode<Kind> } }, already taken: assistant-step, command, command-input, compaction, context, manual-compaction, model-retry, question-reply, steering, system-prompt, tool-call, turn-error, turn-max-tokens, turn-process, turn-tail, turn-trigger, unknown, user, workflow-run",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
+      },
+      {
+        "type": "slot",
+        "name": "conversation.chat.assistant-actions",
+        "kind": "list",
+        "scope": "session",
+        "purpose": "Ordered actions for one finalized assistant message.",
+        "replaceRisk": "none",
+        "parent": "conversation.chat.node",
+        "registration": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "order",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "label",
+            "type": "string | (() => string)",
+            "required": false
+          }
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
+      },
+      {
+        "type": "slot",
+        "name": "conversation.chat.turnTail",
+        "kind": "list",
+        "scope": "session",
+        "purpose": "Ordered feature contributions before a completed Turn's action row.",
+        "replaceRisk": "none",
+        "parent": "conversation.chat.node",
+        "registration": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "order",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "label",
+            "type": "string | (() => string)",
+            "required": false
+          }
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
+      },
+      {
+        "type": "slot",
+        "name": "deliverables.file.actions",
+        "kind": "list",
+        "scope": "session",
+        "purpose": "Open one file through its authorized Session event coordinates.",
+        "replaceRisk": "none",
+        "parent": "conversation.chat.turnTail",
+        "registration": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "order",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "label",
+            "type": "string | (() => string)",
+            "required": false
+          }
+        ],
+        "since": "0.1.7-alpha.1"
+      },
+      {
+        "type": "slot",
+        "name": "tool.call.toolview",
+        "kind": "keyed",
+        "scope": "session",
+        "purpose": "Keyed Tool call view dispatched by wire Tool name.",
+        "replaceRisk": "shadows-shipped-ui",
+        "parent": "conversation.chat.node",
+        "registration": [
+          {
+            "name": "key",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "keyDomain": "open: any string the owner dispatches (no compile-time key set), already taken: ask_user_question, bash, cordis_define, cordis_inspect_list, cordis_inspect_query, cordis_inspect_self, cordis_run, cordis_stop, cordis_undefine, create_goal, edit, get_goal, glob, grep, interrupt_agent, job_kill, job_list, job_output, list_agents, list_subagent_models, lsp, present, ralph, read, read_image, schedule_create, schedule_delete, schedule_list, schedule_update, send_message, session_event_read, session_event_search, session_event_trace, session_search, session_trace, skill, spawn_teammate, subagent, team_task_create, team_task_get, team_task_list, team_task_update, terminal_close, terminal_list, terminal_open, terminal_read, terminal_signal, todo_write, update_goal, wait_agent, web_fetch, web_search, workflow, write",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
+      },
+      {
+        "type": "slot",
+        "name": "tool.call.images",
+        "kind": "single",
+        "scope": "session",
+        "purpose": "Durable images of a settled image-bearing Tool call, rendered through the attachment presentation plugin.",
+        "replaceRisk": "shadows-shipped-ui",
+        "parent": "tool.call.toolview",
+        "since": "0.1.3-alpha.1"
+      },
+      {
+        "type": "slot",
+        "name": "tool.view.cordis",
+        "kind": "keyed",
+        "scope": "session",
+        "purpose": "Interactive Package-owned region rendered inside the latest eligible `cordis_run` card in the conversation flow.",
+        "replaceRisk": "none",
+        "parent": "tool.call.toolview",
+        "registration": [
+          {
+            "name": "key",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "keyDomain": "fixed by the dynamic Client Guard",
+        "allowedKeys": [
+          {
+            "value": "self",
+            "description": "The only accepted key. The Guard binds it to this Package's pluginId and packageId."
+          }
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
+      },
+      {
+        "type": "slot",
+        "name": "conversation.chat.commandview",
+        "kind": "keyed",
+        "scope": "session",
+        "purpose": "Command row keyed by the command name.",
+        "replaceRisk": "none",
+        "parent": "conversation.chat.node",
+        "registration": [
+          {
+            "name": "key",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "keyDomain": "open: any string the owner dispatches (no compile-time key set), none are taken yet",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
+      },
+      {
+        "type": "slot",
+        "name": "conversation.chat.message.images",
+        "kind": "single",
+        "scope": "session",
+        "purpose": "Renderer for one consecutive group of durable message images.",
+        "replaceRisk": "shadows-shipped-ui",
+        "parent": "conversation.chat.node",
+        "since": "0.2.1-alpha.3"
+      },
+      {
+        "type": "slot",
+        "name": "conversation.chat.reasoning.body",
+        "kind": "single",
+        "scope": "session",
+        "purpose": "Expanded reasoning body with the unchanged model text.",
+        "replaceRisk": "shadows-shipped-ui",
+        "parent": "conversation.chat.node",
+        "since": "0.2.1-alpha.2"
+      },
+      {
+        "type": "slot",
+        "name": "conversation.composer.bar",
+        "kind": "single",
+        "scope": "session-maybe",
+        "purpose": "Resident composer body, including the no-Session inert state.",
+        "replaceRisk": "shadows-shipped-ui",
+        "parent": "conversation.content",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
+      },
+      {
+        "type": "slot",
+        "name": "conversation.composer.dock",
+        "kind": "list",
+        "scope": "session",
+        "purpose": "Ambient entries below the composer card.",
+        "replaceRisk": "none",
+        "parent": "conversation.composer.bar",
+        "registration": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "order",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "label",
+            "type": "string | (() => string)",
+            "required": false
+          }
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
+      },
+      {
+        "type": "slot",
+        "name": "conversation.input.left",
+        "kind": "list",
+        "scope": "session",
+        "purpose": "Compact controls at the left of the composer tool row.",
+        "replaceRisk": "none",
+        "parent": "conversation.composer.bar",
+        "registration": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "order",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "label",
+            "type": "string | (() => string)",
+            "required": false
+          }
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
+      },
+      {
+        "type": "slot",
+        "name": "conversation.input.right",
+        "kind": "list",
+        "scope": "session",
+        "purpose": "Compact controls before the composer submit action.",
+        "replaceRisk": "none",
+        "parent": "conversation.composer.bar",
+        "registration": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "order",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "label",
+            "type": "string | (() => string)",
+            "required": false
+          }
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
+      },
+      {
+        "type": "slot",
+        "name": "conversation.input.overlay",
+        "kind": "list",
+        "scope": "session",
+        "purpose": "Floating entries rendered inside the resident composer card.",
+        "replaceRisk": "none",
+        "parent": "conversation.composer.bar",
+        "registration": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "order",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "label",
+            "type": "string | (() => string)",
+            "required": false
+          }
+        ],
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
+      },
+      {
+        "type": "slot",
+        "name": "conversation.input.attachments",
+        "kind": "single",
+        "scope": "session-maybe",
+        "purpose": "Optional draft-attachment rail and drop target.",
+        "replaceRisk": "shadows-shipped-ui",
+        "parent": "conversation.composer.bar",
+        "since": "0.1.0-rc.8"
+      },
+      {
+        "type": "slot",
+        "name": "conversation.input.permission",
+        "kind": "single",
+        "scope": "session",
+        "purpose": "Current-session permission control inside the composer tool row.",
+        "replaceRisk": "shadows-shipped-ui",
+        "parent": "conversation.composer.bar",
+        "since": "0.1.6-alpha.1"
+      },
+      {
+        "type": "slot",
+        "name": "conversation.input.model",
+        "kind": "single",
+        "scope": "session",
+        "purpose": "Model selector inside the composer tool row.",
+        "replaceRisk": "shadows-shipped-ui",
+        "parent": "conversation.composer.bar",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
+      },
+      {
+        "type": "slot",
+        "name": "conversation.input.model.label",
+        "kind": "single",
+        "scope": "session",
+        "purpose": "Non-interactive inline model label; selection controls remain owner-managed.",
+        "replaceRisk": "shadows-shipped-ui",
+        "parent": "conversation.input.model",
+        "since": "0.2.1-alpha.5"
+      },
+      {
+        "type": "slot",
+        "name": "conversation.input.plan",
+        "kind": "single",
+        "scope": "session",
+        "purpose": "Plan control inside the composer tool row.",
+        "replaceRisk": "shadows-shipped-ui",
+        "parent": "conversation.composer.bar",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
+      },
+      {
+        "type": "slot",
+        "name": "conversation.input.activity",
+        "kind": "single",
+        "scope": "session",
+        "purpose": "Compact action after the model selector; it can expand across the toolbar while retaining the editor and submit action.",
+        "replaceRisk": "shadows-shipped-ui",
+        "parent": "conversation.composer.bar",
+        "since": "0.1.7-alpha.1"
+      },
+      {
+        "type": "slot",
+        "name": "conversation.hero.brand.mark",
+        "kind": "single",
+        "scope": "root",
+        "purpose": "Brand mark shown before the blank-session headline.",
+        "replaceRisk": "none",
+        "parent": "conversation.content",
+        "since": "0.1.0-rc.8"
+      },
+      {
+        "type": "slot",
+        "name": "conversation.hero.agentPreset",
+        "kind": "single",
+        "scope": "session-maybe",
+        "purpose": "Agent-preset control staged for a New Session.",
+        "replaceRisk": "shadows-shipped-ui",
+        "parent": "conversation.content",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "type": "factory",
         "name": "conversation.chat.reasoning.content",
         "kind": "factory",
         "scope": "root",
-        "parent": null
+        "parent": null,
+        "since": "0.2.1-alpha.2",
+        "sinceBase": true
       },
       {
         "type": "factory",
         "name": "conversation.chat.user.content",
         "kind": "factory",
         "scope": "session",
-        "parent": null
+        "parent": null,
+        "since": "0.2.1-alpha.3",
+        "sinceBase": true
       },
       {
         "type": "slot",
@@ -3576,7 +4101,8 @@
         "scope": "session",
         "purpose": "User-message images, including pending and local-echo previews, independently replaceable from output images.",
         "replaceRisk": "shadows-shipped-ui",
-        "parent": "conversation.chat.user.content"
+        "parent": "conversation.chat.user.content",
+        "since": "0.2.1-alpha.3"
       }
     ]
   }

@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "Plugin API Gallery",
-    "description": "Not sure where your plugin's UI belongs? 43 Slot demos in their real positions + 100 Slots, 98 Host Services, 76 Host Events with register code."
+    "description": "Not sure where your plugin's UI belongs? 46 Slot demos in their real positions + 103 Slots, 98 Host Services, 76 Host Events with register code and a since-version badge (DSH 0.2.1-rc.3)."
   },
   "panel": {
     "title": "Plugin API Gallery",

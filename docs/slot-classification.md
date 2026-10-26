@@ -1,8 +1,8 @@
 # Slot 分类：应实现 / 不能做可见 UI / 需要决策（task-2）
 
-> **定位**：`dsh-plugin-api-gallery` 下一轮扩展的实现依据。目标不是“把 100 个 Slot 都塞进来”，而是**在不替换任何内置 UI 的前提下**，把能安全追加、且能真正渲染出可见界面的 Slot 做成 demo。
+> **定位**：`dsh-plugin-api-gallery` 下一轮扩展的实现依据。目标不是“把 103 个 Slot 都塞进来”，而是**在不替换任何内置 UI 的前提下**，把能安全追加、且能真正渲染出可见界面的 Slot 做成 demo。
 >
-> **输入**：`docs/all-slots.md`（task-1 全量 census：100 Slot + 6 Factory）、`catalog.json`（DSH `0.2.1-rc.2` / `2026-10-23`）、`docs/slot-demos.md`、`docs/interface-catalog.md`、`client.js`。
+> **输入**：`docs/all-slots.md`（task-1 全量 census：rc.3 已更新为 103 Slot + 6 Factory）、`catalog.json`（DSH `0.2.1-rc.3` / `2026-10-26`）、`docs/slot-demos.md`、`docs/interface-catalog.md`、`client.js`。
 >
 > **证据边界**：本文件的 kind/scope/parent/replaceRisk/keyDomain 全部来自静态 census；`ownerProps` 只有 `slot-demos.md` 记录的 15 个 Slot 有确认值，其余标注为“未知（渲染时判空）”。本轮实时 `Slots.listSubTree` 再次超时（见 §8），**没有**用猜测补 ownerProps。
 >
@@ -18,25 +18,27 @@
 
 | 桶 | Slot 数 | 其中已实现 | 其中新增 | Factory |
 | --- | ---: | ---: | ---: | ---: |
-| **A. 应实现（additive + 可见 UI）** | **33** | 15 | **18** | 0 |
+| **A. 应实现（additive + 可见 UI）** | **36** | 15 | **21** | 0 |
 | **B. 不能做可见 UI（skip）** | **57** | 0 | 0 | 6（全部 skip） |
 | **C. 需要决策（needs-decision）** | **10** | 0 | 0 | 0 |
-| 合计 | **100** | 15 | 18 | 6 |
+| 合计 | **103** | 15 | 21 | 6 |
 
 B 的 57 构成：43 single + 3 chain + 4 fixed-keyed + 7 owner-dispatch-only open-keyed（与 census §5.6 的“不可增量 57”完全同一集合）。
 
-### 1.2 相对 census 保守候选（43）的 delta
+### 1.2 相对 census 保守候选（46）的 delta
 
 | 口径 | 数量 | 构成 |
 | --- | ---: | --- |
-| census 保守候选 | 43 | 37 list + 6 keyed（`main` / `sidebar.right.pane.tab` / `sidebar.right.pane.tab.title` / `sidebar.right.tab.guide.entry` / `tool.call.toolview` / `conversation.chat.commandview`） |
-| 本分类 A（全部） | 33 | 31 list + 2 keyed |
+| census 保守候选 | 46 | 40 list + 6 keyed（`main` / `sidebar.right.pane.tab` / `sidebar.right.pane.tab.title` / `sidebar.right.tab.guide.entry` / `tool.call.toolview` / `conversation.chat.commandview`） |
+| 本分类 A（全部） | 36 | 34 list + 2 keyed |
 | ├─ 已实现，保留 | 15 | 14 list + 1 keyed（`sidebar.right.pane.tab`） |
-| └─ **本轮新增实现清单** | **18** | **17 list + 1 keyed**（`sidebar.right.pane.tab.title`） |
-| 本分类 C | 10 | 6 list + 4 keyed（从 census 43 移出） |
+| └─ **本轮新增实现清单** | **21** | **20 list + 1 keyed**（`sidebar.right.pane.tab.title`；含 rc.3 追加 3 个 list） |
+| 本分类 C | 10 | 6 list + 4 keyed（从 census 46 移出） |
 | 本分类 B | 57 | 与 census 不可增量集合相同 |
 
-换算：census 43 中 15 个已实现，剩 28 个；本轮 **18 进 A、10 进 C**（18 + 10 = 28）。没有从 B 提级，也没有把任何 single / chain / fixed-key / owner-dispatch key 放进 A。
+换算：census 46 中 15 个已实现，剩 31 个；**18 进 A、10 进 C**（28），rc.3 又追加 3 个 actions list slot 进 A（合计 A=36）。没有从 B 提级，也没有把任何 single / chain / fixed-key / owner-dispatch key 放进 A。
+
+**0.2.1-rc.3 追加（3 项，全部 A 类 list）**：`sidebar.panellist.actions`、`conversation.session.header.views.actions`、`sidebar.right.tab.guide.actions`。三者都是区域「更多」菜单的行容器，root scope、`replaceRisk: none`，注册 `{ id, order?, label? }`；默认占用者是 `ui-entry-customization`，其他插件可按 order 追加菜单行。分别用 id `api-gallery-panellist-actions` / `api-gallery-views-actions` / `api-gallery-guide-actions` 注册。
 
 ### 1.3 判定规则（严格执行）
 
@@ -272,7 +274,7 @@ B 的 57 构成：43 single + 3 chain + 4 fixed-keyed + 7 owner-dispatch-only op
 | 可追加但上下文不可验收 | 6 | `settings.onboarding`、`sidebar.panellist`、`plugins.add.actions`、`sidebar.right.tab.document.unpreviewable`、`deliverables.review.file.actions`、`conversation.plan-review.actions` | C，本轮不做 |
 | keyed 可达性未证实 / 无派发条件 | 4 | `main`、`sidebar.right.tab.guide.entry`、`tool.call.toolview`、`conversation.chat.commandview` | C，验证后再议 |
 
-> 计数口径：**100 Slot = A 33 + B 57 + C 10**（B、C 合计 67 个 Slot 不做可见 UI），另有 **6 个 Factory** 全部 skip，合计 73 个“不做”对象。10 个 C 类保留潜在提级路径，但本轮一律不实现。
+> 计数口径：**103 Slot = A 36 + B 57 + C 10**（B、C 合计 67 个 Slot 不做可见 UI），另有 **6 个 Factory** 全部 skip，合计 73 个“不做”对象（rc.3 新增 3 项全在 A 类，不改变 B/C）。10 个 C 类保留潜在提级路径，但本轮一律不实现。
 
 ---
 
@@ -317,7 +319,7 @@ B 的 57 构成：43 single + 3 chain + 4 fixed-keyed + 7 owner-dispatch-only op
 
 | 来源 | 用途 | 状态 |
 | --- | --- | --- |
-| `docs/all-slots.md` | 100 Slot + 6 Factory 的 kind/scope/parent/replaceRisk/keyDomain/注册选项（主输入） | 已用 |
+| `docs/all-slots.md` | 103 Slot + 6 Factory 的 kind/scope/parent/replaceRisk/keyDomain/注册选项（主输入；rc.3 已更新） | 已用 |
 | `catalog.json` | 交叉核对 name/kind/scope/parent/replaceRisk/registration（无 ownerProps 字段） | 已用 |
 | `docs/slot-demos.md` | 15 个已实现 Slot 的 ownerProps、id、落点、右侧栏两段式注册 | 已用 |
 | `docs/interface-catalog.md` | Slot 英文用途、已知边界（`sidebarRightTabs.register` 不在 Inspect 目录等） | 已用 |
@@ -337,4 +339,4 @@ B 的 57 构成：43 single + 3 chain + 4 fixed-keyed + 7 owner-dispatch-only op
 
 ## 9. 一句话给 Lead
 
-A 新增 18 个（17 list + 1 自家 tab 的 keyed 标题），其中 15 个可共用一个 `GalleryEntry` 组件，3 个 bespoke；B 57 个（43 single + 3 chain + 4 fixed + 7 owner-dispatch）+ 6 Factory 永不注册；C 10 个（6 个状态不可验收的 list + 4 个可达性未证实的 keyed）本轮全部跳过。零替换内置 UI，零 fixed-key，零 single。
+A 新增 21 个（20 list + 1 自家 tab 的 keyed 标题；含 rc.3 追加 3 个 actions slot），其中 18 个可共用一个 `GalleryEntry` 组件，3 个 bespoke；B 57 个（43 single + 3 chain + 4 fixed + 7 owner-dispatch）+ 6 Factory 永不注册；C 10 个保留潜在提级路径。零替换内置 UI，零 fixed-key，零 single。

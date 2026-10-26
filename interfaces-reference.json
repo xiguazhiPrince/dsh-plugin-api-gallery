@@ -1,6 +1,7 @@
 {
-  "generatedAt": "2026-10-23",
-  "dshVersion": "0.2.1-rc.2",
+  "generatedAt": "2026-10-26",
+  "dshVersion": "0.2.1-rc.3",
+  "versionSource": "version-since.json（DSH 各 release tag 的生成式 inspect 目录）",
   "counts": {
     "hostEvents": 76,
     "clientEvents": 4,
@@ -17,532 +18,654 @@
         "mode": "emit",
         "description": "A declarative agent entry failed before it could publish a live agent.",
         "signature": "'agent-loop/config-start-failed'(payload: { sessionId: SessionId; error: unknown }): void",
-        "observe": "ctx.on('agent-loop/config-start-failed', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('agent-loop/config-start-failed', (payload) => {\n  // observe only\n})",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "agent-preset/selected",
         "mode": "emit",
         "description": "One session committed a different agent preset to its durable log.",
         "signature": "'agent-preset/selected'(sessionId: SessionId, agentPreset: string): void",
-        "observe": "ctx.on('agent-preset/selected', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('agent-preset/selected', (payload) => {\n  // observe only\n})",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "agent/assistant-stream",
         "mode": "emit",
         "description": "Process-local assistant-stream publication.",
         "signature": "'agent/assistant-stream'(this: Scoped<Agent>, payload: { agent: Agent; frame: AssistantStreamFrame }): void",
-        "observe": "ctx.on('agent/assistant-stream', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('agent/assistant-stream', (payload) => {\n  // observe only\n})",
+        "since": "0.1.3-alpha.1"
       },
       {
         "name": "agent/created",
         "mode": "serial",
         "description": "An entered agent is ready for per-agent initialization after factory setup.",
         "signature": "'agent/created'(this: Scoped<Agent>, payload: { agent: Agent; source: SessionStartSource; signal?: AbortSignal }): undefined | Promise<undefined>",
-        "observe": "ctx.on('agent/created', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('agent/created', (payload) => {\n  // observe only\n})",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "agent/disposed",
         "mode": "emit",
         "description": "An agent left the registry; AgentLoop emits this after driver quiescence and scoped-registration unwind, but before session detachment.",
         "signature": "'agent/disposed'(this: Scoped<Agent>, payload: { agent: Agent }): void",
-        "observe": "ctx.on('agent/disposed', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('agent/disposed', (payload) => {\n  // observe only\n})",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "agent/error",
         "mode": "emit",
         "description": "A step or turn errored.",
         "signature": "'agent/error'(this: Scoped<Agent>, payload: { agent: Agent; turn: number; step: number; error: unknown }): void",
-        "observe": "ctx.on('agent/error', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('agent/error', (payload) => {\n  // observe only\n})",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "agent/inbox/claimed",
         "mode": "emit",
         "description": "One message left the inbox inside its open turn.",
         "signature": "'agent/inbox/claimed'(this: Scoped<Agent>, payload: { agent: Agent; message: UserMessage; turn: number }): void",
-        "observe": "ctx.on('agent/inbox/claimed', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('agent/inbox/claimed', (payload) => {\n  // observe only\n})",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "agent/inbox/discarded",
         "mode": "emit",
         "description": "One message was discarded from the live inbox.",
         "signature": "'agent/inbox/discarded'(this: Scoped<Agent>, payload: { agent: Agent; message: UserMessage }): void",
-        "observe": "ctx.on('agent/inbox/discarded', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('agent/inbox/discarded', (payload) => {\n  // observe only\n})",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "agent/inbox/inserted",
         "mode": "emit",
         "description": "One message entered the live inbox.",
         "signature": "'agent/inbox/inserted'(this: Scoped<Agent>, payload: { agent: Agent; message: UserMessage }): void",
-        "observe": "ctx.on('agent/inbox/inserted', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('agent/inbox/inserted', (payload) => {\n  // observe only\n})",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "agent/pre-step",
         "mode": "waterfall",
         "description": "Reject a proposed step or replace the messages that enter it.",
         "signature": "'agent/pre-step'(this: Scoped<Agent>, payload: { agent: Agent; messages: UserMessage[]; turn: number; step: number; signal: AbortSignal }, next: () => Promise<PreStepDecision>): Promise<PreStepDecision>",
-        "observe": "ctx.on('agent/pre-step', (payload, next) => {\n  // inspect or rewrite payload\n  return next();\n})"
+        "observe": "ctx.on('agent/pre-step', (payload, next) => {\n  // inspect or rewrite payload\n  return next();\n})",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "agent/request",
         "mode": "waterfall",
         "description": "Replace the frozen call configuration.",
         "signature": "'agent/request'(this: Scoped<Agent>, payload: { agent: Agent; turn: number; step: number; signal: AbortSignal }, next: () => Promise<LlmCallConfig>): Promise<LlmCallConfig>",
-        "observe": "ctx.on('agent/request', (payload, next) => {\n  // inspect or rewrite payload\n  return next();\n})"
+        "observe": "ctx.on('agent/request', (payload, next) => {\n  // inspect or rewrite payload\n  return next();\n})",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "agent/request-error",
         "mode": "waterfall",
         "description": "Handle one failed model-request attempt before the loop retries or closes its step.",
         "signature": "'agent/request-error'(this: Scoped<Agent>, payload: { agent: Agent; turn: number; step: number; provider: string; failure: LlmFailure; retryPolicy: ResolvedRetryPolicy | undefined; signal: AbortSignal }, next: () => Promise<RequestErrorAction>): Promise<RequestErrorAction>",
-        "observe": "ctx.on('agent/request-error', (payload, next) => {\n  // inspect or rewrite payload\n  return next();\n})"
+        "observe": "ctx.on('agent/request-error', (payload, next) => {\n  // inspect or rewrite payload\n  return next();\n})",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "agent/status",
         "mode": "emit",
         "description": "Agent status changed (`idle` ⇄ `running`).",
         "signature": "'agent/status'(this: Scoped<Agent>, payload: { agent: Agent; status: AgentStatus }): void",
-        "observe": "ctx.on('agent/status', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('agent/status', (payload) => {\n  // observe only\n})",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "agent/turn-stopping",
         "mode": "serial",
         "description": "The turn is about to close: the model owes no response (no live tool calls, no fresh steering).",
         "signature": "'agent/turn-stopping'(this: Scoped<Agent>, payload: { agent: Agent; turn: number; signal: AbortSignal }): Promise<void> | void",
-        "observe": "ctx.on('agent/turn-stopping', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('agent/turn-stopping', (payload) => {\n  // observe only\n})",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "api-session/activity",
         "mode": "emit",
         "description": "One user-authored durable message advanced Session list activity.",
         "signature": "'api-session/activity'(sessionId: SessionId, updatedAt: number): void",
-        "observe": "ctx.on('api-session/activity', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('api-session/activity', (payload) => {\n  // observe only\n})",
+        "since": "0.1.2-alpha.1"
       },
       {
         "name": "api-session/added",
         "mode": "emit",
         "description": "A Session became visible or its Agent was created or disposed.",
         "signature": "'api-session/added'(summary: SessionSummary): void",
-        "observe": "ctx.on('api-session/added', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('api-session/added', (payload) => {\n  // observe only\n})",
+        "since": "0.1.2-alpha.1"
       },
       {
         "name": "api-session/error",
         "mode": "emit",
         "description": "One Agent failed outside a durable turn position.",
         "signature": "'api-session/error'(sessionId: SessionId, message: string): void",
-        "observe": "ctx.on('api-session/error', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('api-session/error', (payload) => {\n  // observe only\n})",
+        "since": "0.1.2-alpha.1"
       },
       {
         "name": "api-session/removed",
         "mode": "emit",
         "description": "A Session left the live Host registry.",
         "signature": "'api-session/removed'(sessionId: SessionId): void",
-        "observe": "ctx.on('api-session/removed', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('api-session/removed', (payload) => {\n  // observe only\n})",
+        "since": "0.1.2-alpha.1"
       },
       {
         "name": "api-session/status",
         "mode": "emit",
         "description": "One Agent changed running state.",
         "signature": "'api-session/status'(sessionId: SessionId, running: boolean): void",
-        "observe": "ctx.on('api-session/status', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('api-session/status', (payload) => {\n  // observe only\n})",
+        "since": "0.1.2-alpha.1"
       },
       {
         "name": "app-boot/config-reload",
         "mode": "emit",
         "description": "Profile patches were reconciled into the running Loader tree: every entry update settled and no new inactive entry was introduced.",
         "signature": "'app-boot/config-reload'(): void",
-        "observe": "ctx.on('app-boot/config-reload', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('app-boot/config-reload', (payload) => {\n  // observe only\n})",
+        "since": "0.1.7-alpha.1"
       },
       {
         "name": "approval/request",
         "mode": "waterfall",
         "description": "Ask composed answerers for one decision.",
         "signature": "'approval/request'( this: Scoped<Agent>, req: ApprovalRequestEvent, next: () => Promise<ApprovalOutcome>, ): Promise<ApprovalOutcome>",
-        "observe": "ctx.on('approval/request', (payload, next) => {\n  // inspect or rewrite payload\n  return next();\n})"
+        "observe": "ctx.on('approval/request', (payload, next) => {\n  // inspect or rewrite payload\n  return next();\n})",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "authorization/settled",
         "mode": "emit",
         "description": "One authorization attempt has finished and released its key.",
         "signature": "'authorization/settled'(key: CredentialKey, settlement: AuthorizationSettlement): void",
-        "observe": "ctx.on('authorization/settled', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('authorization/settled', (payload) => {\n  // observe only\n})",
+        "since": "0.1.1-rc.1"
       },
       {
         "name": "commands/change",
         "mode": "emit",
         "description": "A command was registered or unregistered.",
         "signature": "'commands/change'(): void",
-        "observe": "ctx.on('commands/change', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('commands/change', (payload) => {\n  // observe only\n})",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "compaction/summary-error",
         "mode": "waterfall",
         "description": "Recover a failed summary request by synchronously recording a durable change to its selected input.",
         "signature": "'compaction/summary-error'(payload: { session: Session; sourceEventSeqs: readonly SessionSeq[]; error: unknown; signal?: AbortSignal }, next: () => boolean): boolean",
-        "observe": "ctx.on('compaction/summary-error', (payload, next) => {\n  // inspect or rewrite payload\n  return next();\n})"
+        "observe": "ctx.on('compaction/summary-error', (payload, next) => {\n  // inspect or rewrite payload\n  return next();\n})",
+        "since": "0.1.6-alpha.1"
       },
       {
         "name": "connection/request",
         "mode": "waterfall",
         "description": "Admit or wrap an authenticated shared API request, including body transfer.",
         "signature": "'connection/request'(request: IncomingMessage, response: ServerResponse, next: () => Promise<void>): Promise<void>",
-        "observe": "ctx.on('connection/request', (payload, next) => {\n  // inspect or rewrite payload\n  return next();\n})"
+        "observe": "ctx.on('connection/request', (payload, next) => {\n  // inspect or rewrite payload\n  return next();\n})",
+        "since": "0.1.6-alpha.2"
       },
       {
         "name": "credentials/record-updated",
         "mode": "emit",
         "description": "Committed change to a stored credential record: a `modifyRecord` that wrote, a `deleteRecord` that removed, or an external edit observed in storage.",
         "signature": "'credentials/record-updated'(key: CredentialKey): void",
-        "observe": "ctx.on('credentials/record-updated', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('credentials/record-updated', (payload) => {\n  // observe only\n})",
+        "since": "0.1.1-rc.1"
       },
       {
         "name": "credentials/reference-updated",
         "mode": "emit",
         "description": "Committed change to a provider-managed credential source: a `set`, an `unset`, or an external edit observed in storage.",
         "signature": "'credentials/reference-updated'(ref: CredentialRef): void",
-        "observe": "ctx.on('credentials/reference-updated', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('credentials/reference-updated', (payload) => {\n  // observe only\n})",
+        "since": "0.1.1-rc.1"
       },
       {
         "name": "deepseek-account/model-sign-in-required",
         "mode": "emit",
         "description": "An account model request requires the user to sign in.",
         "signature": "'deepseek-account/model-sign-in-required'(): void",
-        "observe": "ctx.on('deepseek-account/model-sign-in-required', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('deepseek-account/model-sign-in-required', (payload) => {\n  // observe only\n})",
+        "since": "0.1.7-rc.2"
       },
       {
         "name": "deepseek-account/session-expired",
         "mode": "emit",
         "description": "Server rejection removed the current account credential; this notification is not replayed.",
         "signature": "'deepseek-account/session-expired'(): void",
-        "observe": "ctx.on('deepseek-account/session-expired', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('deepseek-account/session-expired', (payload) => {\n  // observe only\n})",
+        "since": "0.1.7-rc.2"
       },
       {
         "name": "deepseek-account/signed-out",
         "mode": "emit",
         "description": "Local grant removal has completed.",
         "signature": "'deepseek-account/signed-out'(): void",
-        "observe": "ctx.on('deepseek-account/signed-out', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('deepseek-account/signed-out', (payload) => {\n  // observe only\n})",
+        "since": "0.1.7-rc.2"
       },
       {
         "name": "domain/changed",
         "mode": "emit",
         "description": "A domain record or the global singleton changed, emitted once per write strictly after the backend acknowledged durability.",
         "signature": "'domain/changed'(change: DomainChanged): void",
-        "observe": "ctx.on('domain/changed', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('domain/changed', (payload) => {\n  // observe only\n})",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "feedback/committed",
         "mode": "parallel",
         "description": "Observe a durable cold feedback mutation without publishing a live Session.",
         "signature": "'feedback/committed'(inspection: SessionInspection): void",
-        "observe": "ctx.on('feedback/committed', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('feedback/committed', (payload) => {\n  // observe only\n})",
+        "since": "0.1.3-alpha.2"
       },
       {
         "name": "fs/edit-intent",
         "mode": "waterfall",
         "description": "Single-slot decision for the next FileSystem.editText.",
         "signature": "'fs/edit-intent'(target: FsTarget, actor: object | undefined, next: () => { version: FsVersion } | undefined | Promise<{ version: FsVersion } | undefined>): Promise<{ version: FsVersion } | undefined>",
-        "observe": "ctx.on('fs/edit-intent', (payload, next) => {\n  // inspect or rewrite payload\n  return next();\n})"
+        "observe": "ctx.on('fs/edit-intent', (payload, next) => {\n  // inspect or rewrite payload\n  return next();\n})",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "fs/observed",
         "mode": "emit",
         "description": "Record an authoritative positive or negative observation.",
         "signature": "'fs/observed'(target: FsTarget, observation: FsObservation, actor: object | undefined): void",
-        "observe": "ctx.on('fs/observed', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('fs/observed', (payload) => {\n  // observe only\n})",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "fs/write-intent",
         "mode": "waterfall",
         "description": "Single-slot decision for the next FileSystem.writeText.",
         "signature": "'fs/write-intent'(target: FsTarget, actor: object | undefined, next: () => FsWriteIntent | undefined | Promise<FsWriteIntent | undefined>): Promise<FsWriteIntent | undefined>",
-        "observe": "ctx.on('fs/write-intent', (payload, next) => {\n  // inspect or rewrite payload\n  return next();\n})"
+        "observe": "ctx.on('fs/write-intent', (payload, next) => {\n  // inspect or rewrite payload\n  return next();\n})",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "goal/activation-changed",
         "mode": "emit",
         "description": "Process-local goal activation changed for one session.",
         "signature": "'goal/activation-changed'(payload: GoalActivationChanged): void",
-        "observe": "ctx.on('goal/activation-changed', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('goal/activation-changed', (payload) => {\n  // observe only\n})",
+        "since": "0.1.5-alpha.1"
       },
       {
         "name": "goal/changed",
         "mode": "emit",
         "description": "Goal mutation accepted by one live agent.",
         "signature": "'goal/changed'(this: import('@deepseek-ai/dsh-scope').Scoped<Agent>, payload: { agent: Agent; change: GoalChanged }): void",
-        "observe": "ctx.on('goal/changed', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('goal/changed', (payload) => {\n  // observe only\n})",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "hmr/change",
         "mode": "emit",
         "description": "A watched file has no module or configuration handler.",
         "signature": "'hmr/change'(url: string): void",
-        "observe": "ctx.on('hmr/change', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('hmr/change', (payload) => {\n  // observe only\n})",
+        "since": "0.1.6-alpha.2"
       },
       {
         "name": "hmr/reload",
         "mode": "emit",
         "description": "Module replacements have finished loading.",
         "signature": "'hmr/reload'(reloads: Map<Plugin, Reload>): void",
-        "observe": "ctx.on('hmr/reload', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('hmr/reload', (payload) => {\n  // observe only\n})",
+        "since": "0.1.6-alpha.2"
       },
       {
         "name": "llm/adapters-updated",
         "mode": "emit",
         "description": "The provider topology changed: an adapter registered or unregistered routes, or the configurable-provider directory gained or lost entries.",
         "signature": "'llm/adapters-updated'(): void",
-        "observe": "ctx.on('llm/adapters-updated', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('llm/adapters-updated', (payload) => {\n  // observe only\n})",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "llm/stream",
         "mode": "waterfall",
         "description": "Waterfall around every streaming model call (retry, replay, routing).",
         "signature": "'llm/stream'(this: LlmRuntime, options: GenerateOptions, next: () => AsyncIterable<StreamChunk>): AsyncIterable<StreamChunk>",
-        "observe": "ctx.on('llm/stream', (payload, next) => {\n  // inspect or rewrite payload\n  return next();\n})"
+        "observe": "ctx.on('llm/stream', (payload, next) => {\n  // inspect or rewrite payload\n  return next();\n})",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "permission-presets/catalog-changed",
         "mode": "emit",
         "description": "The selectable process catalog changed.",
         "signature": "'permission-presets/catalog-changed'(): void",
-        "observe": "ctx.on('permission-presets/catalog-changed', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('permission-presets/catalog-changed', (payload) => {\n  // observe only\n})",
+        "since": "0.1.6-alpha.1"
       },
       {
         "name": "plugin-manager/changed",
         "mode": "emit",
         "description": "The profile's plugins, bundles, or composition changed: a manager operation completed.",
         "signature": "'plugin-manager/changed'(change: PluginChange): void",
-        "observe": "ctx.on('plugin-manager/changed', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('plugin-manager/changed', (payload) => {\n  // observe only\n})",
+        "since": "0.1.6-alpha.2"
       },
       {
         "name": "plugin-manager/install-log",
         "mode": "emit",
         "description": "One chunk of a pnpm run's output, streamed as the run produces it.",
         "signature": "'plugin-manager/install-log'(chunk: PluginInstallLogChunk): void",
-        "observe": "ctx.on('plugin-manager/install-log', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('plugin-manager/install-log', (payload) => {\n  // observe only\n})",
+        "since": "0.1.6-alpha.2"
       },
       {
         "name": "plugin-manager/install-state",
         "mode": "emit",
         "description": "An installation moved between its Host phases.",
         "signature": "'plugin-manager/install-state'(progress: PluginInstallProgress): void",
-        "observe": "ctx.on('plugin-manager/install-state', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('plugin-manager/install-state', (payload) => {\n  // observe only\n})",
+        "since": "0.1.6-alpha.2"
       },
       {
         "name": "plugin-market/changed",
         "mode": "emit",
         "description": "The configured index sources changed.",
         "signature": "'plugin-market/changed'(): void",
-        "observe": "ctx.on('plugin-market/changed', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('plugin-market/changed', (payload) => {\n  // observe only\n})",
+        "since": "0.2.1-alpha.4"
       },
       {
         "name": "schedule/changed",
         "mode": "emit",
         "description": "Durable task set changed; clients refetch global task and Session-active catalogs.",
         "signature": "'schedule/changed'(): void",
-        "observe": "ctx.on('schedule/changed', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('schedule/changed', (payload) => {\n  // observe only\n})",
+        "since": "0.1.7-rc.2"
       },
       {
         "name": "session-telemetry/record",
         "mode": "waterfall",
         "description": "Transform one outbound record before it reaches the backend.",
         "signature": "'session-telemetry/record'(record: SessionTelemetryRecord, next: () => SessionTelemetryRecord): SessionTelemetryRecord",
-        "observe": "ctx.on('session-telemetry/record', (payload, next) => {\n  // inspect or rewrite payload\n  return next();\n})"
+        "observe": "ctx.on('session-telemetry/record', (payload, next) => {\n  // inspect or rewrite payload\n  return next();\n})",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "session/created",
         "mode": "emit",
         "description": "Creation announcement during session publication.",
         "signature": "'session/created'(this: Scoped<Session>, session: Session): void",
-        "observe": "ctx.on('session/created', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('session/created', (payload) => {\n  // observe only\n})",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "session/disposed",
         "mode": "emit",
         "description": "Emitted once when an announced session leaves the store, including publication rollback, but never for an entry whose creation announcement did not begin.",
         "signature": "'session/disposed'(this: Scoped<Session>, session: Session): void",
-        "observe": "ctx.on('session/disposed', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('session/disposed', (payload) => {\n  // observe only\n})",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "session/event",
         "mode": "emit",
         "description": "Post-commit, fire-and-forget append feed.",
         "signature": "'session/event'(this: Scoped<Session>, session: Session, event: SessionEvent): void",
-        "observe": "ctx.on('session/event', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('session/event', (payload) => {\n  // observe only\n})",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "session/flush",
         "mode": "parallel",
         "description": "Awaited parallel durability checkpoint: every listener runs and the caller awaits all of them, with no waterfall veto.",
         "signature": "'session/flush'(this: Scoped<Session>, session: Session): Promise<void> | void",
-        "observe": "ctx.on('session/flush', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('session/flush', (payload) => {\n  // observe only\n})",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "settings/document-updated",
         "mode": "emit",
         "description": "One profile entry's form values, availability, or page policy changed.",
         "signature": "'settings/document-updated'(ns: SettingsNamespace, revision: number): void",
-        "observe": "ctx.on('settings/document-updated', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('settings/document-updated', (payload) => {\n  // observe only\n})",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "skills/change",
         "mode": "emit",
         "description": "A skill provider, runtime contribution, or provider-backed catalog may have changed.",
         "signature": "'skills/change'(): void",
-        "observe": "ctx.on('skills/change', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('skills/change', (payload) => {\n  // observe only\n})",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "subagent/end",
         "mode": "emit",
         "description": "A published child settled.",
         "signature": "'subagent/end'(this: Scoped<SubagentRuntime>, info: SubagentRunEndInfo): void",
-        "observe": "ctx.on('subagent/end', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('subagent/end', (payload) => {\n  // observe only\n})",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "subagent/provider-added",
         "mode": "emit",
         "description": "A provider became resolvable in the registry.",
         "signature": "'subagent/provider-added'(provider: SubagentProvider): void",
-        "observe": "ctx.on('subagent/provider-added', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('subagent/provider-added', (payload) => {\n  // observe only\n})",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "subagent/provider-removed",
         "mode": "emit",
         "description": "A provider left the registry.",
         "signature": "'subagent/provider-removed'(name: string): void",
-        "observe": "ctx.on('subagent/provider-removed', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('subagent/provider-removed', (payload) => {\n  // observe only\n})",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "subagent/start",
         "mode": "emit",
         "description": "A provider established a published child.",
         "signature": "'subagent/start'(this: Scoped<SubagentRuntime>, info: SubagentRunInfo): void",
-        "observe": "ctx.on('subagent/start', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('subagent/start', (payload) => {\n  // observe only\n})",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "system-prompt/assemble",
         "mode": "waterfall",
         "description": "Expert waterfall over the assembled sections, contexts, tools, and variables.",
         "signature": "'system-prompt/assemble'(this: Scoped<SystemPrompt>, assembly: PromptAssembly, context: AssembleContext, next: () => Promise<PromptAssembly>): Promise<PromptAssembly>",
-        "observe": "ctx.on('system-prompt/assemble', (payload, next) => {\n  // inspect or rewrite payload\n  return next();\n})"
+        "observe": "ctx.on('system-prompt/assemble', (payload, next) => {\n  // inspect or rewrite payload\n  return next();\n})",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "system-prompt/change",
         "mode": "emit",
         "description": "Emitted when any prompt provider changes.",
         "signature": "'system-prompt/change'(): void",
-        "observe": "ctx.on('system-prompt/change', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('system-prompt/change', (payload) => {\n  // observe only\n})",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "tools/change",
         "mode": "emit",
         "description": "A tool was registered or unregistered, or a scoped restriction changed (the available tool set changed — possibly for one scope only).",
         "signature": "'tools/change'(): void",
-        "observe": "ctx.on('tools/change', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('tools/change', (payload) => {\n  // observe only\n})",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "tools/execute",
         "mode": "waterfall",
         "description": "Around-dispatch waterfall for timeout, retry, or metrics.",
         "signature": "'tools/execute'(this: Scoped<ToolRuntime>, exec: ToolDispatchExecution, next: () => Promise<ToolExecutionResult>): Promise<ToolExecutionResult>",
-        "observe": "ctx.on('tools/execute', (payload, next) => {\n  // inspect or rewrite payload\n  return next();\n})"
+        "observe": "ctx.on('tools/execute', (payload, next) => {\n  // inspect or rewrite payload\n  return next();\n})",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "tools/post-execute",
         "mode": "waterfall",
         "description": "Accept, replace, enrich, or block a normalized dispatch result.",
         "signature": "'tools/post-execute'(this: Scoped<ToolRuntime>, exec: ToolExecution, result: Readonly<ToolExecutionResult>, next: () => Promise<PostToolDecision>): Promise<PostToolDecision>",
-        "observe": "ctx.on('tools/post-execute', (payload, next) => {\n  // inspect or rewrite payload\n  return next();\n})"
+        "observe": "ctx.on('tools/post-execute', (payload, next) => {\n  // inspect or rewrite payload\n  return next();\n})",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "tools/pre-execute",
         "mode": "waterfall",
         "description": "Allow, deny, cancel, or ask before dispatch.",
         "signature": "'tools/pre-execute'(this: Scoped<ToolRuntime>, exec: ToolExecution, next: () => Promise<PreToolDecision>): Promise<PreToolDecision>",
-        "observe": "ctx.on('tools/pre-execute', (payload, next) => {\n  // inspect or rewrite payload\n  return next();\n})"
+        "observe": "ctx.on('tools/pre-execute', (payload, next) => {\n  // inspect or rewrite payload\n  return next();\n})",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "tools/ptc-dispatch-log",
         "mode": "waterfall",
         "description": "Allow a listener to replace content in the DURABLE LOG COPY of one `run_code` sub-dispatch outcome before the bridge appends its `tool/ptc-dispatch` event.",
         "signature": "'tools/ptc-dispatch-log'(this: Scoped<ToolRuntime>, dispatch: PtcDispatchLog, next: () => Promise<ContentBlock[]>): Promise<ContentBlock[]>",
-        "observe": "ctx.on('tools/ptc-dispatch-log', (payload, next) => {\n  // inspect or rewrite payload\n  return next();\n})"
+        "observe": "ctx.on('tools/ptc-dispatch-log', (payload, next) => {\n  // inspect or rewrite payload\n  return next();\n})",
+        "since": "0.1.2-alpha.1"
       },
       {
         "name": "tools/result",
         "mode": "emit",
         "description": "Observe the frozen, lossless-JSON final outcome.",
         "signature": "'tools/result'(this: Scoped<ToolRuntime>, exec: Readonly<ToolExecution>, result: Readonly<ToolExecutionResult>): undefined",
-        "observe": "ctx.on('tools/result', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('tools/result', (payload) => {\n  // observe only\n})",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "user-questions/request",
         "mode": "waterfall",
         "description": "Ask composed answerers for structured user input.",
         "signature": "'user-questions/request'( this: Scoped<Agent>, request: AskUserQuestionRequestEvent, next: () => Promise<AskUserQuestionAnswer>, ): Promise<AskUserQuestionAnswer>",
-        "observe": "ctx.on('user-questions/request', (payload, next) => {\n  // inspect or rewrite payload\n  return next();\n})"
+        "observe": "ctx.on('user-questions/request', (payload, next) => {\n  // inspect or rewrite payload\n  return next();\n})",
+        "since": "0.1.2-alpha.1"
       },
       {
         "name": "webserver/index-inject",
         "mode": "emit",
         "description": "Collect the structured index injection table.",
         "signature": "'webserver/index-inject'(table: IndexInjection[]): void",
-        "observe": "ctx.on('webserver/index-inject', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('webserver/index-inject', (payload) => {\n  // observe only\n})",
+        "since": "0.1.1-rc.1"
       },
       {
         "name": "workflow/agent-end",
         "mode": "emit",
         "description": "One `agent()` call settled (clean result, child failure, or run cancellation).",
         "signature": "'workflow/agent-end'(info: WorkflowRunInfo, agent: WorkflowAgentEndInfo): void",
-        "observe": "ctx.on('workflow/agent-end', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('workflow/agent-end', (payload) => {\n  // observe only\n})",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "workflow/agent-start",
         "mode": "emit",
         "description": "One `agent()` call established a published child run.",
         "signature": "'workflow/agent-start'(info: WorkflowRunInfo, agent: WorkflowAgentInfo): void",
-        "observe": "ctx.on('workflow/agent-start', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('workflow/agent-start', (payload) => {\n  // observe only\n})",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "workflow/end",
         "mode": "emit",
         "description": "A workflow run settled (any stop reason).",
         "signature": "'workflow/end'(info: WorkflowRunInfo, result: WorkflowResultInfo): void",
-        "observe": "ctx.on('workflow/end', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('workflow/end', (payload) => {\n  // observe only\n})",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "workflow/log",
         "mode": "emit",
         "description": "The script emitted a narration line (a `log(message)` call).",
         "signature": "'workflow/log'(info: WorkflowRunInfo, message: string): void",
-        "observe": "ctx.on('workflow/log', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('workflow/log', (payload) => {\n  // observe only\n})",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "workflow/phase",
         "mode": "emit",
         "description": "The script entered a phase (a `phase(title)` call) — progress grouping for observers; no execution semantics.",
         "signature": "'workflow/phase'(info: WorkflowRunInfo, title: string): void",
-        "observe": "ctx.on('workflow/phase', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('workflow/phase', (payload) => {\n  // observe only\n})",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "workflow/start",
         "mode": "emit",
         "description": "A workflow run started — the script's meta block validated, the body about to execute.",
         "signature": "'workflow/start'(info: WorkflowRunInfo): void",
-        "observe": "ctx.on('workflow/start', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('workflow/start', (payload) => {\n  // observe only\n})",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "workspace/session-activity",
         "mode": "waterfall",
         "description": "Ask the composed providers what still runs for a session before it is archived.",
         "signature": "'workspace/session-activity'( request: SessionActivityRequest, next: () => Promise<readonly SessionActivity[]>, ): Promise<readonly SessionActivity[]>",
-        "observe": "ctx.on('workspace/session-activity', (payload, next) => {\n  // inspect or rewrite payload\n  return next();\n})"
+        "observe": "ctx.on('workspace/session-activity', (payload, next) => {\n  // inspect or rewrite payload\n  return next();\n})",
+        "since": "0.1.7-alpha.1"
       },
       {
         "name": "workspace/session-stop",
         "mode": "parallel",
         "description": "Stop a session's running work because the caller archived it with `stopActivity`; the archive set is durable when this dispatches.",
         "signature": "'workspace/session-stop'(request: SessionActivityRequest): Promise<void> | void",
-        "observe": "ctx.on('workspace/session-stop', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('workspace/session-stop', (payload) => {\n  // observe only\n})",
+        "since": "0.1.7-alpha.1"
       }
     ],
     "client": [
@@ -551,28 +674,36 @@
         "mode": "emit",
         "description": "A connection generation was established.",
         "signature": "'connection/reset'(): void",
-        "observe": "ctx.on('connection/reset', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('connection/reset', (payload) => {\n  // observe only\n})",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "locale/change",
         "mode": "emit",
         "description": "The active locale switched.",
         "signature": "'locale/change'(snapshot: LocaleSnapshot): void",
-        "observe": "ctx.on('locale/change', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('locale/change', (payload) => {\n  // observe only\n})",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "slots/changed",
         "mode": "emit",
         "description": "An ordinary Slot declaration or entry registration set changed.",
         "signature": "'slots/changed'(key: string): void",
-        "observe": "ctx.on('slots/changed', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('slots/changed', (payload) => {\n  // observe only\n})",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "name": "theme/change",
         "mode": "emit",
         "description": "Theme state changed (preference switched, registry updated, or the OS color scheme changed while the preference is `system`).",
         "signature": "'theme/change'(snapshot: ThemeSnapshot): void",
-        "observe": "ctx.on('theme/change', (payload) => {\n  // observe only\n})"
+        "observe": "ctx.on('theme/change', (payload) => {\n  // observe only\n})",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       }
     ]
   },
@@ -586,7 +717,9 @@
           "async saveSelection(next: ModelSelection): Promise<void>"
         ],
         "used": false,
-        "use": "const service = ctx.get('agentDefaultModel');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('agentDefaultModel');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "agentLoop",
@@ -598,7 +731,9 @@
           "async resume(ownerCtx: Context, options: ResumeAgentOptions): Promise<AgentHandle>"
         ],
         "used": false,
-        "use": "const service = ctx.get('agentLoop');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('agentLoop');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "agentPresets",
@@ -620,7 +755,9 @@
           "compositionInventory(): Promise<AgentPresetComposition[]>"
         ],
         "used": false,
-        "use": "const service = ctx.get('agentPresets');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('agentPresets');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "agents",
@@ -642,7 +779,9 @@
           "roots(): Agent[]"
         ],
         "used": true,
-        "use": "const service = ctx.get('agents');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('agents');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "agentTeams",
@@ -661,7 +800,8 @@
           "tryMembership(agent: Agent): TeamMembership | undefined"
         ],
         "used": false,
-        "use": "const service = ctx.get('agentTeams');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('agentTeams');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.8"
       },
       {
         "key": "approval",
@@ -672,7 +812,9 @@
           "overrideOf(session: Session): ApprovalPolicy | undefined"
         ],
         "used": false,
-        "use": "const service = ctx.get('approval');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('approval');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "attachments",
@@ -694,7 +836,9 @@
           "readImageRequest( ref: ImageAttachmentRef, target: ImageRequestTarget, signal?: AbortSignal, ): Promise<RequestImageAttachment>"
         ],
         "used": false,
-        "use": "const service = ctx.get('attachments');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('attachments');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "authorization",
@@ -707,7 +851,8 @@
           "async begin(request: AuthorizationRequest): Promise<AuthorizationOutcome>"
         ],
         "used": false,
-        "use": "const service = ctx.get('authorization');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('authorization');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.1-rc.1"
       },
       {
         "key": "browserUse",
@@ -716,7 +861,8 @@
           "register(name: BrowserUseProviderName): () => Promise<void>"
         ],
         "used": false,
-        "use": "const service = ctx.get('browserUse');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('browserUse');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.6-alpha.1"
       },
       {
         "key": "claudeCodeMods",
@@ -727,7 +873,8 @@
           "async add(definition: ModDefinition): Promise<() => Promise<void>>"
         ],
         "used": false,
-        "use": "const service = ctx.get('claudeCodeMods');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('claudeCodeMods');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.2.1-alpha.1"
       },
       {
         "key": "clientModules",
@@ -742,7 +889,9 @@
           "onGraphChanged(listener: () => void): () => void"
         ],
         "used": false,
-        "use": "const service = ctx.get('clientModules');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('clientModules');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "commands",
@@ -755,7 +904,9 @@
           "@Remote async execute( agent: Agent, line: string, submittedAttachments: readonly CommandSubmitAttachment[], signal: AbortSignal, ): Promise<CommandExecution | undefined>"
         ],
         "used": true,
-        "use": "const service = ctx.get('commands');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('commands');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "compaction",
@@ -766,7 +917,9 @@
           "abstract compactRegion( start: SessionSeq, end: SessionSeq, agent: CompactionAgentContext, signal?: AbortSignal, ): Promise<CompactionResult>"
         ],
         "used": false,
-        "use": "const service = ctx.get('compaction');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('compaction');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "computerUse",
@@ -775,7 +928,8 @@
           "register(name: ComputerUseProviderName): () => Promise<void>"
         ],
         "used": false,
-        "use": "const service = ctx.get('computerUse');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('computerUse');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.6-alpha.1"
       },
       {
         "key": "configEditor",
@@ -786,7 +940,8 @@
           "async edit( entry: Entry, change: (current: Record<string, unknown>, inherited: Record<string, unknown>) => Record<string, unknown>, ): Promise<void>"
         ],
         "used": false,
-        "use": "const service = ctx.get('configEditor');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('configEditor');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.7-alpha.1"
       },
       {
         "key": "connection",
@@ -805,7 +960,8 @@
           "authenticatedUrl(baseUrl: string): string"
         ],
         "used": false,
-        "use": "const service = ctx.get('connection');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('connection');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.6-alpha.2"
       },
       {
         "key": "cotTranslation",
@@ -815,7 +971,8 @@
           "@Remote async translate(request: TranslationRequest, signal: AbortSignal): Promise<string>"
         ],
         "used": false,
-        "use": "const service = ctx.get('cotTranslation');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('cotTranslation');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.2.1-alpha.2"
       },
       {
         "key": "credentials",
@@ -832,7 +989,9 @@
           "abstract deleteRecord(key: CredentialKey): Promise<void>"
         ],
         "used": false,
-        "use": "const service = ctx.get('credentials');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('credentials');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "credentialsController",
@@ -843,7 +1002,8 @@
           "@Remote async unset(ref: string): Promise<void>"
         ],
         "used": false,
-        "use": "const service = ctx.get('credentialsController');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('credentialsController');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.2-alpha.1"
       },
       {
         "key": "deepseekAccount",
@@ -864,7 +1024,8 @@
           "abstract getDeviceIdentity(): Promise<{ deviceId?: string; userId?: AccountUserId; osVersion: string }>"
         ],
         "used": false,
-        "use": "const service = ctx.get('deepseekAccount');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('deepseekAccount');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.7-alpha.1"
       },
       {
         "key": "deepseekLlmApiExtensions",
@@ -874,7 +1035,8 @@
           "async prepare(request: DeepSeekLlmApiExtensionRequest): Promise<PreparedDeepSeekLlmApiExtensions>"
         ],
         "used": false,
-        "use": "const service = ctx.get('deepseekLlmApiExtensions');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('deepseekLlmApiExtensions');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.2-alpha.1"
       },
       {
         "key": "directoryPicker",
@@ -883,7 +1045,9 @@
           "abstract capability(): DirectoryPickerCapability"
         ],
         "used": false,
-        "use": "const service = ctx.get('directoryPicker');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('directoryPicker');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "directoryPickerController",
@@ -894,7 +1058,8 @@
           "@Remote('createDirectory') async createDirectory(path: string, name: string): Promise<string>"
         ],
         "used": false,
-        "use": "const service = ctx.get('directoryPickerController');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('directoryPickerController');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.2-alpha.1"
       },
       {
         "key": "fileReferences",
@@ -903,7 +1068,8 @@
           "abstract list( agent: Agent, query: string, signal: AbortSignal, ): Promise<FileReferenceCandidate[]>"
         ],
         "used": false,
-        "use": "const service = ctx.get('fileReferences');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('fileReferences');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.8"
       },
       {
         "key": "fileUploads",
@@ -917,7 +1083,8 @@
           "retirePrompt(agent: Agent, requestId: string): void"
         ],
         "used": false,
-        "use": "const service = ctx.get('fileUploads');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('fileUploads');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.3-alpha.1"
       },
       {
         "key": "fs",
@@ -940,7 +1107,9 @@
           "abstract editText( target: FsTarget, edit: FsEditRequest, expected?: { version: FsVersion }, signal?: AbortSignal, sandboxPolicy?: SandboxExecutionPolicy, ): Promise<FsEditOutcome>"
         ],
         "used": false,
-        "use": "const service = ctx.get('fs');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('fs');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "goals",
@@ -958,7 +1127,9 @@
           "@Remote('create') remoteExportCreate(agent: Agent, request: CreateGoalRequest): CreateGoalResult"
         ],
         "used": true,
-        "use": "const service = ctx.get('goals');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('goals');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "hmr",
@@ -972,7 +1143,8 @@
           "async reconcileProfile(requiredIds: readonly string[] = []): Promise<ProfileReconciliation>"
         ],
         "used": false,
-        "use": "const service = ctx.get('hmr');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('hmr');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.6-alpha.2"
       },
       {
         "key": "inspector",
@@ -982,7 +1154,8 @@
           "readonly cordis: CordisRuntimeTreeReader"
         ],
         "used": false,
-        "use": "const service = ctx.get('inspector');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('inspector');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.2-alpha.1"
       },
       {
         "key": "jobController",
@@ -993,7 +1166,8 @@
           "@Remote('kill') kill(request: JobKillRequest): JobKillValue"
         ],
         "used": false,
-        "use": "const service = ctx.get('jobController');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('jobController');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.7-alpha.1"
       },
       {
         "key": "jobs",
@@ -1011,7 +1185,9 @@
           "abstract attachController(name: string): () => void"
         ],
         "used": false,
-        "use": "const service = ctx.get('jobs');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('jobs');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "llm",
@@ -1035,7 +1211,9 @@
           "stream(options: GenerateOptions): AsyncIterable<StreamChunk>"
         ],
         "used": false,
-        "use": "const service = ctx.get('llm');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('llm');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "lsp",
@@ -1045,7 +1223,9 @@
           "query(request: LspQueryRequest, signal?: AbortSignal): Promise<LspQueryResult>"
         ],
         "used": false,
-        "use": "const service = ctx.get('lsp');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('lsp');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "mcpResources",
@@ -1054,7 +1234,8 @@
           "register(server: string, provider: McpResourceProvider): () => void"
         ],
         "used": false,
-        "use": "const service = ctx.get('mcpResources');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('mcpResources');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.6-alpha.1"
       },
       {
         "key": "messageFeedback",
@@ -1065,7 +1246,9 @@
           "@Remote('delete') delete(request: MessageFeedbackDeleteRequest): Promise<MessageFeedbackDeleteResult>"
         ],
         "used": false,
-        "use": "const service = ctx.get('messageFeedback');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('messageFeedback');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "officeToPdf",
@@ -1077,7 +1260,8 @@
           "@Remote('generation') getGeneration(signal: AbortSignal): OfficeToPdfGeneration"
         ],
         "used": false,
-        "use": "const service = ctx.get('officeToPdf');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('officeToPdf');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.6-alpha.2"
       },
       {
         "key": "otel",
@@ -1087,7 +1271,8 @@
           "createSessionLogReporter(options: SessionLogOptions): SessionLogReporter"
         ],
         "used": false,
-        "use": "const service = ctx.get('otel');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('otel');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.2.0-rc.1"
       },
       {
         "key": "permissionPresets",
@@ -1101,7 +1286,9 @@
           "set(session: Session, name: string): void"
         ],
         "used": false,
-        "use": "const service = ctx.get('permissionPresets');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('permissionPresets');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "planMode",
@@ -1111,7 +1298,9 @@
           "set(agent: Agent, active: boolean): 'committed' | 'queued' | 'cancelled' | 'noop'"
         ],
         "used": false,
-        "use": "const service = ctx.get('planMode');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('planMode');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "pluginManager",
@@ -1131,7 +1320,8 @@
           "@Remote removeBundle(name: string): Promise<ChangeResult>"
         ],
         "used": false,
-        "use": "const service = ctx.get('pluginManager');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('pluginManager');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.6-alpha.2"
       },
       {
         "key": "pluginMarket",
@@ -1143,7 +1333,8 @@
           "async entry(url: string, name: string): Promise<MarketListingEntry | undefined>"
         ],
         "used": false,
-        "use": "const service = ctx.get('pluginMarket');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('pluginMarket');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.2.1-alpha.4"
       },
       {
         "key": "pluginRegistryProbe",
@@ -1152,7 +1343,8 @@
           "@Remote async fastest(): Promise<string | null>"
         ],
         "used": false,
-        "use": "const service = ctx.get('pluginRegistryProbe');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('pluginRegistryProbe');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.7-alpha.2"
       },
       {
         "key": "productAnalytics",
@@ -1163,7 +1355,8 @@
           "@Remote async report(event: ProductEvent): Promise<void>"
         ],
         "used": false,
-        "use": "const service = ctx.get('productAnalytics');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('productAnalytics');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.2.0-rc.1"
       },
       {
         "key": "productTelemetry",
@@ -1172,7 +1365,8 @@
           "emit(record: ProductTelemetryRecord): void"
         ],
         "used": false,
-        "use": "const service = ctx.get('productTelemetry');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('productTelemetry');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.7-alpha.1"
       },
       {
         "key": "profileContext",
@@ -1184,7 +1378,8 @@
           "readonly telemetryDisabledEnv: string | undefined"
         ],
         "used": false,
-        "use": "const service = ctx.get('profileContext');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('profileContext');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.6-alpha.2"
       },
       {
         "key": "ptcRuntime",
@@ -1197,7 +1392,8 @@
           "abstract run(spec: PtcRunSpec): Promise<PtcRunResult>"
         ],
         "used": false,
-        "use": "const service = ctx.get('ptcRuntime');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('ptcRuntime');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.6-alpha.1"
       },
       {
         "key": "remoteAccess",
@@ -1211,7 +1407,8 @@
           "@Remote({ mode: 'stream' }) async *follow(signal: AbortSignal): AsyncIterable<RemoteAccessFrame>"
         ],
         "used": false,
-        "use": "const service = ctx.get('remoteAccess');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('remoteAccess');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.2.1-alpha.3"
       },
       {
         "key": "sandbox",
@@ -1220,7 +1417,9 @@
           "abstract confine(argv: readonly string[], policy: SandboxPolicy, signal?: AbortSignal): Promise<ConfinedArgv>"
         ],
         "used": false,
-        "use": "const service = ctx.get('sandbox');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('sandbox');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "sandboxPolicy",
@@ -1232,7 +1431,9 @@
           "overrideOf(session: Session): SandboxMode | undefined"
         ],
         "used": false,
-        "use": "const service = ctx.get('sandboxPolicy');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('sandboxPolicy');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "schedule",
@@ -1246,7 +1447,8 @@
           "@Remote('update') async update(request: ScheduleUpdateRequest, signal?: AbortSignal): Promise<ScheduleUpdateResult>"
         ],
         "used": true,
-        "use": "const service = ctx.get('schedule');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('schedule');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.7-rc.2"
       },
       {
         "key": "sessionController",
@@ -1276,7 +1478,8 @@
           "@Remote({ mode: 'stream' }) async *control(signal: AbortSignal): AsyncIterable<SessionControlFrame>"
         ],
         "used": false,
-        "use": "const service = ctx.get('sessionController');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('sessionController');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.2-alpha.1"
       },
       {
         "key": "sessionFeedback",
@@ -1285,7 +1488,8 @@
           "@Remote('record') record(request: SessionFeedbackRecordRequest): Promise<SessionFeedbackRecordResult>"
         ],
         "used": false,
-        "use": "const service = ctx.get('sessionFeedback');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('sessionFeedback');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.5-alpha.2"
       },
       {
         "key": "sessionFileReferences",
@@ -1294,7 +1498,8 @@
           "@Remote list( agent: Agent, query: string, signal: AbortSignal, ): Promise<FileReferenceCandidate[]>"
         ],
         "used": false,
-        "use": "const service = ctx.get('sessionFileReferences');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('sessionFileReferences');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.2-alpha.1"
       },
       {
         "key": "sessionPersistence",
@@ -1308,7 +1513,9 @@
           "abstract list(options?: SessionPersistenceListOptions): Promise<readonly SessionPersistenceSnapshot[]>"
         ],
         "used": false,
-        "use": "const service = ctx.get('sessionPersistence');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('sessionPersistence');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "sessionProjectionCache",
@@ -1321,7 +1528,9 @@
           "coldSnapshot( meta: SessionHeader, inheritedEventCount: SessionLogOffset, events: readonly SessionEvent[], ): ProjectionSnapshot"
         ],
         "used": false,
-        "use": "const service = ctx.get('sessionProjectionCache');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('sessionProjectionCache');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "sessionProjections",
@@ -1340,7 +1549,9 @@
           "hydrate( session: Session, checkpoint: ProjectionCheckpoint, events: readonly SessionEvent[], baseSeq: SessionLogOffset, ): ProjectionSnapshot"
         ],
         "used": false,
-        "use": "const service = ctx.get('sessionProjections');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('sessionProjections');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "sessionQuery",
@@ -1363,7 +1574,9 @@
           "async readEvent(request: SessionEventReadRequest, signal?: AbortSignal): Promise<SessionEventWindow>"
         ],
         "used": false,
-        "use": "const service = ctx.get('sessionQuery');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('sessionQuery');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "sessionReferenceResolver",
@@ -1374,7 +1587,9 @@
           "async prepare( agent: Agent, content: ContentBlock[], references: SessionReferenceInput[], signal?: AbortSignal, ): Promise<PreparedReferencedMessage>"
         ],
         "used": false,
-        "use": "const service = ctx.get('sessionReferenceResolver');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('sessionReferenceResolver');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "sessions",
@@ -1391,7 +1606,9 @@
           "fork(source: SessionForkSource, boundary?: SessionSeq, childSessionId?: SessionId): Session"
         ],
         "used": true,
-        "use": "const service = ctx.get('sessions');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('sessions');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "sessionSkillCatalog",
@@ -1400,7 +1617,8 @@
           "@Remote async list(request: SkillListRequest, signal: AbortSignal): Promise<SkillListValue>"
         ],
         "used": false,
-        "use": "const service = ctx.get('sessionSkillCatalog');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('sessionSkillCatalog');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.2-alpha.1"
       },
       {
         "key": "sessionTelemetry",
@@ -1412,7 +1630,9 @@
           "abstract shutdown(): Promise<void>"
         ],
         "used": false,
-        "use": "const service = ctx.get('sessionTelemetry');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('sessionTelemetry');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "sessionTitle",
@@ -1424,7 +1644,9 @@
           "register(provider: SessionTitleProvider): () => Promise<void>"
         ],
         "used": false,
-        "use": "const service = ctx.get('sessionTitle');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('sessionTitle');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "settings",
@@ -1438,7 +1660,9 @@
           "async mutate(ns: string, ops: readonly SettingsPathOp[], expectedRevision?: number): Promise<void>"
         ],
         "used": false,
-        "use": "const service = ctx.get('settings');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('settings');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "settingsController",
@@ -1451,7 +1675,8 @@
           "@Remote async openSettingsDocument(signal: AbortSignal): Promise<SettingsDocumentOpenValue>"
         ],
         "used": false,
-        "use": "const service = ctx.get('settingsController');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('settingsController');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.2-alpha.1"
       },
       {
         "key": "shell",
@@ -1461,7 +1686,9 @@
           "abstract execute(spec: ShellExecSpec): Promise<ShellExecution>"
         ],
         "used": false,
-        "use": "const service = ctx.get('shell');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('shell');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "shellEnv",
@@ -1472,7 +1699,9 @@
           "list(): BashEnvVariableInfo[]"
         ],
         "used": false,
-        "use": "const service = ctx.get('shellEnv');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('shellEnv');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "skills",
@@ -1485,7 +1714,9 @@
           "async get(name: string, options: SkillViewOptions = {}): Promise<SkillDefinition | undefined>"
         ],
         "used": false,
-        "use": "const service = ctx.get('skills');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('skills');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "speechController",
@@ -1499,7 +1730,8 @@
           "@Remote async transcribe(request: TranscriptionRequest, signal: AbortSignal): Promise<Transcript>"
         ],
         "used": false,
-        "use": "const service = ctx.get('speechController');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('speechController');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.7-alpha.1"
       },
       {
         "key": "speechToText",
@@ -1516,7 +1748,8 @@
           "async transcribe(spec: SpeechSpec, signal: AbortSignal): Promise<Transcript>"
         ],
         "used": false,
-        "use": "const service = ctx.get('speechToText');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('speechToText');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.7-alpha.1"
       },
       {
         "key": "spillStore",
@@ -1525,7 +1758,9 @@
           "abstract saveText(input: SaveTextSpill): Promise<SpillRef>"
         ],
         "used": false,
-        "use": "const service = ctx.get('spillStore');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('spillStore');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "ssh",
@@ -1537,7 +1772,8 @@
           "dispose(): Promise<void>"
         ],
         "used": false,
-        "use": "const service = ctx.get('ssh');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('ssh');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.6-alpha.1"
       },
       {
         "key": "storage",
@@ -1548,7 +1784,9 @@
           "form<K extends keyof StorageForms>(form: K): StorageForms[K]"
         ],
         "used": false,
-        "use": "const service = ctx.get('storage');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('storage');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "storageDomain",
@@ -1559,7 +1797,9 @@
           "async closeAll(): Promise<void>"
         ],
         "used": false,
-        "use": "const service = ctx.get('storageDomain');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('storageDomain');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "subagentModelSelection",
@@ -1568,7 +1808,8 @@
           "current(): SubagentModelSelectionSettings"
         ],
         "used": false,
-        "use": "const service = ctx.get('subagentModelSelection');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('subagentModelSelection');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.2-alpha.1"
       },
       {
         "key": "subagents",
@@ -1591,7 +1832,9 @@
           "list(): string[]"
         ],
         "used": false,
-        "use": "const service = ctx.get('subagents');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('subagents');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "subprocess",
@@ -1603,7 +1846,9 @@
           "abstract spawnTerminal(spec: SubprocessTerminalSpawnSpec): Promise<SubprocessTerminalHandle>"
         ],
         "used": false,
-        "use": "const service = ctx.get('subprocess');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('subprocess');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "systemPrompt",
@@ -1620,7 +1865,9 @@
           "async assemble(context: AssembleContext = {}): Promise<PromptAssembly>"
         ],
         "used": false,
-        "use": "const service = ctx.get('systemPrompt');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('systemPrompt');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "terminalController",
@@ -1636,7 +1883,8 @@
           "@Remote async close(agent: Agent, id: WebTerminalId): Promise<void>"
         ],
         "used": false,
-        "use": "const service = ctx.get('terminalController');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('terminalController');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.6-alpha.1"
       },
       {
         "key": "terminals",
@@ -1653,7 +1901,9 @@
           "list(owner: Agent): TerminalSessionSnapshot[]"
         ],
         "used": false,
-        "use": "const service = ctx.get('terminals');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('terminals');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "timer",
@@ -1667,7 +1917,9 @@
           "debounce<F extends (...args: any[]) => void>(callback: F, delay: number): F & { dispose: () => void }"
         ],
         "used": false,
-        "use": "const service = ctx.get('timer');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('timer');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "tokenMeter",
@@ -1677,7 +1929,9 @@
           "estimateMessage(message: Message): number"
         ],
         "used": false,
-        "use": "const service = ctx.get('tokenMeter');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('tokenMeter');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "toolResultPruner",
@@ -1689,7 +1943,9 @@
           "pruneSession(session: Session): PruneResult"
         ],
         "used": false,
-        "use": "const service = ctx.get('toolResultPruner');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('toolResultPruner');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "tools",
@@ -1705,7 +1961,9 @@
           "async execute(exec: ToolExecutionInput): Promise<ToolExecutionResult>"
         ],
         "used": true,
-        "use": "const service = ctx.get('tools');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('tools');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "translator",
@@ -1716,7 +1974,8 @@
           "async translate(spec: TranslationSpec, signal?: AbortSignal): Promise<string>"
         ],
         "used": false,
-        "use": "const service = ctx.get('translator');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('translator');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.2.1-alpha.2"
       },
       {
         "key": "typert",
@@ -1731,7 +1990,9 @@
           "toJSONSchema(key: string, params?: z.core.ToJSONSchemaParams): z.core.JSONSchema.BaseSchema"
         ],
         "used": false,
-        "use": "const service = ctx.get('typert');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('typert');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "typertGateway",
@@ -1744,7 +2005,9 @@
           "async stream(request: InvokeRemoteRequest): Promise<AsyncIterable<unknown>>"
         ],
         "used": false,
-        "use": "const service = ctx.get('typertGateway');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('typertGateway');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "userQuestions",
@@ -1756,7 +2019,9 @@
           "async ask(request: AskUserQuestionRequest): Promise<AskUserQuestionAnswer>"
         ],
         "used": false,
-        "use": "const service = ctx.get('userQuestions');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('userQuestions');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "web",
@@ -1768,7 +2033,9 @@
           "async fetch(request: WebFetchRequest, signal?: AbortSignal): Promise<WebFetchResult>"
         ],
         "used": false,
-        "use": "const service = ctx.get('web');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('web');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "webApp",
@@ -1777,7 +2044,8 @@
           "getAdvertisedUrl(): string"
         ],
         "used": true,
-        "use": "const service = ctx.get('webApp');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('webApp');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.2.1-alpha.3"
       },
       {
         "key": "webhookRuntime",
@@ -1787,7 +2055,8 @@
           "dispatch<K extends string>(delivery: VerifiedWebhookDelivery<K>): void"
         ],
         "used": false,
-        "use": "const service = ctx.get('webhookRuntime');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('webhookRuntime');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.2-alpha.1"
       },
       {
         "key": "webServer",
@@ -1803,7 +2072,9 @@
           "renderIndex(html: string): string"
         ],
         "used": true,
-        "use": "const service = ctx.get('webServer');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('webServer');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "workflowEngine",
@@ -1812,7 +2083,9 @@
           "abstract start(request: WorkflowStartRequest): WorkflowRun"
         ],
         "used": false,
-        "use": "const service = ctx.get('workflowEngine');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('workflowEngine');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "workingDirectory",
@@ -1824,7 +2097,8 @@
           "set(agent: Agent, path: string, signal?: AbortSignal): Promise<string>"
         ],
         "used": true,
-        "use": "const service = ctx.get('workingDirectory');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('workingDirectory');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.2.1-alpha.2"
       },
       {
         "key": "workspaceChanges",
@@ -1834,7 +2108,8 @@
           "diff(sessionId: SessionId, seq: number, index: number, signal: AbortSignal): Promise<WorkspaceFileDiff | undefined>"
         ],
         "used": false,
-        "use": "const service = ctx.get('workspaceChanges');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('workspaceChanges');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.6-alpha.2"
       },
       {
         "key": "workspaceController",
@@ -1853,7 +2128,8 @@
           "@Remote({ mode: 'stream' }) async *follow(signal: AbortSignal): AsyncIterable<WorkspaceFollowFrame>"
         ],
         "used": false,
-        "use": "const service = ctx.get('workspaceController');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('workspaceController');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.2-alpha.1"
       },
       {
         "key": "workspaceFiles",
@@ -1866,7 +2142,8 @@
           "@Remote({ mode: 'stream' }) changes(workspaceFileScope: WorkspaceFileScope, path: string, signal: AbortSignal): AsyncIterable<WorkspaceFileWatchFrame>"
         ],
         "used": false,
-        "use": "const service = ctx.get('workspaceFiles');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('workspaceFiles');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.5-alpha.1"
       },
       {
         "key": "workspaceRegistry",
@@ -1885,7 +2162,9 @@
           "async resolveByPath(path: string): Promise<Workspace | undefined>"
         ],
         "used": false,
-        "use": "const service = ctx.get('workspaceRegistry');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('workspaceRegistry');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "worktrees",
@@ -1894,7 +2173,8 @@
           "async create(agent: Agent, request: CreateWorktreeRequest = {}, signal?: AbortSignal): Promise<CreatedWorktree>"
         ],
         "used": false,
-        "use": "const service = ctx.get('worktrees');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('worktrees');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.2.1-alpha.2"
       }
     ],
     "client": [
@@ -1909,7 +2189,9 @@
           "closeRightbar(): void"
         ],
         "used": false,
-        "use": "const service = ctx.get('layout');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('layout');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "locale",
@@ -1926,7 +2208,9 @@
           "bind(ns: string): Translate"
         ],
         "used": false,
-        "use": "const service = ctx.get('locale');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('locale');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "sessions",
@@ -1942,7 +2226,9 @@
           "binding(id: SessionId): SessionBinding | undefined"
         ],
         "used": false,
-        "use": "const service = ctx.get('sessions');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('sessions');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "slots",
@@ -1953,7 +2239,9 @@
           "inject(key: keyof SlotMap & string, callback: () => SlotInjectionEffect): () => void"
         ],
         "used": true,
-        "use": "const service = ctx.get('slots');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('slots');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "theme",
@@ -1966,7 +2254,9 @@
           "overrideTokens(source: string, tokens: ThemeTokenOverrides): () => void"
         ],
         "used": false,
-        "use": "const service = ctx.get('theme');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('theme');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "timer",
@@ -1980,7 +2270,9 @@
           "debounce<F extends (...args: any[]) => void>(callback: F, delay: number): F & { dispose: () => void }"
         ],
         "used": false,
-        "use": "const service = ctx.get('timer');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('timer');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       },
       {
         "key": "uiWorkspace",
@@ -1998,7 +2290,8 @@
           "createDirectory(path: string, name: string): Promise<string>"
         ],
         "used": false,
-        "use": "const service = ctx.get('uiWorkspace');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('uiWorkspace');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.2-alpha.1"
       },
       {
         "key": "workspaces",
@@ -2012,7 +2305,9 @@
           "insertSessionBefore( workspaceId: WorkspaceId, sessionId: SessionId, beforeSessionId?: SessionId, ): Promise<WorkspaceView>"
         ],
         "used": false,
-        "use": "const service = ctx.get('workspaces');\nif (service !== undefined) {\n  // service.<method>\n}"
+        "use": "const service = ctx.get('workspaces');\nif (service !== undefined) {\n  // service.<method>\n}",
+        "since": "0.1.0-rc.7",
+        "sinceBase": true
       }
     ],
     "extraClient": [
@@ -2025,7 +2320,9 @@
           "openTabs.getSnapshot()",
           "tabDomain.occurrence(sessionId, { id })"
         ],
-        "used": true
+        "used": true,
+        "since": null,
+        "sinceNote": "源码可见：Inspect 目录未收录，暂无版本追踪"
       },
       {
         "key": "sidebarRightTabs",
@@ -2033,7 +2330,9 @@
         "methods": [
           "register(definition): () => void"
         ],
-        "used": true
+        "used": true,
+        "since": null,
+        "sinceNote": "源码可见：Inspect 目录未收录，暂无版本追踪"
       },
       {
         "key": "commandUi",
@@ -2043,7 +2342,9 @@
           "decorate(decoration): () => void",
           "dismiss(name)"
         ],
-        "used": true
+        "used": true,
+        "since": null,
+        "sinceNote": "源码可见：Inspect 目录未收录，暂无版本追踪"
       },
       {
         "key": "inputTriggers",
@@ -2051,7 +2352,9 @@
         "methods": [
           "registerSource(source): () => void"
         ],
-        "used": false
+        "used": false,
+        "since": null,
+        "sinceNote": "源码可见：Inspect 目录未收录，暂无版本追踪"
       }
     ]
   },

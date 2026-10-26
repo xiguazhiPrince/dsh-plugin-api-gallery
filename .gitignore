@@ -3,3 +3,5 @@ node_modules/
 dump-config.yml
 probe*.cjs
 .idea/
+.scan/upstream/
+.scan/rc3/

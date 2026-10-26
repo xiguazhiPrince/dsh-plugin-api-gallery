@@ -267,6 +267,38 @@ window.__ModuleLoader__.load({
         scope: 'session',
         desc: 'plan 正在 review 时的动作；只有该瞬时状态出现（待挂载验证）。approval 仍由 question composer 负责。',
       },
+
+      // ---- 0.2.1-rc.3 新增的 3 个 More 菜单 actions slot（root list） ----
+      {
+        slot: 'sidebar.panellist.actions',
+        fullSlot: true,
+        slug: 'panellist-actions',
+        mode: 'menu-item',
+        order: 50,
+        scope: 'root',
+        since: '0.2.1-rc.3',
+        desc: '0.2.1-rc.3 新增：左侧栏面板列表「更多」菜单的行容器。侧栏只在这个 list 有注册项时显示「更多」；本示例在菜单里加一行「图鉴demo」。',
+      },
+      {
+        slot: 'conversation.session.header.views.actions',
+        fullSlot: true,
+        slug: 'views-actions',
+        mode: 'menu-item',
+        order: 50,
+        scope: 'root',
+        since: '0.2.1-rc.3',
+        desc: '0.2.1-rc.3 新增：会话头部 View 标签行「更多」菜单的行容器。标签条在注册的 View 多于一个时显示「更多」；本示例在菜单里加一行「图鉴demo」。',
+      },
+      {
+        slot: 'sidebar.right.tab.guide.actions',
+        fullSlot: true,
+        slug: 'guide-actions',
+        mode: 'menu-item',
+        order: 50,
+        scope: 'root',
+        since: '0.2.1-rc.3',
+        desc: '0.2.1-rc.3 新增：右侧栏起始页工具卡片「更多」菜单的行容器。guide 只在这个 list 有注册项时显示「更多」；本示例在菜单里加一行「图鉴demo」。',
+      },
     ];
 
     function slotTitle(key) {
@@ -286,6 +318,27 @@ window.__ModuleLoader__.load({
     function errorText(error) {
       if (error === null || error === undefined) return '';
       return error.message ? String(error.message) : String(error);
+    }
+
+    // Version badge: the first DSH release tag whose generated Cordis inspect
+    // catalogs list this interface (see scripts/build-versions.cjs).
+    function VersionTag({ since, sinceBase, note }) {
+      if (!since) {
+        return h('span', {
+          className: 'sl-tag sl-ver',
+          title: note || 'Inspect 目录未收录，暂无版本追踪',
+        }, '版本未追踪');
+      }
+      return h(
+        'span',
+        {
+          className: 'sl-tag sl-ver',
+          title: sinceBase
+            ? `最早追踪到的版本是 ${since}；更早的 release 未纳入追踪`
+            : `首次出现在 DSH ${since}`,
+        },
+        sinceBase ? `≤ ${since}` : `自 ${since}`,
+      );
     }
 
     function meta(key, id, kind, scope, desc, label = true) {
@@ -318,6 +371,7 @@ window.__ModuleLoader__.load({
         mode: entry.mode,
         desc: entry.desc,
         label: true,
+        since: entry.since ?? null,
         code: lines.join('\n'),
       };
     }
@@ -1015,6 +1069,7 @@ window.__ModuleLoader__.load({
           h('dt', null, '注册 id'), h('dd', null, h('code', { className: 'sl-mono' }, info ? info.id : '—')),
           h('dt', null, 'mode'), h('dd', null, h('code', { className: 'sl-mono' }, entry.mode ?? '—')),
           h('dt', null, 'order'), h('dd', null, String(entry.order ?? '—')),
+          h('dt', null, '首次出现'), h('dd', null, h(VersionTag, { since: info ? info.since : null })),
         ),
         h('p', { className: 'sl-note' }, '通用 GalleryEntry 入口：owner props 一律按 undefined 防御（只读判空、不调用 openFile 等副作用）；点击只打开这个 shell.overlay 详情弹层，没有 per-entry 的 bespoke 弹层。'),
       );
@@ -1037,7 +1092,7 @@ window.__ModuleLoader__.load({
       };
       const glyph = h('span', { className: 'sl-gen-glyph', 'aria-hidden': true }, '图');
       const label = h('span', { className: 'sl-gen-label' }, '图鉴demo');
-      const short = h('span', { className: 'sl-gen-slot' }, shortSlot(slot));
+      const short = h('span', { className: 'sl-gen-slot' }, entry.fullSlot ? slot : shortSlot(slot));
       if (mode === 'icon-button') return h('button', base, glyph);
       if (mode === 'link') return h('button', base, '图鉴demo');
       if (mode === 'badge') return h('button', base, glyph, h('span', null, '图鉴demo'));
@@ -1366,6 +1421,7 @@ window.__ModuleLoader__.load({
           'summary',
           null,
           h('code', { className: 'sl-nonui-name' }, item.name),
+          h(VersionTag, { since: item.since, sinceBase: item.sinceBase }),
           h('span', { className: 'sl-nonui-region' }, item.regionLabel ?? item.region ?? '—'),
           h('span', { className: 'sl-tag' }, `${item.kind}/${item.scope}`),
           h('span', { className: 'sl-nonui-reason', title: item.reason }, item.reason),
@@ -1384,6 +1440,7 @@ window.__ModuleLoader__.load({
             h('dt', null, 'kind'), h('dd', null, item.kind),
             h('dt', null, 'scope'), h('dd', null, item.scope),
             h('dt', null, 'parent'), h('dd', null, item.parent ?? '—'),
+            h('dt', null, '首次出现'), h('dd', null, h(VersionTag, { since: item.since, sinceBase: item.sinceBase })),
             h('dt', null, 'replaceRisk'), h('dd', null, item.replaceRisk ?? '—'),
             item.keyDomain ? h('dt', null, 'keyDomain') : null,
             item.keyDomain ? h('dd', null, h('code', { className: 'sl-mono' }, item.keyDomain)) : null,
@@ -1463,8 +1520,18 @@ window.__ModuleLoader__.load({
           'div',
           { className: 'sl-nonui-summary' },
           h('div', { className: 'sl-nonui-summary-title' }, '57 个不可见 Slot + 6 个 Factory'),
-          h('div', { className: 'sl-nonui-summary-sub' }, `数据来自 /plugin-api-gallery/non-ui（DSH ${data.dshVersion}，${data.generatedAt}）。这些不是 demo 注册，只是“为什么不做 UI”的逐项参考。`),
+          h('div', { className: 'sl-nonui-summary-sub' }, `数据来自 /plugin-api-gallery/non-ui（DSH ${data.dshVersion}，${data.generatedAt}）。这些不是 demo 注册，只是“为什么不做 UI”的逐项参考。版本号 = 该 Slot 首次出现在 DSH release 的版本；≤ 表示最早追踪版本之前就存在。`),
           h('div', { className: 'sl-nonui-badges' }, data.groups.map((group) => h('span', { key: group.id, className: 'sl-tag' }, group.title))),
+          Array.isArray(data.newSlots) && data.newSlots.length > 0 ? h(
+            'div',
+            { className: 'sl-nonui-badges' },
+            h('span', { className: 'sl-tag' }, `${data.dshVersion} 新增 Slot（已在各自位置加 demo）：`),
+            data.newSlots.map((slot) => h('span', {
+              key: slot.name,
+              className: 'sl-tag sl-ver',
+              title: `${slot.name} · ${slot.kind}/${slot.scope} · parent ${slot.parent ?? '—'}`,
+            }, `${slot.name}（自 ${slot.since}）`)),
+          ) : null,
         ),
         h(UiMap, { regions, active: regionFilter, onSelect: setRegionFilter }),
         h(
@@ -1504,6 +1571,7 @@ window.__ModuleLoader__.load({
           'summary',
           null,
           h('code', { className: 'sl-ref-name' }, event.name),
+          h(VersionTag, { since: event.since, sinceBase: event.sinceBase }),
           h('span', { className: 'sl-ref-mode' }, event.mode),
           h('span', { className: 'sl-ref-desc' }, eventZh(event)),
         ),
@@ -1516,6 +1584,7 @@ window.__ModuleLoader__.load({
             'dl',
             { className: 'sl-kv' },
             h('dt', null, 'scope'), h('dd', null, scope),
+            h('dt', null, '首次出现'), h('dd', null, h(VersionTag, { since: event.since, sinceBase: event.sinceBase })),
             h('dt', null, 'mode'), h('dd', null, event.mode),
             h('dt', null, 'signature'), h('dd', null, h('code', { className: 'sl-mono' }, event.signature)),
           ),
@@ -1541,7 +1610,7 @@ window.__ModuleLoader__.load({
           'div',
           { className: 'sl-nonui-summary' },
           h('div', { className: 'sl-nonui-summary-title' }, `${data.counts.hostEvents} 个 Host 事件 + ${data.counts.clientEvents} 个 Client 事件`),
-          h('div', { className: 'sl-nonui-summary-sub' }, '事件没有视觉座位：用 ctx.on 观察或改写；waterfall 必须 return next()，emit/serial/parallel 按各自语义。它们是非 UI 接口，但可以驱动 UI、日志和状态。'),
+          h('div', { className: 'sl-nonui-summary-sub' }, '事件没有视觉座位：用 ctx.on 观察或改写；waterfall 必须 return next()，emit/serial/parallel 按各自语义。它们是非 UI 接口，但可以驱动 UI、日志和状态。版本号 = 该事件首次出现在 DSH release 的版本；≤ 表示最早追踪版本之前就存在。'),
           h('div', { className: 'sl-nonui-badges' },
             h('span', { className: 'sl-tag' }, 'waterfall'),
             h('span', { className: 'sl-tag' }, 'emit'),
@@ -1582,6 +1651,7 @@ window.__ModuleLoader__.load({
           'summary',
           null,
           h('code', { className: 'sl-ref-name' }, service.key),
+          h(VersionTag, { since: service.since, sinceBase: service.sinceBase, note: service.sinceNote }),
           service.used ? h('span', { className: 'sl-ref-used' }, '图鉴已用') : null,
           h('span', { className: 'sl-ref-desc' }, serviceZh(service, scope)),
         ),
@@ -1594,6 +1664,7 @@ window.__ModuleLoader__.load({
             'dl',
             { className: 'sl-kv' },
             h('dt', null, 'scope'), h('dd', null, scope),
+            h('dt', null, '首次出现'), h('dd', null, h(VersionTag, { since: service.since, sinceBase: service.sinceBase, note: service.sinceNote })),
             h('dt', null, 'methods'), h('dd', null, String(service.methods.length)),
           ),
           h('div', { className: 'sl-ref-code' }, h(CodeBlock, { code: service.use })),
@@ -1620,7 +1691,7 @@ window.__ModuleLoader__.load({
           'div',
           { className: 'sl-nonui-summary' },
           h('div', { className: 'sl-nonui-summary-title' }, `${data.counts.hostServices} 个 Host Service + ${data.counts.clientServices} 个 Client Service + ${data.counts.extraClientServices} 个源码确认的额外 Client Service`),
-          h('div', { className: 'sl-nonui-summary-sub' }, 'Service 是 Cordis 上下文上的命名能力对象，不是 UI 座位：插件用 ctx.get("key")（或 inject 声明强依赖）拿到它，再调用其方法。Host Service 在 Host/Node 进程；Client Service 在浏览器。方法可能是读状态、注册 registry（tools/commands/tabs）、执行动作（openTab/pickDirectory）或内部管理。'),
+          h('div', { className: 'sl-nonui-summary-sub' }, 'Service 是 Cordis 上下文上的命名能力对象，不是 UI 座位：插件用 ctx.get("key")（或 inject 声明强依赖）拿到它，再调用其方法。Host Service 在 Host/Node 进程；Client Service 在浏览器。方法可能是读状态、注册 registry（tools/commands/tabs）、执行动作（openTab/pickDirectory）或内部管理。版本号 = 该 Service 首次出现在 DSH release 的版本；≤ 表示最早追踪版本之前就存在。'),
           h('div', { className: 'sl-nonui-badges' },
             h('span', { className: 'sl-tag' }, '读：sessions.get / agents.list'),
             h('span', { className: 'sl-tag' }, '注册：tools.register / commands.register'),
@@ -1749,7 +1820,7 @@ window.__ModuleLoader__.load({
           { className: 'sl-page-head' },
           h('div', { className: 'sl-kicker' }, '图鉴demo · main + sidebar.panellist'),
           h('h1', { className: 'sl-page-title' }, '非 UI 接口参考'),
-          h('p', { className: 'sl-page-desc' }, '本页由 sidebar.panellist 的图鉴demo 图标打开；收录 57 个不可见 Slot + 6 个 Factory、Host/Client Events、Host/Client Services、Tools/Builtins。43 个可交互 Slot 仍在各自位置。'),
+          h('p', { className: 'sl-page-desc' }, '本页由 sidebar.panellist 的图鉴demo 图标打开；收录 57 个不可见 Slot + 6 个 Factory、Host/Client Events、Host/Client Services、Tools/Builtins。46 个可交互 Slot 仍在各自位置（含 0.2.1-rc.3 新增的 3 个 More 菜单 actions slot）。每行的版本号 = 该接口首次出现在 DSH release 的版本。'),
         ),
         h('div', { className: 'sl-actions' },
           h(Btn, { primary: true, onClick: openRightTab }, '打开右侧栏图鉴demo'),
@@ -1979,6 +2050,7 @@ window.__ModuleLoader__.load({
 .sl-page-desc { margin: 0; color: var(--dsw-alias-label-secondary); font-size: 13px; max-width: 760px; }
 .sl-tags { display: flex; gap: 6px; flex-wrap: wrap; margin: 10px 0 16px; }
 .sl-tag { font-size: 10px; color: var(--dsw-alias-label-secondary); border: 1px solid var(--dsw-alias-border-l1); border-radius: 999px; padding: 1px 7px; }
+.sl-ver { color: var(--dsw-alias-brand-primary); border-color: var(--dsw-alias-brand-primary); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; white-space: nowrap; }
 .sl-extra { margin: 0 0 14px; }
 .sl-note { margin: 0 0 10px; color: var(--dsw-alias-label-secondary); font-size: 12px; line-height: 1.6; }
 .sl-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin: 12px 0; }

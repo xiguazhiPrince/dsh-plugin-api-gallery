@@ -35,12 +35,20 @@ const DEMO = {
   'slot:settings.plugins.tab': 'Plugins 设置 tab',
   'slot:shell.overlay': '详情弹层 / Toast',
   'slot:conversation.hero.options': 'New Session Hero 选项',
+  'slot:sidebar.panellist.actions': '左侧栏「更多」菜单行（0.2.1-rc.3）',
+  'slot:conversation.session.header.views.actions': '会话头部 View「更多」菜单行（0.2.1-rc.3）',
+  'slot:sidebar.right.tab.guide.actions': '右侧栏起始页「更多」菜单行（0.2.1-rc.3）',
   'builtin:React': '所有 demo 组件',
   'builtin:ctx': 'slot 注册与 ctx.get',
 };
 
 function demoFor(category, name) {
   return DEMO[`${category}:${name}`] ?? '';
+}
+
+function sinceText(entry) {
+  if (entry === undefined || !entry.since) return '—';
+  return entry.sinceBase ? `≤ ${entry.since}` : entry.since;
 }
 
 function esc(text) {
@@ -59,6 +67,7 @@ push(
   '',
   `> 扫描自运行的 DSH **${catalog.meta.dshVersion}**（${catalog.meta.scannedAt}），来源：${catalog.meta.source}。`,
   '> 本文件由 `scripts/build-docs.cjs` 从 `catalog.json` 生成；接口会随 DSH 版本变化，写代码前请用 `cordis_inspect_query` 复核。',
+  '> **版本列** = 该接口首次出现在 DSH release 的版本（由 `scripts/build-versions.cjs` 从各 release tag 的生成式 inspect 目录计算）；`≤ X` 表示最早追踪版本 X 之前就存在。',
   '',
   '## 统计',
   '',
@@ -161,7 +170,7 @@ push(
 
 for (const service of catalog.host.services) {
   const demo = demoFor('host-service', service.key);
-  push(`### ${service.key}`, '', esc(service.description), '', demo ? `**在线 Demo**：${demo}` : '**在线 Demo**：—（只读目录 + 用法片段）', '');
+  push(`### ${service.key}`, '', esc(service.description), '', `**首次出现**：${sinceText(service)}`, '', demo ? `**在线 Demo**：${demo}` : '**在线 Demo**：—（只读目录 + 用法片段）', '');
   push('<details><summary>方法签名</summary>', '', '```ts');
   for (const method of service.methods) push(method);
   push('```', '', '</details>', '');
@@ -171,16 +180,16 @@ for (const service of catalog.host.services) {
 }
 
 push('## Host Events', '', `${catalog.meta.counts.hostEvents} 个。\`waterfall\` 必须返回 \`next()\`；\`emit\` 只观察；\`serial\`/parallel 按文档等待。`, '');
-push('| 事件 | 模式 | 说明 | 在线 Demo |', '| --- | --- | --- | --- |');
+push('| 事件 | 版本 | 模式 | 说明 | 在线 Demo |', '| --- | --- | --- | --- | --- |');
 for (const event of catalog.host.events) {
-  push(`| ${code(event.name)} | ${event.mode} | ${esc(event.description)} | ${demoFor('host-event', event.name) || '—'} |`);
+  push(`| ${code(event.name)} | ${sinceText(event)} | ${event.mode} | ${esc(event.description)} | ${demoFor('host-event', event.name) || '—'} |`);
 }
 push('');
 
 push('## Client Services', '', `${catalog.meta.counts.clientServices} 个。客户端服务通过受限 \`ctx.get\` 获取。`, '');
 for (const service of catalog.client.services) {
   const demo = demoFor('client-service', service.key);
-  push(`### ${service.key}`, '', esc(service.description), '', demo ? `**在线 Demo**：${demo}` : '**在线 Demo**：—', '');
+  push(`### ${service.key}`, '', esc(service.description), '', `**首次出现**：${sinceText(service)}`, '', demo ? `**在线 Demo**：${demo}` : '**在线 Demo**：—', '');
   push('<details><summary>方法签名</summary>', '', '```ts');
   for (const method of service.methods) push(method);
   push('```', '', '</details>', '');
@@ -188,9 +197,9 @@ for (const service of catalog.client.services) {
 }
 
 push('## Client Events', '', `${catalog.meta.counts.clientEvents} 个。`, '');
-push('| 事件 | 模式 | 说明 | 在线 Demo |', '| --- | --- | --- | --- |');
+push('| 事件 | 版本 | 模式 | 说明 | 在线 Demo |', '| --- | --- | --- | --- | --- |');
 for (const event of catalog.client.events) {
-  push(`| ${code(event.name)} | ${event.mode} | ${esc(event.description)} | ${demoFor('client-event', event.name) || '—'} |`);
+  push(`| ${code(event.name)} | ${sinceText(event)} | ${event.mode} | ${esc(event.description)} | ${demoFor('client-event', event.name) || '—'} |`);
 }
 push('');
 
@@ -202,18 +211,18 @@ for (const builtin of catalog.client.builtins) {
 push('');
 
 push('## Slots', '', `${catalog.meta.counts.slots} 个 Slot、${catalog.meta.counts.factories} 个 Factory。\`replaceRisk: shadows-shipped-ui\` 表示复用内置 id 会替换内置 UI；新 id 通常是增量注册。`, '');
-push('| Slot | 类型 | 作用域 | 父节点 | 用途 | 在线 Demo |', '| --- | --- | --- | --- | --- | --- |');
+push('| Slot | 版本 | 类型 | 作用域 | 父节点 | 用途 | 在线 Demo |', '| --- | --- | --- | --- | --- | --- | --- |');
 for (const slot of catalog.client.slots) {
   if (slot.type !== 'slot') continue;
-  push(`| ${code(slot.name)} | ${slot.kind} | ${slot.scope} | ${slot.parent ?? '—'} | ${esc(slot.purpose ?? slot.catalogDescription ?? '')} | ${demoFor('slot', slot.name) || '—'} |`);
+  push(`| ${code(slot.name)} | ${sinceText(slot)} | ${slot.kind} | ${slot.scope} | ${slot.parent ?? '—'} | ${esc(slot.purpose ?? slot.catalogDescription ?? '')} | ${demoFor('slot', slot.name) || '—'} |`);
 }
 push('');
 
 push('## Factories', '', 'Factory 是拥有者渲染的子界面，不是插件注册点；通常注册它下面声明的 Slot。', '');
-push('| Factory | 作用域 | 说明 |', '| --- | --- | --- |');
+push('| Factory | 版本 | 作用域 | 说明 |', '| --- | --- | --- | --- |');
 for (const factory of catalog.client.slots) {
   if (factory.type !== 'factory') continue;
-  push(`| ${code(factory.name)} | ${factory.scope} | ${esc(factory.purpose ?? '')} |`);
+  push(`| ${code(factory.name)} | ${sinceText(factory)} | ${factory.scope} | ${esc(factory.purpose ?? '')} |`);
 }
 push('');
 
@@ -226,7 +235,7 @@ push('');
 
 push('## 分布式 Demo 对照',
   '',
-  '本轮不是总览页，而是把 demo 放进 Slot 的真实位置；43 个可增量 Slot（15 原有 + 18 A + 10 C）已全部实现，入口标题统一为 `图鉴demo · <slot-key>`。下表只列 15 个核心入口，完整 43 项矩阵见 `docs/slot-demos.md`。',
+  '本轮不是总览页，而是把 demo 放进 Slot 的真实位置；46 个可增量 Slot（15 原有 + 18 A + 10 C + 0.2.1-rc.3 新增 3 个 actions slot）已全部实现，入口标题统一为 `图鉴demo · <slot-key>`。下表只列核心入口，完整 46 项矩阵见 `docs/slot-demos.md`。',
   '',
   '| Slot | demo 落点 | 注册方式 |',
   '| --- | --- | --- |',
@@ -245,6 +254,9 @@ push('## 分布式 Demo 对照',
   '| `settings.plugins.tab` | Plugins 设置 tab | list + 新 id |',
   '| `shell.overlay` | 详情弹层 / Toast | list + 新 id |',
   '| `conversation.hero.options` | New Session Hero 选项 | list + 新 id |',
+  '| `sidebar.panellist.actions` | 左侧栏「更多」菜单行 | list + 新 id（0.2.1-rc.3） |',
+  '| `conversation.session.header.views.actions` | 会话头部 View「更多」菜单行 | list + 新 id（0.2.1-rc.3） |',
+  '| `sidebar.right.tab.guide.actions` | 右侧栏起始页「更多」菜单行 | list + 新 id（0.2.1-rc.3） |',
   '',
   '小入口（header、input、session row、footer）用紧凑标签 + 完整 `title`/`aria-label`；tab/页面/列表项直接显示完整 `图鉴demo · <slot>`。所有小入口的详情由 `shell.overlay` 弹层展示。',
   '',
@@ -263,14 +275,17 @@ push('## 分布式 Demo 对照',
   '把结果写回 `.scan/`，然后：',
   '',
   '```sh',
+  'node scripts/build-versions.cjs',
   'node scripts/build-catalog.cjs',
   'node scripts/build-docs.cjs',
+  'node scripts/build-interfaces.cjs',
+  'node scripts/build-non-ui.cjs',
   '```',
   '',
   '## 已知边界',
   '',
   '- 目录是静态快照；运行时 `ctx.get("service")` 可能返回 `undefined`，必须判空。',
-  '- 43 个可增量 Slot（15 原有 + 18 A + 10 C）已全部实现；B 类 57 + Factory 6 属于不可增量/不可见，不注册。',
+  '- 46 个可增量 Slot（15 原有 + 18 A + 10 C + rc.3 新增 3）已全部实现；B 类 57 + Factory 6 属于不可增量/不可见，不注册。',
   '- Inspect 的 Client Service 目录是 “catalogued” 子集：`ctx.commandUi`（ui-commands）、`ctx.sidebarRight` / `ctx.sidebarRightTabs`（ui-sidebar-right）等服务不在快照里，但包内确实提供；本项目直接消费了它们。',
   '- 不是每个 Slot 都适合直接塞 demo：`main`、`sidebar`、`rightbar.session` 等 single/replace 型 Slot 会替换内置 UI，本示例不占用。',
   '- 原生右侧栏的 tab 列表是 registry，不是 Slot；`sidebar.right.pane.tab` 只渲染 body。加列表项必须用 `ctx.sidebarRightTabs.register`。',

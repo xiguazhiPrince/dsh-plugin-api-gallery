@@ -1,12 +1,14 @@
 ﻿# DSH Plugin API Gallery · 插件接口图鉴
 
-**你想给 DSH 加个功能，但说不清它该长在页面哪个位置？** 这个插件把 43 个可插入位置全部实装了一遍：每个入口都长在真实位置上、都带注册代码，点开就是“这里该怎么注册”。另有全量接口图鉴：100 个 Slot（其中 57 个不可注册，逐个写明为什么）、98 个 Host Service、76 个 Host Event、6 个 Factory。
+**你想给 DSH 加个功能，但说不清它该长在页面哪个位置？** 这个插件把 46 个可插入位置全部实装了一遍：每个入口都长在真实位置上、都带注册代码，点开就是“这里该怎么注册”。另有全量接口图鉴：103 个 Slot（其中 57 个不可注册，逐个写明为什么）、98 个 Host Service、76 个 Host Event、6 个 Factory。
 
-Know what your plugin should do, but not where in the UI it belongs? 43 Slots demoed in their real positions, each with registration code — plus 100 Slots / 98 Host Services / 76 Host Events, including the 57 Slots you can't register, and why.
+Know what your plugin should do, but not where in the UI it belongs? 46 Slots demoed in their real positions, each with registration code — plus 103 Slots / 98 Host Services / 76 Host Events, including the 57 Slots you can't register, and why.
 
-**装它解决三个问题：**我的功能该长在哪 → 看下表的意图索引；这个位置能不能插 → 看 43 个实测；某个接口存不存在、怎么调 → 查 Service / Event 页。
+**装它解决三个问题：**我的功能该长在哪 → 看下表的意图索引；这个位置能不能插 → 看 46 个实测；某个接口存不存在、怎么调 → 查 Service / Event 页。
 
-> 会在 43 处真实位置插入入口，建议装在测试 profile。找具体 Slot 直接 Ctrl+F 下面的 slot key 索引。
+> 会在 46 处真实位置插入入口，建议装在测试 profile。找具体 Slot 直接 Ctrl+F 下面的 slot key 索引。
+>
+> **0.2.1-rc.3 已对齐**：Host/Client Service、Event、Slot、Factory 的每一行都带「首次出现版本」（来自各 release tag 的生成式 inspect 目录）；rc.3 新增的 3 个「更多」菜单 actions slot 已各加一个 demo，标题为 `图鉴demo · <slot>`。
 
 ![DSH 插件接口图鉴：红框为插件在真实 UI 位置上的入口](assets/hero.png)
 
@@ -31,13 +33,13 @@ Know what your plugin should do, but not where in the UI it belongs? 43 Slots de
 | 加「+」菜单或斜杠命令 | `ctx.commandUi.register`（**是 Service，不是 Slot**） | composer 的「指令」分组里多一项 |
 | 在插件详情页加区块 | `plugins.detail.section` / `plugins.detail.badge` / `plugins.detail.actions` | 详情页下方说明区、标题旁标签、操作按钮 |
 
-**表里查不到，大概率就是“不该插”的位置。** 57 个 Slot 属于 single / chain / fixed-key / owner-dispatch-only，硬注册会替换内置 UI 或永远不渲染 —— 每一个都在「Slot / Factory」页写明了原因；全量 100 个 Slot 的 census 和 UI 区域图见 [docs/all-slots.md](docs/all-slots.md)，分类依据见 [docs/slot-classification.md](docs/slot-classification.md)。
+**表里查不到，大概率就是“不该插”的位置。** 57 个 Slot 属于 single / chain / fixed-key / owner-dispatch-only，硬注册会替换内置 UI 或永远不渲染 —— 每一个都在「Slot / Factory」页写明了原因；全量 103 个 Slot 的 census 和 UI 区域图见 [docs/all-slots.md](docs/all-slots.md)，分类依据见 [docs/slot-classification.md](docs/slot-classification.md)。
 
 ---
 
-## 43 个 Slot 都长在哪
+## 46 个 Slot 都长在哪
 
-这不是一个“接口总览页”。它把 **43 个 Slot 注册的 demo 直接放进各自的真实位置**：15 个既有代表性 Slot + **A-新增 18 项 + C 子集 10 项**（会话 View 标签栏、会话右上角、原生右侧栏、输入框、消息动作、Session 行、Settings、Plugins 页/详情页、main 面板、tool/command 视图，以及 onboarding/review/plan-review 等少见状态）……另外在 composer 的 **+ 菜单「指令」分组**里加了一项 `图鉴demo · commandUi.register`（客户端服务，不是 Slot）。每个 Slot 入口的标题都写成：
+这不是一个“接口总览页”。它把 **46 个 Slot 注册的 demo 直接放进各自的真实位置**：15 个既有代表性 Slot + **A-新增 18 项 + C 子集 10 项 + 0.2.1-rc.3 新增 3 项**（会话 View 标签栏、会话右上角、原生右侧栏、输入框、消息动作、Session 行、Settings、Plugins 页/详情页、main 面板、tool/command 视图，以及 onboarding/review/plan-review 等少见状态）……另外在 composer 的 **+ 菜单「指令」分组**里加了一项 `图鉴demo · commandUi.register`（客户端服务，不是 Slot）。每个 Slot 入口的标题都写成：
 
 ```text
 图鉴demo · <slot-key>
@@ -45,9 +47,9 @@ Know what your plugin should do, but not where in the UI it belongs? 43 Slots de
 
 例如 `图鉴demo · conversation.view`、`图鉴demo · conversation.session.header.utilities`。点击小入口会由 `shell.overlay` 弹出该 Slot 的完整说明、注册代码和实时效果；整页/整 tab 的 Slot 则直接把说明和代码渲染在自己的页面里。
 
-> 接口快照来自 **DSH 0.2.1-rc.2**，扫描时间 **2026-10-23**。全量 98 个 Host Service、76 个 Host Event、100 个 Slot 的目录见 [docs/interface-catalog.md](docs/interface-catalog.md)。
+> 接口快照来自 **DSH 0.2.1-rc.3**，扫描时间 **2026-10-26**。全量 98 个 Host Service、76 个 Host Event、103 个 Slot 的目录（含版本列）见 [docs/interface-catalog.md](docs/interface-catalog.md)。
 >
-> 安全边界：只注册 **list / 自家 key 的 keyed** Slot；不注册 single、chain、fixed-key、owner-dispatch-only key，也不替换任何内置 UI。B 类 57 个 + 6 个 Factory 保持不注册；A 33 + C 10 = 43 个可增量 Slot 已全部实现。分类依据见 [docs/slot-classification.md](docs/slot-classification.md)。
+> 安全边界：只注册 **list / 自家 key 的 keyed** Slot；不注册 single、chain、fixed-key、owner-dispatch-only key，也不替换任何内置 UI。B 类 57 个 + 6 个 Factory 保持不注册；A 36（含 rc.3 新增 3）+ C 10 = 46 个可增量 Slot 已全部实现。分类依据见 [docs/slot-classification.md](docs/slot-classification.md)。
 
 ---
 
@@ -138,22 +140,22 @@ Know what your plugin should do, but not where in the UI it belongs? 43 Slots de
 | B 类：owner-dispatch-only keyed | 7 | key 由 owner 注册表派发（provider-card / bundle config / document renderer 等），注册了也永远不渲染。 |
 | Factory | 6 | 由 owner 直接渲染的子界面，不是注册点。 |
 
-> 43 个可增量 Slot（15 原有 + 18 A + 10 C）已全部注册；`main` + `sidebar.panellist`、`tool.call.toolview`、`conversation.chat.commandview` 也已补齐。剩余 B 类 57 + Factory 6 属于“不可增量/不可见”，注册只会替换内置 UI 或永远不渲染，因此不注册。
+> 46 个可增量 Slot（15 原有 + 18 A + 10 C + rc.3 新增 3）已全部注册；`main` + `sidebar.panellist`、`tool.call.toolview`、`conversation.chat.commandview` 也已补齐。剩余 B 类 57 + Factory 6 属于“不可增量/不可见”，注册只会替换内置 UI 或永远不渲染，因此不注册。
 
 ## 非 UI 接口参考页
 
-侧栏的 **图鉴demo** 图标（`sidebar.panellist`）打开的 `main` 页面是“非 UI 接口参考页”，有四个 tab：
+侧栏的 **图鉴demo** 图标（`sidebar.panellist`）打开的 `main` 页面是“非 UI 接口参考页”，有四个 tab。**每个 Slot / Service / Event 行都带「首次出现版本」徽标**（`≤ x` 表示最早追踪版本之前就存在；Factory 无实际注册接口，标注为最早证据版本）：
 
 - **Slot / Factory（63）**：57 个不可见 Slot + 6 个 Factory；数据 `non-ui-slots.json`，路由 `GET /plugin-api-gallery/non-ui`；分组 `single 43 / chain 3 / fixed-key 4 / owner-dispatch 7 / Factory 6`；顶部 UI 位置示意图（左栏 / 中央 / 右侧 + frame / overlay）可点击过滤；每行有区域标签、breadcrumb、purpose、parent、replaceRisk、keyDomain、registration 和逐项原因。
-- **Events（80）**：76 Host Events + 4 Client Events；数据 `interfaces-reference.json`，路由 `GET /plugin-api-gallery/interfaces`；每行显示 mode、signature、描述和 `ctx.on(...)` 观察/waterfall 片段。
-- **Services（110）**：98 Host Services + 8 Client Services + 4 个 source-verified 但 Inspect 目录未列出的 Client Services（`sidebarRight` / `sidebarRightTabs` / `commandUi` / `inputTriggers`）；每行显示 methods、`ctx.get(...)` 片段，并标注“图鉴已用”。
+- **Events（80）**：76 Host Events + 4 Client Events；数据 `interfaces-reference.json`，路由 `GET /plugin-api-gallery/interfaces`；每行显示**首次出现版本**、mode、signature、描述和 `ctx.on(...)` 观察/waterfall 片段。
+- **Services（110）**：98 Host Services + 8 Client Services + 4 个 source-verified 但 Inspect 目录未列出的 Client Services（`sidebarRight` / `sidebarRightTabs` / `commandUi` / `inputTriggers`，这 4 个没有版本追踪）；每行显示**首次出现版本**、methods、`ctx.get(...)` 片段，并标注“图鉴已用”。
 - **Tools / Builtins**：当前模型可见 Tools（来自 `/state`，当前 43 个）+ 5 个 Client Builtins；Theme tokens 收在折叠区，标注它们是 UI 令牌而不是事件/接口。
 
 页面顶部搜索可过滤当前 tab；所有数据来自只读 JSON 路由，不注册任何额外 UI。所有条目的**主描述使用中文**（Slot 原因、事件分类/用途、服务分类/用途、工具/内建符号说明）；原始英文 purpose/description 收在每行的「原文（English）」折叠里，方便核对来源。`main` + `sidebar.panellist` 自身的注册代码和 Host 快照在页面底部折叠区。
 
 > UI 位置示意图是**概念布局**，不是像素级截图；它用来回答“这个 Slot 管的是哪一栏/哪一块”，精确位置仍需对照实际界面。当前环境没有浏览器控制入口，无法生成带标注的真实截图。
 
-它不是 43 个可交互 Slot 的总览页；43 个入口仍然分布在各自的真实位置。
+它不是 46 个可交互 Slot 的总览页；46 个入口仍然分布在各自的真实位置。
 
 ## 额外：composer 「+」菜单里的一项（不是 Slot）
 
@@ -197,7 +199,7 @@ ctx.inject(['commandUi'], (scope) => {
 
 ## 设计约定
 
-- **只占用可增量注册的 Slot**：list 用新 `id`（`api-gallery-<slug>`），keyed 只用自家 key（`api-gallery:right-tab`、`api-gallery-panel`、`api_gallery_demo`、`api-gallery`）。`sidebar`、`rightbar.session` 这类 single/replace 型 Slot 不硬塞，避免替换内置 UI。当前共 43 个 Slot 注册 = 37 list + 6 keyed，其中 28 个是本轮新增。
+- **只占用可增量注册的 Slot**：list 用新 `id`（`api-gallery-<slug>`），keyed 只用自家 key（`api-gallery:right-tab`、`api-gallery-panel`、`api_gallery_demo`、`api-gallery`）。`sidebar`、`rightbar.session` 这类 single/replace 型 Slot 不硬塞，避免替换内置 UI。当前共 46 个 Slot 注册 = 40 list + 6 keyed（rc.3 追加 3 个 list），其中 31 个是本轮新增。
 - **数据驱动，不写 28 个 bespoke 组件**：`GENERIC_SLOTS` 数组描述 slot / id / mode / order / desc，`GalleryEntry` 一个组件覆盖 8 种 mode；只有 `plugins.tab`、`plugins.detail.section`、`sidebar.right.pane.tab.title`、`sidebar.right.tab.guide.entry`、`main`/`PanelIcon`、`tool.call.toolview`、`conversation.chat.commandview` 是 bespoke。
 - **完整标题 + 紧凑控件**：tab/页面/列表项显示 `图鉴demo · <slot>`；header/input 这类空间小的控件显示短标签（「图」/「图鉴」/「图鉴demo」），完整 slot 名放 `title` / `aria-label` 和详情弹层标题。
 - **每个 demo 都是真实实现**：View 真的能切、右侧栏 tab 真的能开、Settings 页真的在导航里、按钮真的可点；不是截图或静态说明。
@@ -211,26 +213,28 @@ ctx.inject(['commandUi'], (scope) => {
 
 ```text
 .
-├─ client.js                    43 个 Slot 注册（15 保留 + 24 新增 + 4 最后补齐）+ 非 UI 接口参考页
+├─ client.js                    46 个 Slot 注册（15 保留 + 24 新增 + 4 最后补齐 + rc.3 追加 3）+ 非 UI 接口参考页
 ├─ index.js                     Host 半：/state + /non-ui + /interfaces 只读数据 + api_gallery_demo 工具 + /api-gallery 命令
 ├─ catalog.json                 全量接口快照（文档用，不参与 UI）
+├─ version-since.json           每个 Service/Event/Slot/Factory 的首次出现版本（由 release tag 目录生成）
 ├─ non-ui-slots.json           57 个不可见 Slot + 6 Factory 的逐项原因（页面数据）
-├─ interfaces-reference.json   76 Host Events / 4 Client Events / 106 Services / Builtins（页面数据）
+├─ interfaces-reference.json   76 Host Events / 4 Client Events / 110 Services / 5 Builtins（页面数据，带 since 版本）
 ├─ cordis.patch.yml             Loader 行
 ├─ package.json                 bundle manifest（dsh.bundle + dsh.client）
 ├─ LICENSE                      MIT © 2026 xiguazhiPrince
 ├─ locale/{en,zh}.json          插件标题/描述
 ├─ icon.svg                     插件图标
-├─ assets/hero.png              README 首屏截图（43 处入口 + 红框标注）
-├─ docs/interface-catalog.md    98 Services / 76 Events / 100 Slots 全量目录
-├─ docs/slot-classification.md  task-2 分类：A 33 / B 57 / C 10（最终 C 10 全部实现）
+├─ assets/hero.png              README 首屏截图（43 处入口 + 红框标注，截图早于 rc.3 追加项）
+├─ docs/interface-catalog.md    98 Services / 76 Events / 103 Slots 全量目录（含首次出现版本）
+├─ docs/slot-classification.md  task-2 分类：A 36 / B 57 / C 10（C 10 全部实现）
 ├─ docs/all-slots.md            task-1 全量 Slot census
-├─ docs/slot-demos.md           43 个 Slot 注册的契约与注册矩阵（验证用）
+├─ docs/slot-demos.md           46 个 Slot 注册的契约与注册矩阵（验证用）
+├─ scripts/build-versions.cjs   从 DSH 各 release tag 的生成式 inspect 目录计算 version-since.json
 ├─ scripts/build-catalog.cjs    从 .scan/ 生成 catalog.json
 ├─ scripts/build-docs.cjs       从 catalog.json 生成 interface-catalog.md
 ├─ scripts/build-non-ui.cjs     从 catalog.json 生成 non-ui-slots.json
 ├─ scripts/build-interfaces.cjs 从 catalog.json + source-verified services 生成 interfaces-reference.json
-└─ .scan/                       cordis_inspect_query 原始快照
+└─ .scan/                       DSH 0.2.1-rc.3 的 cordis_inspect_query 原始快照（2026-10-26）
 ```
 
 ### Host 半
@@ -261,7 +265,7 @@ ctx.slots.inject(entry.slot, () => ctx.slots.register({
 
 ## 安装、更新、卸载
 
-**要求**：DSH ≥ `0.2.1-rc.2`（本插件的接口快照版本）。仓库里是构建好的纯 JS（无 TypeScript、无 `scripts`、无 `prepare`），所以从 git 安装不需要任何构建授权。
+**要求**：DSH ≥ `0.2.1-rc.3`（本插件的接口快照版本）。仓库里是构建好的纯 JS（无 TypeScript、无 `scripts`、无 `prepare`），所以从 git 安装不需要任何构建授权。
 
 ### 从 GitHub 安装（推荐）
 
@@ -314,7 +318,7 @@ dsh plugin --profile web remove dsh-plugin-api-gallery
 3. 侧栏底部多一个 3×3 点阵图标，点开是四 tab 的非 UI 接口参考页；
 4. 输入 `/api-gallery` 能触发命令视图（`api_gallery_demo` 工具要模型调用才可见）。
 
-> 它会在 43 处真实位置插入入口。想隔离测试就先建一个独立 profile（`dsh --profile demo --from-default-profile <template>`），再往里装；不要在主力 profile 上试。
+> 它会在 46 处真实位置插入入口。想隔离测试就先建一个独立 profile（`dsh --profile demo --from-default-profile <template>`），再往里装；不要在主力 profile 上试。
 
 ---
 
@@ -323,7 +327,7 @@ dsh plugin --profile web remove dsh-plugin-api-gallery
 ### 注册 + live occupant 验证（已通过）
 
 - `node --check client.js` / `node --check index.js` 通过。
-- 43 个 Slot 注册 = **37 list + 6 keyed**（`sidebar.right.pane.tab` body、`sidebar.right.pane.tab.title`、`sidebar.right.tab.guide.entry`、`main`、`tool.call.toolview`、`conversation.chat.commandview`）。
+- 46 个 Slot 注册 = **40 list + 6 keyed**（`sidebar.right.pane.tab` body、`sidebar.right.pane.tab.title`、`sidebar.right.tab.guide.entry`、`main`、`tool.call.toolview`、`conversation.chat.commandview`）。
 - 24 个新增 A/C 项 + 最后 4 项已逐一用 `cordis_inspect_query` 抽查 occupant，全部 active：
   - P1/Plugins：`api-gallery-models-footer`、`api-gallery-settings-action`、`api-gallery-header-actions`、`api-gallery-plugins-page-tab`、`api-gallery-plugin-item`、`api-gallery-detail-actions`、`api-gallery-detail-badge`、`api-gallery-detail-section`；
   - Session/侧栏：`api-gallery-session-menu`、`api-gallery-session-row-action`、`api-gallery-session-hover`、`api-gallery-file-actions`；

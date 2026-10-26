@@ -1,6 +1,30 @@
 {
-  "generatedAt": "2026-10-23",
-  "dshVersion": "0.2.1-rc.2",
+  "generatedAt": "2026-10-26",
+  "dshVersion": "0.2.1-rc.3",
+  "versionSource": "version-since.json（DSH 各 release tag 的生成式 inspect 目录）",
+  "newSlots": [
+    {
+      "name": "conversation.session.header.views.actions",
+      "kind": "list",
+      "scope": "root",
+      "parent": "conversation.session.header",
+      "since": "0.2.1-rc.3"
+    },
+    {
+      "name": "sidebar.panellist.actions",
+      "kind": "list",
+      "scope": "root",
+      "parent": "sidebar",
+      "since": "0.2.1-rc.3"
+    },
+    {
+      "name": "sidebar.right.tab.guide.actions",
+      "kind": "list",
+      "scope": "root",
+      "parent": "sidebar.right.pane.tab",
+      "since": "0.2.1-rc.3"
+    }
+  ],
   "counts": {
     "single": 43,
     "chain": 3,
@@ -118,7 +142,8 @@
           "registration": [],
           "keyDomain": null,
           "allowedKeys": null,
-          "reason": "single Slot 由 owner 直接渲染唯一节点；注册即替换内置 UI，不是追加入口。"
+          "reason": "single Slot 由 owner 直接渲染唯一节点；注册即替换内置 UI，不是追加入口。",
+          "since": "0.1.2-alpha.1"
         },
         {
           "name": "conversation.chat.flow",
@@ -134,7 +159,8 @@
           "registration": [],
           "keyDomain": null,
           "allowedKeys": null,
-          "reason": "Chat 行流唯一节点，注册即替换整个消息流。"
+          "reason": "Chat 行流唯一节点，注册即替换整个消息流。",
+          "since": "0.2.1-alpha.2"
         },
         {
           "name": "conversation.chat.message.images",
@@ -150,7 +176,8 @@
           "registration": [],
           "keyDomain": null,
           "allowedKeys": null,
-          "reason": "single Slot 由 owner 直接渲染唯一节点；注册即替换内置 UI，不是追加入口。"
+          "reason": "single Slot 由 owner 直接渲染唯一节点；注册即替换内置 UI，不是追加入口。",
+          "since": "0.2.1-alpha.3"
         },
         {
           "name": "conversation.chat.reasoning.body",
@@ -166,7 +193,8 @@
           "registration": [],
           "keyDomain": null,
           "allowedKeys": null,
-          "reason": "reasoning 正文唯一渲染器。"
+          "reason": "reasoning 正文唯一渲染器。",
+          "since": "0.2.1-alpha.2"
         },
         {
           "name": "conversation.chat.user.images",
@@ -182,7 +210,8 @@
           "registration": [],
           "keyDomain": null,
           "allowedKeys": null,
-          "reason": "用户图片唯一渲染器。"
+          "reason": "用户图片唯一渲染器。",
+          "since": "0.2.1-alpha.3"
         },
         {
           "name": "conversation.composer.bar",
@@ -198,7 +227,9 @@
           "registration": [],
           "keyDomain": null,
           "allowedKeys": null,
-          "reason": "single Slot 由 owner 直接渲染唯一节点；注册即替换内置 UI，不是追加入口。"
+          "reason": "single Slot 由 owner 直接渲染唯一节点；注册即替换内置 UI，不是追加入口。",
+          "since": "0.1.0-rc.7",
+          "sinceBase": true
         },
         {
           "name": "conversation.header",
@@ -214,7 +245,8 @@
           "registration": [],
           "keyDomain": null,
           "allowedKeys": null,
-          "reason": "single Slot 由 owner 直接渲染唯一节点；注册即替换内置 UI，不是追加入口。"
+          "reason": "single Slot 由 owner 直接渲染唯一节点；注册即替换内置 UI，不是追加入口。",
+          "since": "0.1.7-alpha.1"
         },
         {
           "name": "conversation.header.leading",
@@ -230,7 +262,8 @@
           "registration": [],
           "keyDomain": null,
           "allowedKeys": null,
-          "reason": "single Slot 由 owner 直接渲染唯一节点；注册即替换内置 UI，不是追加入口。"
+          "reason": "single Slot 由 owner 直接渲染唯一节点；注册即替换内置 UI，不是追加入口。",
+          "since": "0.1.7-alpha.1"
         },
         {
           "name": "conversation.hero.agentPreset",
@@ -246,7 +279,9 @@
           "registration": [],
           "keyDomain": null,
           "allowedKeys": null,
-          "reason": "single Slot 由 owner 直接渲染唯一节点；注册即替换内置 UI，不是追加入口。"
+          "reason": "single Slot 由 owner 直接渲染唯一节点；注册即替换内置 UI，不是追加入口。",
+          "since": "0.1.0-rc.7",
+          "sinceBase": true
         },
         {
           "name": "conversation.hero.brand.mark",
@@ -262,7 +297,8 @@
           "registration": [],
           "keyDomain": null,
           "allowedKeys": null,
-          "reason": "single Slot 由 owner 直接渲染唯一节点；注册即替换内置 UI，不是追加入口。"
+          "reason": "single Slot 由 owner 直接渲染唯一节点；注册即替换内置 UI，不是追加入口。",
+          "since": "0.1.0-rc.8"
         },
         {
           "name": "conversation.hero.workspace",
@@ -278,7 +314,9 @@
           "registration": [],
           "keyDomain": null,
           "allowedKeys": null,
-          "reason": "single Slot 由 owner 直接渲染唯一节点；注册即替换内置 UI，不是追加入口。"
+          "reason": "single Slot 由 owner 直接渲染唯一节点；注册即替换内置 UI，不是追加入口。",
+          "since": "0.1.0-rc.7",
+          "sinceBase": true
         },
         {
           "name": "conversation.hero.workspace.directoryFlow",
@@ -294,7 +332,9 @@
           "registration": [],
           "keyDomain": null,
           "allowedKeys": null,
-          "reason": "single Slot 由 owner 直接渲染唯一节点；注册即替换内置 UI，不是追加入口。"
+          "reason": "single Slot 由 owner 直接渲染唯一节点；注册即替换内置 UI，不是追加入口。",
+          "since": "0.1.0-rc.7",
+          "sinceBase": true
         },
         {
           "name": "conversation.input.activity",
@@ -310,7 +350,8 @@
           "registration": [],
           "keyDomain": null,
           "allowedKeys": null,
-          "reason": "single Slot 由 owner 直接渲染唯一节点；注册即替换内置 UI，不是追加入口。"
+          "reason": "single Slot 由 owner 直接渲染唯一节点；注册即替换内置 UI，不是追加入口。",
+          "since": "0.1.7-alpha.1"
         },
         {
           "name": "conversation.input.attachments",
@@ -326,7 +367,8 @@
           "registration": [],
           "keyDomain": null,
           "allowedKeys": null,
-          "reason": "single Slot 由 owner 直接渲染唯一节点；注册即替换内置 UI，不是追加入口。"
+          "reason": "single Slot 由 owner 直接渲染唯一节点；注册即替换内置 UI，不是追加入口。",
+          "since": "0.1.0-rc.8"
         },
         {
           "name": "conversation.input.model",
@@ -342,7 +384,9 @@
           "registration": [],
           "keyDomain": null,
           "allowedKeys": null,
-          "reason": "single Slot 由 owner 直接渲染唯一节点；注册即替换内置 UI，不是追加入口。"
+          "reason": "single Slot 由 owner 直接渲染唯一节点；注册即替换内置 UI，不是追加入口。",
+          "since": "0.1.0-rc.7",
+          "sinceBase": true
         },
         {
           "name": "conversation.input.model.label",
@@ -358,7 +402,8 @@
           "registration": [],
           "keyDomain": null,
           "allowedKeys": null,
-          "reason": "single Slot 由 owner 直接渲染唯一节点；注册即替换内置 UI，不是追加入口。"
+          "reason": "single Slot 由 owner 直接渲染唯一节点；注册即替换内置 UI，不是追加入口。",
+          "since": "0.2.1-alpha.5"
         },
         {
           "name": "conversation.input.permission",
@@ -374,7 +419,8 @@
           "registration": [],
           "keyDomain": null,
           "allowedKeys": null,
-          "reason": "single Slot 由 owner 直接渲染唯一节点；注册即替换内置 UI，不是追加入口。"
+          "reason": "single Slot 由 owner 直接渲染唯一节点；注册即替换内置 UI，不是追加入口。",
+          "since": "0.1.6-alpha.1"
         },
         {
           "name": "conversation.input.plan",
@@ -390,7 +436,9 @@
           "registration": [],
           "keyDomain": null,
           "allowedKeys": null,
-          "reason": "single Slot 由 owner 直接渲染唯一节点；注册即替换内置 UI，不是追加入口。"
+          "reason": "single Slot 由 owner 直接渲染唯一节点；注册即替换内置 UI，不是追加入口。",
+          "since": "0.1.0-rc.7",
+          "sinceBase": true
         },
         {
           "name": "conversation.session",
@@ -406,7 +454,9 @@
           "registration": [],
           "keyDomain": null,
           "allowedKeys": null,
-          "reason": "single Slot 由 owner 直接渲染唯一节点；注册即替换内置 UI，不是追加入口。"
+          "reason": "single Slot 由 owner 直接渲染唯一节点；注册即替换内置 UI，不是追加入口。",
+          "since": "0.1.0-rc.7",
+          "sinceBase": true
         },
         {
           "name": "conversation.session.header",
@@ -422,7 +472,9 @@
           "registration": [],
           "keyDomain": null,
           "allowedKeys": null,
-          "reason": "single Slot 由 owner 直接渲染唯一节点；注册即替换内置 UI，不是追加入口。"
+          "reason": "single Slot 由 owner 直接渲染唯一节点；注册即替换内置 UI，不是追加入口。",
+          "since": "0.1.0-rc.7",
+          "sinceBase": true
         },
         {
           "name": "conversation.session.header.corner",
@@ -438,7 +490,8 @@
           "registration": [],
           "keyDomain": null,
           "allowedKeys": null,
-          "reason": "single Slot 由 owner 直接渲染唯一节点；注册即替换内置 UI，不是追加入口。"
+          "reason": "single Slot 由 owner 直接渲染唯一节点；注册即替换内置 UI，不是追加入口。",
+          "since": "0.1.5-alpha.1"
         },
         {
           "name": "conversation.session.header.lineage",
@@ -454,7 +507,8 @@
           "registration": [],
           "keyDomain": null,
           "allowedKeys": null,
-          "reason": "single Slot 由 owner 直接渲染唯一节点；注册即替换内置 UI，不是追加入口。"
+          "reason": "single Slot 由 owner 直接渲染唯一节点；注册即替换内置 UI，不是追加入口。",
+          "since": "0.1.1-rc.1"
         },
         {
           "name": "conversation.trajectory.images",
@@ -470,7 +524,8 @@
           "registration": [],
           "keyDomain": null,
           "allowedKeys": null,
-          "reason": "single Slot 由 owner 直接渲染唯一节点；注册即替换内置 UI，不是追加入口。"
+          "reason": "single Slot 由 owner 直接渲染唯一节点；注册即替换内置 UI，不是追加入口。",
+          "since": "0.1.2-alpha.1"
         },
         {
           "name": "main.conversation",
@@ -486,7 +541,8 @@
           "registration": [],
           "keyDomain": null,
           "allowedKeys": null,
-          "reason": "single Slot 由 owner 直接渲染唯一节点；注册即替换内置 UI，不是追加入口。"
+          "reason": "single Slot 由 owner 直接渲染唯一节点；注册即替换内置 UI，不是追加入口。",
+          "since": "0.1.5-alpha.2"
         },
         {
           "name": "rightbar",
@@ -502,7 +558,8 @@
           "registration": [],
           "keyDomain": null,
           "allowedKeys": null,
-          "reason": "右列唯一节点。"
+          "reason": "右列唯一节点。",
+          "since": "0.1.5-alpha.1"
         },
         {
           "name": "rightbar.session",
@@ -518,7 +575,8 @@
           "registration": [],
           "keyDomain": null,
           "allowedKeys": null,
-          "reason": "右列 Session 内容唯一节点。"
+          "reason": "右列 Session 内容唯一节点。",
+          "since": "0.1.5-alpha.2"
         },
         {
           "name": "root",
@@ -534,7 +592,9 @@
           "registration": [],
           "keyDomain": null,
           "allowedKeys": null,
-          "reason": "shell 唯一渲染的树根；替换它会换掉整个应用渲染树。"
+          "reason": "shell 唯一渲染的树根；替换它会换掉整个应用渲染树。",
+          "since": "0.1.0-rc.7",
+          "sinceBase": true
         },
         {
           "name": "settings.close",
@@ -550,7 +610,9 @@
           "registration": [],
           "keyDomain": null,
           "allowedKeys": null,
-          "reason": "关闭按钮的视觉隐藏标签唯一节点。"
+          "reason": "关闭按钮的视觉隐藏标签唯一节点。",
+          "since": "0.1.0-rc.7",
+          "sinceBase": true
         },
         {
           "name": "settings.header",
@@ -566,7 +628,9 @@
           "registration": [],
           "keyDomain": null,
           "allowedKeys": null,
-          "reason": "设置面板标题唯一文本位。"
+          "reason": "设置面板标题唯一文本位。",
+          "since": "0.1.0-rc.7",
+          "sinceBase": true
         },
         {
           "name": "settings.launcher",
@@ -582,7 +646,8 @@
           "registration": [],
           "keyDomain": null,
           "allowedKeys": null,
-          "reason": "侧栏账号启动器唯一节点。"
+          "reason": "侧栏账号启动器唯一节点。",
+          "since": "0.1.7-alpha.1"
         },
         {
           "name": "settings.models.sign-in",
@@ -598,7 +663,8 @@
           "registration": [],
           "keyDomain": null,
           "allowedKeys": null,
-          "reason": "账号登录选择唯一节点。"
+          "reason": "账号登录选择唯一节点。",
+          "since": "0.1.7-alpha.1"
         },
         {
           "name": "settings.trigger",
@@ -614,7 +680,9 @@
           "registration": [],
           "keyDomain": null,
           "allowedKeys": null,
-          "reason": "侧栏底部设置触发行唯一内容。"
+          "reason": "侧栏底部设置触发行唯一内容。",
+          "since": "0.1.0-rc.7",
+          "sinceBase": true
         },
         {
           "name": "shell.bottom",
@@ -630,7 +698,8 @@
           "registration": [],
           "keyDomain": null,
           "allowedKeys": null,
-          "reason": "single Slot 由 owner 直接渲染唯一节点；注册即替换内置 UI，不是追加入口。"
+          "reason": "single Slot 由 owner 直接渲染唯一节点；注册即替换内置 UI，不是追加入口。",
+          "since": "0.2.1-alpha.1"
         },
         {
           "name": "shell.leading",
@@ -646,7 +715,8 @@
           "registration": [],
           "keyDomain": null,
           "allowedKeys": null,
-          "reason": "single Slot 由 owner 直接渲染唯一节点；注册即替换内置 UI，不是追加入口。"
+          "reason": "single Slot 由 owner 直接渲染唯一节点；注册即替换内置 UI，不是追加入口。",
+          "since": "0.1.7-alpha.1"
         },
         {
           "name": "sidebar",
@@ -662,7 +732,9 @@
           "registration": [],
           "keyDomain": null,
           "allowedKeys": null,
-          "reason": "整个左列只有一个节点，注册即替换内置侧栏。"
+          "reason": "整个左列只有一个节点，注册即替换内置侧栏。",
+          "since": "0.1.0-rc.7",
+          "sinceBase": true
         },
         {
           "name": "sidebar.brand.mark",
@@ -678,7 +750,8 @@
           "registration": [],
           "keyDomain": null,
           "allowedKeys": null,
-          "reason": "品牌标记唯一节点。"
+          "reason": "品牌标记唯一节点。",
+          "since": "0.1.0-rc.8"
         },
         {
           "name": "sidebar.brand.name",
@@ -694,7 +767,8 @@
           "registration": [],
           "keyDomain": null,
           "allowedKeys": null,
-          "reason": "品牌名唯一节点。"
+          "reason": "品牌名唯一节点。",
+          "since": "0.1.0-rc.8"
         },
         {
           "name": "sidebar.chat.conversation",
@@ -710,7 +784,8 @@
           "registration": [],
           "keyDomain": null,
           "allowedKeys": null,
-          "reason": "右栏 chat tab 的 Conversation 承载唯一节点。"
+          "reason": "右栏 chat tab 的 Conversation 承载唯一节点。",
+          "since": "0.1.6-alpha.2"
         },
         {
           "name": "sidebar.settings",
@@ -726,7 +801,9 @@
           "registration": [],
           "keyDomain": null,
           "allowedKeys": null,
-          "reason": "侧栏底部 Settings 唯一座位。"
+          "reason": "侧栏底部 Settings 唯一座位。",
+          "since": "0.1.0-rc.7",
+          "sinceBase": true
         },
         {
           "name": "sidebar.toggle.badge",
@@ -742,7 +819,8 @@
           "registration": [],
           "keyDomain": null,
           "allowedKeys": null,
-          "reason": "折叠侧栏展开按钮内的唯一徽标。"
+          "reason": "折叠侧栏展开按钮内的唯一徽标。",
+          "since": "0.1.6-alpha.2"
         },
         {
           "name": "sidebar.workspaces",
@@ -758,7 +836,9 @@
           "registration": [],
           "keyDomain": null,
           "allowedKeys": null,
-          "reason": "single Slot 由 owner 直接渲染唯一节点；注册即替换内置 UI，不是追加入口。"
+          "reason": "single Slot 由 owner 直接渲染唯一节点；注册即替换内置 UI，不是追加入口。",
+          "since": "0.1.0-rc.7",
+          "sinceBase": true
         },
         {
           "name": "sidebar.workspaces.directoryFlow",
@@ -774,7 +854,9 @@
           "registration": [],
           "keyDomain": null,
           "allowedKeys": null,
-          "reason": "single Slot 由 owner 直接渲染唯一节点；注册即替换内置 UI，不是追加入口。"
+          "reason": "single Slot 由 owner 直接渲染唯一节点；注册即替换内置 UI，不是追加入口。",
+          "since": "0.1.0-rc.7",
+          "sinceBase": true
         },
         {
           "name": "tool.call.images",
@@ -790,7 +872,8 @@
           "registration": [],
           "keyDomain": null,
           "allowedKeys": null,
-          "reason": "含图 Tool call 的持久图片渲染器唯一节点。"
+          "reason": "含图 Tool call 的持久图片渲染器唯一节点。",
+          "since": "0.1.3-alpha.1"
         }
       ]
     },
@@ -820,7 +903,9 @@
           ],
           "keyDomain": null,
           "allowedKeys": null,
-          "reason": "selector 命中即替换整个 composer。"
+          "reason": "selector 命中即替换整个 composer。",
+          "since": "0.1.0-rc.7",
+          "sinceBase": true
         },
         {
           "name": "shell.quota-notice",
@@ -842,7 +927,8 @@
           ],
           "keyDomain": null,
           "allowedKeys": null,
-          "reason": "selector 命中即替换内置配额提示链。"
+          "reason": "selector 命中即替换内置配额提示链。",
+          "since": "0.1.7-rc.2"
         },
         {
           "name": "sidebar.right.tab.guide",
@@ -864,7 +950,8 @@
           ],
           "keyDomain": null,
           "allowedKeys": null,
-          "reason": "guide tab body 的 selector 路由替换。"
+          "reason": "guide tab body 的 selector 路由替换。",
+          "since": "0.1.5-alpha.1"
         }
       ]
     },
@@ -894,7 +981,9 @@
           ],
           "keyDomain": "fixed by the owner's key table { [Kind in ChatNodeKind]: { node: ChatNode<Kind> } }, already taken: assistant-step, command, command-input, compaction, context, manual-compaction, model-retry, question-reply, steering, system-prompt, tool-call, turn-error, turn-max-tokens, turn-process, turn-tail, turn-trigger, unknown, user, workflow-run",
           "allowedKeys": null,
-          "reason": "ChatNodeKind 键表固定 19 种；新 key 不被派发。"
+          "reason": "ChatNodeKind 键表固定 19 种；新 key 不被派发。",
+          "since": "0.1.0-rc.7",
+          "sinceBase": true
         },
         {
           "name": "conversation.user.text.node",
@@ -916,7 +1005,8 @@
           ],
           "keyDomain": "fixed by the owner's key table { [Id in UserTextId]: { node: UserTextNode<Id> } }, already taken: command, file, folder, secret, session, skill, text",
           "allowedKeys": null,
-          "reason": "UserTextId 键表固定（command/file/folder/secret/session/skill/text），新 key 不被派发。"
+          "reason": "UserTextId 键表固定（command/file/folder/secret/session/skill/text），新 key 不被派发。",
+          "since": "0.2.1-alpha.3"
         },
         {
           "name": "tool.view.cordis",
@@ -943,7 +1033,9 @@
               "description": "The only accepted key. The Guard binds it to this Package's pluginId and packageId."
             }
           ],
-          "reason": "动态 Client Guard 只允许 self，key 绑定 pluginId/packageId。"
+          "reason": "动态 Client Guard 只允许 self，key 绑定 pluginId/packageId。",
+          "since": "0.1.0-rc.7",
+          "sinceBase": true
         },
         {
           "name": "workspace.toast",
@@ -965,7 +1057,8 @@
           ],
           "keyDomain": "fixed by the owner's key table { [K in ToastKind]: ToastNotice<K> }, already taken: archived, archivedNotOpenable, createFailed, defaultWorkspaceFailed, forkRequiresOpen, pinFailed, sessionIdCopied, sessionIdCopyFailed, shortcutForkFailed, stoppedAndArchived, unpinFailed",
           "allowedKeys": null,
-          "reason": "ToastKind 键表固定 11 个 key；新 key 不存在。"
+          "reason": "ToastKind 键表固定 11 个 key；新 key 不存在。",
+          "since": "0.2.1-alpha.3"
         }
       ]
     },
@@ -995,7 +1088,8 @@
           ],
           "keyDomain": "open: any string the owner dispatches (no compile-time key set), already taken: @deepseek-ai/dsh-experimental-voice-input-bundle",
           "allowedKeys": null,
-          "reason": "key = npm 包名，只在用户从列表启用某 bundle 后派发。"
+          "reason": "key = npm 包名，只在用户从列表启用某 bundle 后派发。",
+          "since": "0.1.7-alpha.1"
         },
         {
           "name": "plugins.bundle.config",
@@ -1017,7 +1111,8 @@
           ],
           "keyDomain": "open: any string the owner dispatches (no compile-time key set), already taken: @deepseek-ai/dsh-experimental-cot-translation-bundle, @deepseek-ai/dsh-experimental-voice-input-bundle",
           "allowedKeys": null,
-          "reason": "key = bundle 包名，只在该 bundle 自己的 page view 派发。"
+          "reason": "key = bundle 包名，只在该 bundle 自己的 page view 派发。",
+          "since": "0.1.6-alpha.2"
         },
         {
           "name": "plugins.row.config",
@@ -1039,7 +1134,8 @@
           ],
           "keyDomain": "open: any string the owner dispatches (no compile-time key set), none are taken yet",
           "allowedKeys": null,
-          "reason": "key = bundle patch 的 <包名>#<row id>，插件不声明该行就没有 key。"
+          "reason": "key = bundle patch 的 <包名>#<row id>，插件不声明该行就没有 key。",
+          "since": "0.1.6-alpha.2"
         },
         {
           "name": "settings.models.provider-card",
@@ -1061,7 +1157,8 @@
           ],
           "keyDomain": "open: any string the owner dispatches (no compile-time key set), none are taken yet",
           "allowedKeys": null,
-          "reason": "key = settingsNs，只有模型 provider 卡会派发。"
+          "reason": "key = settingsNs，只有模型 provider 卡会派发。",
+          "since": "0.1.2-alpha.1"
         },
         {
           "name": "sidebar.right.tab.document",
@@ -1083,7 +1180,8 @@
           ],
           "keyDomain": "open: any string the owner dispatches (no compile-time key set), none are taken yet",
           "allowedKeys": null,
-          "reason": "key = 已注册 document 实现 id，由 document registry 派发。"
+          "reason": "key = 已注册 document 实现 id，由 document registry 派发。",
+          "since": "0.1.5-alpha.2"
         },
         {
           "name": "sidebar.right.tab.document.action",
@@ -1105,7 +1203,8 @@
           ],
           "keyDomain": "open: any string the owner dispatches (no compile-time key set), none are taken yet",
           "allowedKeys": null,
-          "reason": "key = document renderer 专属，只有对应 renderer 才能命中。"
+          "reason": "key = document renderer 专属，只有对应 renderer 才能命中。",
+          "since": "0.1.7-alpha.1"
         },
         {
           "name": "sidebar.right.tab.document.office.pdf",
@@ -1127,7 +1226,8 @@
           ],
           "keyDomain": "open: any string the owner dispatches (no compile-time key set), none are taken yet",
           "allowedKeys": null,
-          "reason": "key = Office 转换字节专用路径。"
+          "reason": "key = Office 转换字节专用路径。",
+          "since": "0.1.6-alpha.2"
         }
       ]
     },
@@ -1151,7 +1251,9 @@
           "registration": [],
           "keyDomain": null,
           "allowedKeys": null,
-          "reason": "reasoning 内容 Factory 由 owner 渲染。"
+          "reason": "reasoning 内容 Factory 由 owner 渲染。",
+          "since": "0.2.1-alpha.2",
+          "sinceBase": true
         },
         {
           "name": "conversation.chat.user.content",
@@ -1167,7 +1269,9 @@
           "registration": [],
           "keyDomain": null,
           "allowedKeys": null,
-          "reason": "用户消息内容 Factory 由 owner 渲染。"
+          "reason": "用户消息内容 Factory 由 owner 渲染。",
+          "since": "0.2.1-alpha.3",
+          "sinceBase": true
         },
         {
           "name": "conversation.content",
@@ -1183,7 +1287,9 @@
           "registration": [],
           "keyDomain": null,
           "allowedKeys": null,
-          "reason": "Factory 是 owner 直接渲染的子界面，不是插件注册席位；没有 register API。"
+          "reason": "Factory 是 owner 直接渲染的子界面，不是插件注册席位；没有 register API。",
+          "since": "0.1.6-alpha.2",
+          "sinceBase": true
         },
         {
           "name": "conversation.images.content",
@@ -1199,7 +1305,9 @@
           "registration": [],
           "keyDomain": null,
           "allowedKeys": null,
-          "reason": "Factory 是 owner 直接渲染的子界面，不是插件注册席位；没有 register API。"
+          "reason": "Factory 是 owner 直接渲染的子界面，不是插件注册席位；没有 register API。",
+          "since": "0.2.1-alpha.3",
+          "sinceBase": true
         },
         {
           "name": "conversation.user.text",
@@ -1215,7 +1323,9 @@
           "registration": [],
           "keyDomain": null,
           "allowedKeys": null,
-          "reason": "Factory 是 owner 直接渲染的子界面，不是插件注册席位；没有 register API。"
+          "reason": "Factory 是 owner 直接渲染的子界面，不是插件注册席位；没有 register API。",
+          "since": "0.2.1-alpha.3",
+          "sinceBase": true
         },
         {
           "name": "workspace.toast.content",
@@ -1231,7 +1341,9 @@
           "registration": [],
           "keyDomain": null,
           "allowedKeys": null,
-          "reason": "Factory 是 owner 直接渲染的子界面，不是插件注册席位；没有 register API。"
+          "reason": "Factory 是 owner 直接渲染的子界面，不是插件注册席位；没有 register API。",
+          "since": "0.2.1-alpha.3",
+          "sinceBase": true
         }
       ]
     }

@@ -17,7 +17,14 @@ const path = require('node:path');
 
 const ROOT = path.resolve(__dirname, '..');
 const catalog = JSON.parse(fs.readFileSync(path.join(ROOT, 'catalog.json'), 'utf8'));
+const VERSIONS = JSON.parse(fs.readFileSync(path.join(ROOT, 'version-since.json'), 'utf8'));
 const slots = catalog.client.slots;
+
+function sinceOf(slot) {
+  const entry = slot.type === 'factory' ? VERSIONS.factories[slot.name] : VERSIONS.slots[slot.name];
+  if (!entry) return {};
+  return entry.base ? { since: entry.since, sinceBase: true } : { since: entry.since };
+}
 
 const OWNER_DISPATCH = [
   'settings.models.provider-card',
@@ -185,6 +192,7 @@ for (const slot of slots) {
     keyDomain: slot.keyDomain ?? null,
     allowedKeys: slot.allowedKeys ?? null,
     reason,
+    ...sinceOf(slot),
   });
 }
 
@@ -197,9 +205,25 @@ for (const region of REGIONS) {
   regionCounts[region.id] = count;
 }
 
+// Slots introduced by the current DSH release that are additive (so they are
+// demoed in place, not listed in the non-UI buckets above). The page shows this
+// strip so readers can see "new in this version" and the version badge.
+const newSlots = slots
+  .filter((slot) => slot.type === 'slot' && slot.since === catalog.meta.dshVersion && slot.sinceBase !== true)
+  .map((slot) => ({
+    name: slot.name,
+    kind: slot.kind ?? null,
+    scope: slot.scope ?? null,
+    parent: slot.parent ?? null,
+    since: slot.since,
+  }))
+  .sort((a, b) => a.name.localeCompare(b.name));
+
 const output = {
-  generatedAt: '2026-10-23',
+  generatedAt: catalog.meta.scannedAt,
   dshVersion: catalog.meta.dshVersion,
+  versionSource: catalog.meta.versionSource,
+  newSlots,
   counts,
   regionCounts,
   regions: REGIONS.map((region) => ({ ...region, count: regionCounts[region.id] })),

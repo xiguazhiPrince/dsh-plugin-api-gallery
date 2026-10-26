@@ -1,10 +1,10 @@
-# Slot Demo 的契约与落点（15 保留 + 24 新增 + 4 最后补齐 = 43）
+# Slot Demo 的契约与落点（15 保留 + 24 新增 + 4 最后补齐 + rc.3 追加 3 = 46）
 
-本文件记录 `dsh-plugin-api-gallery` 实际占用的 **43 个 Slot 注册**：15 个既有 Slot（保留、回归基线）+ **A-新增 18** + **C 子集 10**。内容包括 kind/scope、owner props、注册方式、出现在哪里，以及原生右侧栏的两段式注册。
+本文件记录 `dsh-plugin-api-gallery` 实际占用的 **46 个 Slot 注册**：15 个既有 Slot（保留、回归基线）+ **A-新增 18** + **C 子集 10** + **0.2.1-rc.3 追加 3 个 More 菜单 actions slot**。内容包括 kind/scope、owner props、注册方式、出现在哪里，以及原生右侧栏的两段式注册。
 
-> 接口来自 DSH **0.2.1-rc.2** 的 `cordis_inspect_query` 与 `@deepseek-ai/dsh-client-ui-sidebar-right` 的 shipped source/README。命名约定：入口标题 `图鉴demo · <slot-key>`；空间小的按钮用短标签 + 完整 `title`/`aria-label`，详情弹层标题始终是完整名。
+> 接口来自 DSH **0.2.1-rc.3** 的 `cordis_inspect_query` 与 `@deepseek-ai/dsh-client-ui-sidebar-right` 的 shipped source/README。命名约定：入口标题 `图鉴demo · <slot-key>`；空间小的按钮用短标签 + 完整 `title`/`aria-label`，详情弹层标题始终是完整名。
 >
-> 最终 live `client / Slots / listSubTree` 已恢复，43 个注册逐项抽查 occupant 均为 active（详见文末验证）。没有浏览器控制入口，所以仍未做像素级截图。
+> 2026-10-26 在 rc.3 刷新页面重新抓取 live `client / Slots / listSubTree`：103 Slot + 6 Factory 全量到手，新增 3 个 actions slot 的 occupant / ownerProps 已确认，46 个注册（含 rc.3 新增）均为 additive 注册。没有浏览器控制入口，所以仍未做像素级截图。
 
 ---
 
@@ -83,6 +83,16 @@
 
 > C1/C2 的 id/key 必须相同（`api-gallery-panel`），否则侧栏图标会打开空面板；C9/C10 的 key 必须与 Host 半注册的工具/命令名完全一致。Host 半现在注册 `api_gallery_demo` 与 `/api-gallery` 专门服务这两个 keyed Slot。
 
+## 0.2.1-rc.3 追加 3 个「更多」菜单 actions slot（总计 46）
+
+| # | Slot | kind / scope | owner props | 本插件 id | 出现在哪里 |
+| ---: | --- | --- | --- | --- | --- |
+| 44 | `sidebar.panellist.actions` | list / root | `{ entries, onOpen, onPinnedChange, onDismiss }` | `api-gallery-panellist-actions` | 左侧栏面板列表「更多」菜单（title 满名） |
+| 45 | `conversation.session.header.views.actions` | list / root | `{ entries, onOpen, onPinnedChange, onDismiss }` | `api-gallery-views-actions` | 会话头部 View 标签行「更多」菜单 |
+| 46 | `sidebar.right.tab.guide.actions` | list / root | `{ entries, onOpen, onPinnedChange, onDismiss }` | `api-gallery-guide-actions` | 右侧栏起始页 guide 卡片「更多」菜单 |
+
+三者都是 `kind: list`、`replaceRisk: none`、`keyDomain` 为空；区域只在该 list 有注册项时显示「更多」。本插件用 `mode: menu-item` 的通用 `GalleryEntry` 注册一行 `图鉴demo · <完整 slot key>`，点击打开共享详情弹层，弹层「首次出现」显示 `0.2.1-rc.3`。`non-ui` 页面顶部也会显示「0.2.1-rc.3 新增 Slot」条（slot 名 + 版本，注明已在各自位置加 demo）。
+
 ## 通用 GalleryEntry 注册
 
 20 个 list 项（15 A + 5 C）共用同一段注册逻辑：
@@ -118,7 +128,7 @@ for (const entry of GENERIC_SLOTS) {
 | B 类 single / chain / fixed-key / owner-dispatch | 43 + 3 + 4 + 7 | 注册即替换内置 UI、selector 路由替换、key 集合固定或永不派发；详见 `docs/slot-classification.md` §3 |
 | Factory | 6 | 由 owner 直接渲染的子界面，不是注册点 |
 
-> 43 个可增量 Slot（15 原有 + 18 A + 10 C）已全部注册；`main`、`sidebar.panellist`、`tool.call.toolview`、`conversation.chat.commandview` 也已在最后补齐。剩余 B 类 57 + Factory 6 不注册。
+> 46 个可增量 Slot（15 原有 + 18 A + 10 C + rc.3 新增 3）已全部注册；`main`、`sidebar.panellist`、`tool.call.toolview`、`conversation.chat.commandview` 也已在最后补齐。剩余 B 类 57 + Factory 6 不注册。
 
 
 ---
@@ -132,7 +142,7 @@ for (const entry of GENERIC_SLOTS) {
 - **Services（110）**：98 Host + 8 Client + 4 个 source-verified 但 Inspect 未列出的 Client Services（`sidebarRight` / `sidebarRightTabs` / `commandUi` / `inputTriggers`）；每行 methods、`ctx.get(...)` 片段，标“图鉴已用”。
 - **Tools / Builtins**：当前 `/state` 的模型可见 Tools（43）+ 5 个 Client Builtins；Theme tokens（14）收在折叠区，标注是 UI 令牌。
 
-`/non-ui` 已验证 200、total 63、counts 43/3/4/7/6；`/interfaces` 已验证 200，counts 76/4/98/8/4/5/14。UI 位置图是概念布局，不是真实截图。
+`/non-ui` 已验证 200、total 63、counts 43/3/4/7/6；`/interfaces` 已验证 200，counts 76/4/98/8/4/5/14；`/non-ui` 另带每行 `since` 版本字段。UI 位置图是概念布局，不是真实截图。
 
 所有条目的主描述使用中文：Slot 用中文原因 + region 说明，Event 用中文分类/用途，Service 用中文分类/用途，Tool/Builtin/Token 用中文说明；原始英文 `purpose` / `description` 收在每行「原文（English）」折叠里。
 

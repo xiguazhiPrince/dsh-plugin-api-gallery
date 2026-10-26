@@ -1,10 +1,10 @@
 {
   "name": "dsh-plugin-api-gallery",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "type": "module",
   "license": "MIT",
   "author": "xiguazhiPrince",
-  "description": "DSH plugin API map: 43 live Slot demos in their real UI positions — find where your plugin's UI belongs. Also 100 Slots, 98 Host Services, 76 Host Events, each with register code.",
+  "description": "DSH plugin API map: 46 live Slot demos in their real UI positions (0.2.1-rc.3) — find where your plugin's UI belongs. Also 103 Slots, 98 Host Services, 76 Host Events, each with register code and a since-version badge.",
   "keywords": [
     "dsh",
     "dsh-plugin",
@@ -36,6 +36,7 @@
     "catalog.json",
     "non-ui-slots.json",
     "interfaces-reference.json",
+    "version-since.json",
     "cordis.patch.yml",
     "locale/*.json",
     "icon.svg",

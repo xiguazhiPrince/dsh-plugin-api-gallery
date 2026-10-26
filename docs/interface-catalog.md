@@ -1,7 +1,8 @@
 # DSH 插件接口目录
 
-> 扫描自运行的 DSH **0.2.1-rc.2**（2026-10-23），来源：cordis_inspect_query (Service / Event / Slots / Theme / Builtin)。
+> 扫描自运行的 DSH **0.2.1-rc.3**（2026-10-26），来源：cordis_inspect_query (Service / Event / Slots / Theme / Builtin)。
 > 本文件由 `scripts/build-docs.cjs` 从 `catalog.json` 生成；接口会随 DSH 版本变化，写代码前请用 `cordis_inspect_query` 复核。
+> **版本列** = 该接口首次出现在 DSH release 的版本（由 `scripts/build-versions.cjs` 从各 release tag 的生成式 inspect 目录计算）；`≤ X` 表示最早追踪版本 X 之前就存在。
 
 ## 统计
 
@@ -12,7 +13,7 @@
 | Client Service | 8 |
 | Client Event | 4 |
 | Client Builtin | 5 |
-| Slot | 100 |
+| Slot | 103 |
 | Factory | 6 |
 | Theme token | 14 |
 
@@ -104,6 +105,8 @@ window.__ModuleLoader__.load({
 
 Owns the default model selection independently of any Host or transport.
 
+**首次出现**：≤ 0.1.0-rc.7
+
 **在线 Demo**：—（只读目录 + 用法片段）
 
 <details><summary>方法签名</summary>
@@ -118,6 +121,8 @@ async saveSelection(next: ModelSelection): Promise<void>
 ### agentLoop
 
 Concrete agent factory and driver service.
+
+**首次出现**：≤ 0.1.0-rc.7
 
 **在线 Demo**：—（只读目录 + 用法片段）
 
@@ -135,6 +140,8 @@ async resume(ownerCtx: Context, options: ResumeAgentOptions): Promise<AgentHandl
 ### agentPresets
 
 Registry of YAML-declared presets and the revisions live Agents retain.
+
+**首次出现**：≤ 0.1.0-rc.7
 
 **在线 Demo**：—（只读目录 + 用法片段）
 
@@ -162,6 +169,8 @@ compositionInventory(): Promise<AgentPresetComposition[]>
 ### agents
 
 Agent service (`ctx.agents`): tracks live agents and carries the initiating Agent through one process-local asynchronous driver chain.
+
+**首次出现**：≤ 0.1.0-rc.7
 
 **在线 Demo**：Settings 页 / 原生右侧栏 tab 的实时快照
 
@@ -197,6 +206,8 @@ if (service !== undefined) {
 
 Agent Teams service backed by the exact live Lead Session log.
 
+**首次出现**：0.1.0-rc.8
+
 **在线 Demo**：—（只读目录 + 用法片段）
 
 <details><summary>方法签名</summary>
@@ -221,6 +232,8 @@ tryMembership(agent: Agent): TeamMembership | undefined
 
 Approval service that applies session policy before answerers and logs every ask/outcome pair to the requesting session.
 
+**首次出现**：≤ 0.1.0-rc.7
+
 **在线 Demo**：—（只读目录 + 用法片段）
 
 <details><summary>方法签名</summary>
@@ -236,6 +249,8 @@ overrideOf(session: Session): ApprovalPolicy | undefined
 ### attachments
 
 Immutable binary attachment service.
+
+**首次出现**：≤ 0.1.0-rc.7
 
 **在线 Demo**：—（只读目录 + 用法片段）
 
@@ -264,6 +279,8 @@ readImageRequest( ref: ImageAttachmentRef, target: ImageRequestTarget, signal?: 
 
 `ctx.authorization`: a registry of credential-obtaining flows, one attempt at a time per key.
 
+**首次出现**：0.1.1-rc.1
+
 **在线 Demo**：—（只读目录 + 用法片段）
 
 <details><summary>方法签名</summary>
@@ -282,6 +299,8 @@ async begin(request: AuthorizationRequest): Promise<AuthorizationOutcome>
 
 Owns one optional provider registration in the shared browser-use service.
 
+**首次出现**：0.1.6-alpha.1
+
 **在线 Demo**：—（只读目录 + 用法片段）
 
 <details><summary>方法签名</summary>
@@ -295,6 +314,8 @@ register(name: BrowserUseProviderName): () => Promise<void>
 ### claudeCodeMods
 
 The bridge service: loaded mods, their hooks, and the harness listeners that raise their events.
+
+**首次出现**：0.2.1-alpha.1
 
 **在线 Demo**：—（只读目录 + 用法片段）
 
@@ -311,6 +332,8 @@ async add(definition: ModDefinition): Promise<() => Promise<void>>
 ### clientModules
 
 The web plugin table service: incremental `dsh.client` scan + wire composition + bundle route + index injection rows.
+
+**首次出现**：≤ 0.1.0-rc.7
 
 **在线 Demo**：—（只读目录 + 用法片段）
 
@@ -332,6 +355,8 @@ onGraphChanged(listener: () => void): () => void
 
 Human-command registry.
 
+**首次出现**：≤ 0.1.0-rc.7
+
 **在线 Demo**：—（只读目录 + 用法片段）
 
 <details><summary>方法签名</summary>
@@ -350,6 +375,8 @@ find(agent: Agent, name: string): CommandDefinition | undefined
 
 Abstract compaction service.
 
+**首次出现**：≤ 0.1.0-rc.7
+
 **在线 Demo**：—（只读目录 + 用法片段）
 
 <details><summary>方法签名</summary>
@@ -366,6 +393,8 @@ abstract compactRegion( start: SessionSeq, end: SessionSeq, agent: CompactionAge
 
 Owns one optional provider registration in the shared computer-use service.
 
+**首次出现**：0.1.6-alpha.1
+
 **在线 Demo**：—（只读目录 + 用法片段）
 
 <details><summary>方法签名</summary>
@@ -379,6 +408,8 @@ register(name: ComputerUseProviderName): () => Promise<void>
 ### configEditor
 
 Persist complete raw configs and apply them through the normal Loader path.
+
+**首次出现**：0.1.7-alpha.1
 
 **在线 Demo**：—（只读目录 + 用法片段）
 
@@ -395,6 +426,8 @@ async edit( entry: Entry, change: (current: Record<string, unknown>, inherited: 
 ### connection
 
 Host `ctx.connection` members consumed by transport-independent adapters.
+
+**首次出现**：0.1.6-alpha.2
 
 **在线 Demo**：—（只读目录 + 用法片段）
 
@@ -420,6 +453,8 @@ authenticatedUrl(baseUrl: string): string
 
 Optional reasoning translation delegates Session-bound storage to the translator.
 
+**首次出现**：0.2.1-alpha.2
+
 **在线 Demo**：—（只读目录 + 用法片段）
 
 <details><summary>方法签名</summary>
@@ -434,6 +469,8 @@ Optional reasoning translation delegates Session-bound storage to the translator
 ### credentials
 
 Abstract credential service over two key spaces that answer two questions.
+
+**首次出现**：≤ 0.1.0-rc.7
 
 **在线 Demo**：—（只读目录 + 用法片段）
 
@@ -457,6 +494,8 @@ abstract deleteRecord(key: CredentialKey): Promise<void>
 
 Host service backing the generated `ctx.remote.credentials` namespace.
 
+**首次出现**：0.1.2-alpha.1
+
 **在线 Demo**：—（只读目录 + 用法片段）
 
 <details><summary>方法签名</summary>
@@ -472,6 +511,8 @@ Host service backing the generated `ctx.remote.credentials` namespace.
 ### deepseekAccount
 
 Account operations; only Host consumers can obtain a request credential.
+
+**首次出现**：0.1.7-alpha.1
 
 **在线 Demo**：—（只读目录 + 用法片段）
 
@@ -499,6 +540,8 @@ abstract getDeviceIdentity(): Promise<{ deviceId?: string; userId?: AccountUserI
 
 Registry of independently owned top-level fields for official DeepSeek requests.
 
+**首次出现**：0.1.2-alpha.1
+
 **在线 Demo**：—（只读目录 + 用法片段）
 
 <details><summary>方法签名</summary>
@@ -514,6 +557,8 @@ async prepare(request: DeepSeekLlmApiExtensionRequest): Promise<PreparedDeepSeek
 
 Abstract directory-picking service.
 
+**首次出现**：≤ 0.1.0-rc.7
+
 **在线 Demo**：—（只读目录 + 用法片段）
 
 <details><summary>方法签名</summary>
@@ -527,6 +572,8 @@ abstract capability(): DirectoryPickerCapability
 ### directoryPickerController
 
 Host service backing the generated `ctx.remote.directoryPicker` namespace.
+
+**首次出现**：0.1.2-alpha.1
 
 **在线 Demo**：—（只读目录 + 用法片段）
 
@@ -544,6 +591,8 @@ Host service backing the generated `ctx.remote.directoryPicker` namespace.
 
 Host capability for cancellable file-reference discovery.
 
+**首次出现**：0.1.0-rc.8
+
 **在线 Demo**：—（只读目录 + 用法片段）
 
 <details><summary>方法签名</summary>
@@ -557,6 +606,8 @@ abstract list( agent: Agent, query: string, signal: AbortSignal, ): Promise<File
 ### fileUploads
 
 Host service owning upload storage and receipts keyed by each receiving Agent's exact Session.
+
+**首次出现**：0.1.3-alpha.1
 
 **在线 Demo**：—（只读目录 + 用法片段）
 
@@ -576,6 +627,8 @@ retirePrompt(agent: Agent, requestId: string): void
 ### fs
 
 Abstract filesystem provider.
+
+**首次出现**：≤ 0.1.0-rc.7
 
 **在线 Demo**：—（只读目录 + 用法片段）
 
@@ -604,6 +657,8 @@ abstract editText( target: FsTarget, edit: FsEditRequest, expected?: { version: 
 ### goals
 
 Goal service (`ctx.goals`) backed exclusively by the owning session log.
+
+**首次出现**：≤ 0.1.0-rc.7
 
 **在线 Demo**：Settings 页 / 原生右侧栏 tab 的实时快照
 
@@ -635,6 +690,8 @@ if (service !== undefined) {
 
 Hot reload service with Cordis-compatible module configuration and events.
 
+**首次出现**：0.1.6-alpha.2
+
 **在线 Demo**：—（只读目录 + 用法片段）
 
 <details><summary>方法签名</summary>
@@ -654,6 +711,8 @@ async reconcileProfile(requiredIds: readonly string[] = []): Promise<ProfileReco
 
 Shared Host/Client service façade over the realm's source publisher.
 
+**首次出现**：0.1.2-alpha.1
+
 **在线 Demo**：—（只读目录 + 用法片段）
 
 <details><summary>方法签名</summary>
@@ -668,6 +727,8 @@ readonly cordis: CordisRuntimeTreeReader
 ### jobController
 
 Host service backing the generated `ctx.remote.job` namespace.
+
+**首次出现**：0.1.7-alpha.1
 
 **在线 Demo**：—（只读目录 + 用法片段）
 
@@ -684,6 +745,8 @@ Host service backing the generated `ctx.remote.job` namespace.
 ### jobs
 
 Abstract background job registry.
+
+**首次出现**：≤ 0.1.0-rc.7
 
 **在线 Demo**：—（只读目录 + 用法片段）
 
@@ -707,6 +770,8 @@ abstract attachController(name: string): () => void
 ### llm
 
 The abstract `llm` service: an adapter registry plus a streaming model-call API, interceptable via the `llm/stream` waterfall.
+
+**首次出现**：≤ 0.1.0-rc.7
 
 **在线 Demo**：—（只读目录 + 用法片段）
 
@@ -737,6 +802,8 @@ stream(options: GenerateOptions): AsyncIterable<StreamChunk>
 
 The LSP capability seam (`ctx.lsp`).
 
+**首次出现**：≤ 0.1.0-rc.7
+
 **在线 Demo**：—（只读目录 + 用法片段）
 
 <details><summary>方法签名</summary>
@@ -752,6 +819,8 @@ query(request: LspQueryRequest, signal?: AbortSignal): Promise<LspQueryResult>
 
 Scoped resource access plus three tools shared by configured MCP servers.
 
+**首次出现**：0.1.6-alpha.1
+
 **在线 Demo**：—（只读目录 + 用法片段）
 
 <details><summary>方法签名</summary>
@@ -765,6 +834,8 @@ register(server: string, provider: McpResourceProvider): () => void
 ### messageFeedback
 
 Session-log service; cold operations never construct a Session or Agent.
+
+**首次出现**：≤ 0.1.0-rc.7
 
 **在线 Demo**：—（只读目录 + 用法片段）
 
@@ -781,6 +852,8 @@ Session-log service; cold operations never construct a Session or Agent.
 ### officeToPdf
 
 A provider lifetime owns all converters, queued calls, and temporary files.
+
+**首次出现**：0.1.6-alpha.2
 
 **在线 Demo**：—（只读目录 + 用法片段）
 
@@ -799,6 +872,8 @@ convert(request: OfficeToPdfRequest, signal?: AbortSignal): Promise<OfficeToPdfR
 
 Shared transport provider.
 
+**首次出现**：0.2.0-rc.1
+
 **在线 Demo**：—（只读目录 + 用法片段）
 
 <details><summary>方法签名</summary>
@@ -813,6 +888,8 @@ createSessionLogReporter(options: SessionLogOptions): SessionLogReporter
 ### permissionPresets
 
 Owns the deployment's configured permission presets, the fixed Auto integration hook, and their write path.
+
+**首次出现**：≤ 0.1.0-rc.7
 
 **在线 Demo**：—（只读目录 + 用法片段）
 
@@ -833,6 +910,8 @@ set(session: Session, name: string): void
 
 `ctx.planMode`: owns logged plan state, applies and narrates selected state at step start, the `plan:policy` section, the `/plan` command, and the stable exit tool.
 
+**首次出现**：≤ 0.1.0-rc.7
+
 **在线 Demo**：—（只读目录 + 用法片段）
 
 <details><summary>方法签名</summary>
@@ -847,6 +926,8 @@ set(agent: Agent, active: boolean): 'committed' | 'queued' | 'cancelled' | 'noop
 ### pluginManager
 
 Manage profile files and apply their declared reload lifecycle.
+
+**首次出现**：0.1.6-alpha.2
 
 **在线 Demo**：—（只读目录 + 用法片段）
 
@@ -873,6 +954,8 @@ Manage profile files and apply their declared reload lifecycle.
 
 Fetches, validates, and caches configured market indexes; annotates entries with the profile's installation facts.
 
+**首次出现**：0.2.1-alpha.4
+
 **在线 Demo**：—（只读目录 + 用法片段）
 
 <details><summary>方法签名</summary>
@@ -890,6 +973,8 @@ async entry(url: string, name: string): Promise<MarketListingEntry | undefined>
 
 Compares public registry responses on the Host; the Client owns the initial selection.
 
+**首次出现**：0.1.7-alpha.2
+
 **在线 Demo**：—（只读目录 + 用法片段）
 
 <details><summary>方法签名</summary>
@@ -903,6 +988,8 @@ Compares public registry responses on the Host; the Client owns the initial sele
 ### productAnalytics
 
 Authenticated event intake; disabled instances do not inspect identity or accept new events.
+
+**首次出现**：0.2.0-rc.1
 
 **在线 Demo**：—（只读目录 + 用法片段）
 
@@ -920,6 +1007,8 @@ Authenticated event intake; disabled instances do not inspect identity or accept
 
 Host analytics sender.
 
+**首次出现**：0.1.7-alpha.1
+
 **在线 Demo**：—（只读目录 + 用法片段）
 
 <details><summary>方法签名</summary>
@@ -933,6 +1022,8 @@ emit(record: ProductTelemetryRecord): void
 ### profileContext
 
 Current profile facts; scheduling and mutation belong to their callers.
+
+**首次出现**：0.1.6-alpha.2
 
 **在线 Demo**：—（只读目录 + 用法片段）
 
@@ -951,6 +1042,8 @@ readonly telemetryDisabledEnv: string | undefined
 
 Registers one `ctx.ptcRuntime` implementation.
 
+**首次出现**：0.1.6-alpha.1
+
 **在线 Demo**：—（只读目录 + 用法片段）
 
 <details><summary>方法签名</summary>
@@ -968,6 +1061,8 @@ abstract run(spec: PtcRunSpec): Promise<PtcRunResult>
 ### remoteAccess
 
 Registry of access policies, the Gateway's access decisions, list filtering, and the per-Peer access snapshot.
+
+**首次出现**：0.2.1-alpha.3
 
 **在线 Demo**：—（只读目录 + 用法片段）
 
@@ -988,6 +1083,8 @@ snapshotFor(principal: Principal): RemoteAccessBaseline
 
 Abstract process-sandbox service.
 
+**首次出现**：≤ 0.1.0-rc.7
+
 **在线 Demo**：—（只读目录 + 用法片段）
 
 <details><summary>方法签名</summary>
@@ -1001,6 +1098,8 @@ abstract confine(argv: readonly string[], policy: SandboxPolicy, signal?: AbortS
 ### sandboxPolicy
 
 The sandbox-policy service (`ctx.sandboxPolicy`).
+
+**首次出现**：≤ 0.1.0-rc.7
 
 **在线 Demo**：—（只读目录 + 用法片段）
 
@@ -1018,6 +1117,8 @@ overrideOf(session: Session): SandboxMode | undefined
 ### schedule
 
 Shared management service; reads, deletion, and timing edits never activate a Session.
+
+**首次出现**：0.1.7-rc.2
 
 **在线 Demo**：Settings 页 / 原生右侧栏 tab 的实时快照
 
@@ -1044,6 +1145,8 @@ if (service !== undefined) {
 ### sessionController
 
 Host service backing the generated `ctx.remote.session` namespace.
+
+**首次出现**：0.1.2-alpha.1
 
 **在线 Demo**：—（只读目录 + 用法片段）
 
@@ -1080,6 +1183,8 @@ workspaceDesktop(): { name: string; available: boolean; fileManager: 'finder' | 
 
 Host Remote through which a product surface records a Session-level remark.
 
+**首次出现**：0.1.5-alpha.2
+
 **在线 Demo**：—（只读目录 + 用法片段）
 
 <details><summary>方法签名</summary>
@@ -1094,6 +1199,8 @@ Host Remote through which a product surface records a Session-level remark.
 
 Host Remote adapter over the composed file-reference provider.
 
+**首次出现**：0.1.2-alpha.1
+
 **在线 Demo**：—（只读目录 + 用法片段）
 
 <details><summary>方法签名</summary>
@@ -1107,6 +1214,8 @@ Host Remote adapter over the composed file-reference provider.
 ### sessionPersistence
 
 Durable append-only session storage addressed through per-session handles.
+
+**首次出现**：≤ 0.1.0-rc.7
 
 **在线 Demo**：—（只读目录 + 用法片段）
 
@@ -1127,6 +1236,8 @@ abstract list(options?: SessionPersistenceListOptions): Promise<readonly Session
 
 The persisted projection cache service.
 
+**首次出现**：≤ 0.1.0-rc.7
+
 **在线 Demo**：—（只读目录 + 用法片段）
 
 <details><summary>方法签名</summary>
@@ -1144,6 +1255,8 @@ coldSnapshot( meta: SessionHeader, inheritedEventCount: SessionLogOffset, events
 ### sessionProjections
 
 `ctx.sessionProjections`: the projection unit table and its drive.
+
+**首次出现**：≤ 0.1.0-rc.7
 
 **在线 Demo**：—（只读目录 + 用法片段）
 
@@ -1168,6 +1281,8 @@ hydrate( session: Session, checkpoint: ProjectionCheckpoint, events: readonly Se
 ### sessionQuery
 
 Unified live-preferred session query service.
+
+**首次出现**：≤ 0.1.0-rc.7
 
 **在线 Demo**：—（只读目录 + 用法片段）
 
@@ -1197,6 +1312,8 @@ async readEvent(request: SessionEventReadRequest, signal?: AbortSignal): Promise
 
 Exact-read consumer that prepares immutable cross-session message context.
 
+**首次出现**：≤ 0.1.0-rc.7
+
 **在线 Demo**：—（只读目录 + 用法片段）
 
 <details><summary>方法签名</summary>
@@ -1212,6 +1329,8 @@ async prepare( agent: Agent, content: ContentBlock[], references: SessionReferen
 ### sessions
 
 In-memory session store (`ctx.sessions`).
+
+**首次出现**：≤ 0.1.0-rc.7
 
 **在线 Demo**：Settings 页 / 原生右侧栏 tab 的实时快照
 
@@ -1242,6 +1361,8 @@ if (service !== undefined) {
 
 Host service backing `ctx.remote.skills` without activating a cold Agent.
 
+**首次出现**：0.1.2-alpha.1
+
 **在线 Demo**：—（只读目录 + 用法片段）
 
 <details><summary>方法签名</summary>
@@ -1255,6 +1376,8 @@ Host service backing `ctx.remote.skills` without activating a cold Agent.
 ### sessionTelemetry
 
 Loadable form of the backend contract: one implementation per context — the cordis `Service` registration under the `telemetry` key throws on a duplicate, cordis' standard behavior.
+
+**首次出现**：≤ 0.1.0-rc.7
 
 **在线 Demo**：—（只读目录 + 用法片段）
 
@@ -1273,6 +1396,8 @@ abstract shutdown(): Promise<void>
 
 Log-backed title fold plus asynchronous fallback generation.
 
+**首次出现**：≤ 0.1.0-rc.7
+
 **在线 Demo**：—（只读目录 + 用法片段）
 
 <details><summary>方法签名</summary>
@@ -1289,6 +1414,8 @@ register(provider: SessionTitleProvider): () => Promise<void>
 ### settings
 
 Project Config schemas into forms and own optional instance-level UI policy.
+
+**首次出现**：≤ 0.1.0-rc.7
 
 **在线 Demo**：—（只读目录 + 用法片段）
 
@@ -1309,6 +1436,8 @@ async mutate(ns: string, ops: readonly SettingsPathOp[], expectedRevision?: numb
 
 Host service backing the generated `ctx.remote.settings` namespace.
 
+**首次出现**：0.1.2-alpha.1
+
 **在线 Demo**：—（只读目录 + 用法片段）
 
 <details><summary>方法签名</summary>
@@ -1327,6 +1456,8 @@ Host service backing the generated `ctx.remote.settings` namespace.
 
 Abstract bash execution service.
 
+**首次出现**：≤ 0.1.0-rc.7
+
 **在线 Demo**：—（只读目录 + 用法片段）
 
 <details><summary>方法签名</summary>
@@ -1341,6 +1472,8 @@ abstract execute(spec: ShellExecSpec): Promise<ShellExecution>
 ### shellEnv
 
 Registry (`ctx.shellEnv`) for trusted, per-execution `DSH_*` variables.
+
+**首次出现**：≤ 0.1.0-rc.7
 
 **在线 Demo**：—（只读目录 + 用法片段）
 
@@ -1357,6 +1490,8 @@ list(): BashEnvVariableInfo[]
 ### skills
 
 Layered registry of skill providers, the host+per-scope shape the tools registry established.
+
+**首次出现**：≤ 0.1.0-rc.7
 
 **在线 Demo**：—（只读目录 + 用法片段）
 
@@ -1376,6 +1511,8 @@ async get(name: string, options: SkillViewOptions = {}): Promise<SkillDefinition
 
 Speech calls never activate or submit to an Agent.
 
+**首次出现**：0.1.7-alpha.1
+
 **在线 Demo**：—（只读目录 + 用法片段）
 
 <details><summary>方法签名</summary>
@@ -1394,6 +1531,8 @@ Speech calls never activate or submit to an Agent.
 ### speechToText
 
 Registry shared by all transcription consumers in one Host composition.
+
+**首次出现**：0.1.7-alpha.1
 
 **在线 Demo**：—（只读目录 + 用法片段）
 
@@ -1417,6 +1556,8 @@ async transcribe(spec: SpeechSpec, signal: AbortSignal): Promise<Transcript>
 
 Abstract spill storage service.
 
+**首次出现**：≤ 0.1.0-rc.7
+
 **在线 Demo**：—（只读目录 + 用法片段）
 
 <details><summary>方法签名</summary>
@@ -1430,6 +1571,8 @@ abstract saveText(input: SaveTextSpill): Promise<SpillRef>
 ### ssh
 
 One non-reconnecting SSH session; loss invalidates all active operations.
+
+**首次出现**：0.1.6-alpha.1
 
 **在线 Demo**：—（只读目录 + 用法片段）
 
@@ -1448,6 +1591,8 @@ dispose(): Promise<void>
 
 The storage hub service.
 
+**首次出现**：≤ 0.1.0-rc.7
+
 **在线 Demo**：—（只读目录 + 用法片段）
 
 <details><summary>方法签名</summary>
@@ -1463,6 +1608,8 @@ form<K extends keyof StorageForms>(form: K): StorageForms[K]
 ### storageDomain
 
 The mounted domain facility.
+
+**首次出现**：≤ 0.1.0-rc.7
 
 **在线 Demo**：—（只读目录 + 用法片段）
 
@@ -1480,6 +1627,8 @@ async closeAll(): Promise<void>
 
 Singleton settings owner read when delegation tools are composed for a Session.
 
+**首次出现**：0.1.2-alpha.1
+
 **在线 Demo**：—（只读目录 + 用法片段）
 
 <details><summary>方法签名</summary>
@@ -1493,6 +1642,8 @@ current(): SubagentModelSelectionSettings
 ### subagents
 
 Named provider registry with managed activations, durable discovery, and local child messaging.
+
+**首次出现**：≤ 0.1.0-rc.7
 
 **在线 Demo**：—（只读目录 + 用法片段）
 
@@ -1522,6 +1673,8 @@ list(): string[]
 
 Abstract subprocess service.
 
+**首次出现**：≤ 0.1.0-rc.7
+
 **在线 Demo**：—（只读目录 + 用法片段）
 
 <details><summary>方法签名</summary>
@@ -1538,6 +1691,8 @@ abstract spawnTerminal(spec: SubprocessTerminalSpawnSpec): Promise<SubprocessTer
 ### systemPrompt
 
 Registry service for the prompt inputs assembled before each model step.
+
+**首次出现**：≤ 0.1.0-rc.7
 
 **在线 Demo**：—（只读目录 + 用法片段）
 
@@ -1561,6 +1716,8 @@ async assemble(context: AssembleContext = {}): Promise<PromptAssembly>
 
 Typed Remote control of transient Session-owned terminal processes.
 
+**首次出现**：0.1.6-alpha.1
+
 **在线 Demo**：—（只读目录 + 用法片段）
 
 <details><summary>方法签名</summary>
@@ -1581,6 +1738,8 @@ Typed Remote control of transient Session-owned terminal processes.
 ### terminals
 
 In-process registry for replaceable PTY backends and exact-Agent sessions.
+
+**首次出现**：≤ 0.1.0-rc.7
 
 **在线 Demo**：—（只读目录 + 用法片段）
 
@@ -1604,6 +1763,8 @@ list(owner: Agent): TerminalSessionSnapshot[]
 
 Disposable timer helpers mixed into Cordis contexts.
 
+**首次出现**：≤ 0.1.0-rc.7
+
 **在线 Demo**：—（只读目录 + 用法片段）
 
 <details><summary>方法签名</summary>
@@ -1623,6 +1784,8 @@ debounce<F extends (...args: any[]) => void>(callback: F, delay: number): F & { 
 
 Replay owner for one service-wide estimator and isolated per-session folds.
 
+**首次出现**：≤ 0.1.0-rc.7
+
 **在线 Demo**：—（只读目录 + 用法片段）
 
 <details><summary>方法签名</summary>
@@ -1637,6 +1800,8 @@ estimateMessage(message: Message): number
 ### toolResultPruner
 
 Deterministic head/middle/tail pruning for current tool-result surface nodes.
+
+**首次出现**：≤ 0.1.0-rc.7
 
 **在线 Demo**：—（只读目录 + 用法片段）
 
@@ -1654,6 +1819,8 @@ pruneSession(session: Session): PruneResult
 ### tools
 
 Tool registry and execution pipeline.
+
+**首次出现**：≤ 0.1.0-rc.7
 
 **在线 Demo**：Settings 页 / 原生右侧栏 tab 的实时快照
 
@@ -1683,6 +1850,8 @@ if (service !== undefined) {
 
 One Host service with explicit routing, cancellation and quiescent unload.
 
+**首次出现**：0.2.1-alpha.2
+
 **在线 Demo**：—（只读目录 + 用法片段）
 
 <details><summary>方法签名</summary>
@@ -1698,6 +1867,8 @@ async translate(spec: TranslationSpec, signal?: AbortSignal): Promise<string>
 ### typert
 
 Registry of generated schemas, package reflection, invocations, and Remote dependency providers.
+
+**首次出现**：≤ 0.1.0-rc.7
 
 **在线 Demo**：—（只读目录 + 用法片段）
 
@@ -1719,6 +1890,8 @@ toJSONSchema(key: string, params?: z.core.ToJSONSchemaParams): z.core.JSONSchema
 
 Resolve strict generated definitions or conservative SRC markers against current Cordis Services and Typert providers.
 
+**首次出现**：≤ 0.1.0-rc.7
+
 **在线 Demo**：—（只读目录 + 用法片段）
 
 <details><summary>方法签名</summary>
@@ -1737,6 +1910,8 @@ async stream(request: InvokeRemoteRequest): Promise<AsyncIterable<unknown>>
 
 `ctx.userQuestions`: validation plus the scoped answerer waterfall.
 
+**首次出现**：≤ 0.1.0-rc.7
+
 **在线 Demo**：—（只读目录 + 用法片段）
 
 <details><summary>方法签名</summary>
@@ -1754,6 +1929,8 @@ async ask(request: AskUserQuestionRequest): Promise<AskUserQuestionAnswer>
 
 The web access service.
 
+**首次出现**：≤ 0.1.0-rc.7
+
 **在线 Demo**：—（只读目录 + 用法片段）
 
 <details><summary>方法签名</summary>
@@ -1770,6 +1947,8 @@ async fetch(request: WebFetchRequest, signal?: AbortSignal): Promise<WebFetchRes
 ### webApp
 
 The Web GUI this process serves, provided by the `web-runtime` row.
+
+**首次出现**：0.2.1-alpha.3
 
 **在线 Demo**：Settings 页 / 原生右侧栏 tab 的实时快照
 
@@ -1792,6 +1971,8 @@ if (service !== undefined) {
 
 Fire-and-forget rule runtime.
 
+**首次出现**：0.1.2-alpha.1
+
 **在线 Demo**：—（只读目录 + 用法片段）
 
 <details><summary>方法签名</summary>
@@ -1806,6 +1987,8 @@ dispatch<K extends string>(delivery: VerifiedWebhookDelivery<K>): void
 ### webServer
 
 The browser HTTP carrier service.
+
+**首次出现**：≤ 0.1.0-rc.7
 
 **在线 Demo**：Host 快照路由（/plugin-api-gallery/state）
 
@@ -1835,6 +2018,8 @@ if (service !== undefined) {
 
 Workflow Service Definition contract.
 
+**首次出现**：≤ 0.1.0-rc.7
+
 **在线 Demo**：—（只读目录 + 用法片段）
 
 <details><summary>方法签名</summary>
@@ -1848,6 +2033,8 @@ abstract start(request: WorkflowStartRequest): WorkflowRun
 ### workingDirectory
 
 One owner for each Session's effective directory and its model-visible changes.
+
+**首次出现**：0.2.1-alpha.2
 
 **在线 Demo**：Settings 页 / 原生右侧栏 tab 的实时快照
 
@@ -1873,6 +2060,8 @@ if (service !== undefined) {
 
 Serves the summaries and file comparisons the recorder keeps for live Sessions.
 
+**首次出现**：0.1.6-alpha.2
+
 **在线 Demo**：—（只读目录 + 用法片段）
 
 <details><summary>方法签名</summary>
@@ -1887,6 +2076,8 @@ diff(sessionId: SessionId, seq: number, index: number, signal: AbortSignal): Pro
 ### workspaceController
 
 Host service backing the generated `ctx.remote.workspace` namespace.
+
+**首次出现**：0.1.2-alpha.1
 
 **在线 Demo**：—（只读目录 + 用法片段）
 
@@ -1912,6 +2103,8 @@ Host service backing the generated `ctx.remote.workspace` namespace.
 
 Host Remote file reads and workspace directory observations over the composed filesystem.
 
+**首次出现**：0.1.5-alpha.1
+
 **在线 Demo**：—（只读目录 + 用法片段）
 
 <details><summary>方法签名</summary>
@@ -1929,6 +2122,8 @@ Host Remote file reads and workspace directory observations over the composed fi
 ### workspaceRegistry
 
 Durable workspace registry.
+
+**首次出现**：≤ 0.1.0-rc.7
 
 **在线 Demo**：—（只读目录 + 用法片段）
 
@@ -1954,6 +2149,8 @@ async resolveByPath(path: string): Promise<Workspace | undefined>
 
 Creates retained Git worktrees under the mounted filesystem and sandbox providers.
 
+**首次出现**：0.2.1-alpha.2
+
 **在线 Demo**：—（只读目录 + 用法片段）
 
 <details><summary>方法签名</summary>
@@ -1968,84 +2165,84 @@ async create(agent: Agent, request: CreateWorktreeRequest = {}, signal?: AbortSi
 
 76 个。`waterfall` 必须返回 `next()`；`emit` 只观察；`serial`/parallel 按文档等待。
 
-| 事件 | 模式 | 说明 | 在线 Demo |
-| --- | --- | --- | --- |
-| `agent-loop/config-start-failed` | emit | A declarative agent entry failed before it could publish a live agent. | — |
-| `agent-preset/selected` | emit | One session committed a different agent preset to its durable log. | — |
-| `agent/assistant-stream` | emit | Process-local assistant-stream publication. | — |
-| `agent/created` | serial | An entered agent is ready for per-agent initialization after factory setup. | — |
-| `agent/disposed` | emit | An agent left the registry; AgentLoop emits this after driver quiescence and scoped-registration unwind, but before session detachment. | — |
-| `agent/error` | emit | A step or turn errored. | — |
-| `agent/inbox/claimed` | emit | One message left the inbox inside its open turn. | — |
-| `agent/inbox/discarded` | emit | One message was discarded from the live inbox. | — |
-| `agent/inbox/inserted` | emit | One message entered the live inbox. | — |
-| `agent/pre-step` | waterfall | Reject a proposed step or replace the messages that enter it. | — |
-| `agent/request` | waterfall | Replace the frozen call configuration. | — |
-| `agent/request-error` | waterfall | Handle one failed model-request attempt before the loop retries or closes its step. | — |
-| `agent/status` | emit | Agent status changed (`idle` ⇄ `running`). | — |
-| `agent/turn-stopping` | serial | The turn is about to close: the model owes no response (no live tool calls, no fresh steering). | — |
-| `api-session/activity` | emit | One user-authored durable message advanced Session list activity. | — |
-| `api-session/added` | emit | A Session became visible or its Agent was created or disposed. | — |
-| `api-session/error` | emit | One Agent failed outside a durable turn position. | — |
-| `api-session/removed` | emit | A Session left the live Host registry. | — |
-| `api-session/status` | emit | One Agent changed running state. | — |
-| `app-boot/config-reload` | emit | Profile patches were reconciled into the running Loader tree: every entry update settled and no new inactive entry was introduced. | — |
-| `approval/request` | waterfall | Ask composed answerers for one decision. | — |
-| `authorization/settled` | emit | One authorization attempt has finished and released its key. | — |
-| `commands/change` | emit | A command was registered or unregistered. | — |
-| `compaction/summary-error` | waterfall | Recover a failed summary request by synchronously recording a durable change to its selected input. | — |
-| `connection/request` | waterfall | Admit or wrap an authenticated shared API request, including body transfer. | — |
-| `credentials/record-updated` | emit | Committed change to a stored credential record: a `modifyRecord` that wrote, a `deleteRecord` that removed, or an external edit observed in storage. | — |
-| `credentials/reference-updated` | emit | Committed change to a provider-managed credential source: a `set`, an `unset`, or an external edit observed in storage. | — |
-| `deepseek-account/model-sign-in-required` | emit | An account model request requires the user to sign in. | — |
-| `deepseek-account/session-expired` | emit | Server rejection removed the current account credential; this notification is not replayed. | — |
-| `deepseek-account/signed-out` | emit | Local grant removal has completed. | — |
-| `domain/changed` | emit | A domain record or the global singleton changed, emitted once per write strictly after the backend acknowledged durability. | — |
-| `feedback/committed` | parallel | Observe a durable cold feedback mutation without publishing a live Session. | — |
-| `fs/edit-intent` | waterfall | Single-slot decision for the next FileSystem.editText. | — |
-| `fs/observed` | emit | Record an authoritative positive or negative observation. | — |
-| `fs/write-intent` | waterfall | Single-slot decision for the next FileSystem.writeText. | — |
-| `goal/activation-changed` | emit | Process-local goal activation changed for one session. | — |
-| `goal/changed` | emit | Goal mutation accepted by one live agent. | — |
-| `hmr/change` | emit | A watched file has no module or configuration handler. | — |
-| `hmr/reload` | emit | Module replacements have finished loading. | — |
-| `llm/adapters-updated` | emit | The provider topology changed: an adapter registered or unregistered routes, or the configurable-provider directory gained or lost entries. | — |
-| `llm/stream` | waterfall | Waterfall around every streaming model call (retry, replay, routing). | — |
-| `permission-presets/catalog-changed` | emit | The selectable process catalog changed. | — |
-| `plugin-manager/changed` | emit | The profile's plugins, bundles, or composition changed: a manager operation completed. | — |
-| `plugin-manager/install-log` | emit | One chunk of a pnpm run's output, streamed as the run produces it. | — |
-| `plugin-manager/install-state` | emit | An installation moved between its Host phases. | — |
-| `plugin-market/changed` | emit | The configured index sources changed. | — |
-| `schedule/changed` | emit | Durable task set changed; clients refetch global task and Session-active catalogs. | — |
-| `session-telemetry/record` | waterfall | Transform one outbound record before it reaches the backend. | — |
-| `session/created` | emit | Creation announcement during session publication. | — |
-| `session/disposed` | emit | Emitted once when an announced session leaves the store, including publication rollback, but never for an entry whose creation announcement did not begin. | — |
-| `session/event` | emit | Post-commit, fire-and-forget append feed. | — |
-| `session/flush` | parallel | Awaited parallel durability checkpoint: every listener runs and the caller awaits all of them, with no waterfall veto. | — |
-| `settings/document-updated` | emit | One profile entry's form values, availability, or page policy changed. | — |
-| `skills/change` | emit | A skill provider, runtime contribution, or provider-backed catalog may have changed. | — |
-| `subagent/end` | emit | A published child settled. | — |
-| `subagent/provider-added` | emit | A provider became resolvable in the registry. | — |
-| `subagent/provider-removed` | emit | A provider left the registry. | — |
-| `subagent/start` | emit | A provider established a published child. | — |
-| `system-prompt/assemble` | waterfall | Expert waterfall over the assembled sections, contexts, tools, and variables. | — |
-| `system-prompt/change` | emit | Emitted when any prompt provider changes. | — |
-| `tools/change` | emit | A tool was registered or unregistered, or a scoped restriction changed (the available tool set changed — possibly for one scope only). | — |
-| `tools/execute` | waterfall | Around-dispatch waterfall for timeout, retry, or metrics. | — |
-| `tools/post-execute` | waterfall | Accept, replace, enrich, or block a normalized dispatch result. | — |
-| `tools/pre-execute` | waterfall | Allow, deny, cancel, or ask before dispatch. | — |
-| `tools/ptc-dispatch-log` | waterfall | Allow a listener to replace content in the DURABLE LOG COPY of one `run_code` sub-dispatch outcome before the bridge appends its `tool/ptc-dispatch` event. | — |
-| `tools/result` | emit | Observe the frozen, lossless-JSON final outcome. | — |
-| `user-questions/request` | waterfall | Ask composed answerers for structured user input. | — |
-| `webserver/index-inject` | emit | Collect the structured index injection table. | — |
-| `workflow/agent-end` | emit | One `agent()` call settled (clean result, child failure, or run cancellation). | — |
-| `workflow/agent-start` | emit | One `agent()` call established a published child run. | — |
-| `workflow/end` | emit | A workflow run settled (any stop reason). | — |
-| `workflow/log` | emit | The script emitted a narration line (a `log(message)` call). | — |
-| `workflow/phase` | emit | The script entered a phase (a `phase(title)` call) — progress grouping for observers; no execution semantics. | — |
-| `workflow/start` | emit | A workflow run started — the script's meta block validated, the body about to execute. | — |
-| `workspace/session-activity` | waterfall | Ask the composed providers what still runs for a session before it is archived. | — |
-| `workspace/session-stop` | parallel | Stop a session's running work because the caller archived it with `stopActivity`; the archive set is durable when this dispatches. | — |
+| 事件 | 版本 | 模式 | 说明 | 在线 Demo |
+| --- | --- | --- | --- | --- |
+| `agent-loop/config-start-failed` | ≤ 0.1.0-rc.7 | emit | A declarative agent entry failed before it could publish a live agent. | — |
+| `agent-preset/selected` | ≤ 0.1.0-rc.7 | emit | One session committed a different agent preset to its durable log. | — |
+| `agent/assistant-stream` | 0.1.3-alpha.1 | emit | Process-local assistant-stream publication. | — |
+| `agent/created` | ≤ 0.1.0-rc.7 | serial | An entered agent is ready for per-agent initialization after factory setup. | — |
+| `agent/disposed` | ≤ 0.1.0-rc.7 | emit | An agent left the registry; AgentLoop emits this after driver quiescence and scoped-registration unwind, but before session detachment. | — |
+| `agent/error` | ≤ 0.1.0-rc.7 | emit | A step or turn errored. | — |
+| `agent/inbox/claimed` | ≤ 0.1.0-rc.7 | emit | One message left the inbox inside its open turn. | — |
+| `agent/inbox/discarded` | ≤ 0.1.0-rc.7 | emit | One message was discarded from the live inbox. | — |
+| `agent/inbox/inserted` | ≤ 0.1.0-rc.7 | emit | One message entered the live inbox. | — |
+| `agent/pre-step` | ≤ 0.1.0-rc.7 | waterfall | Reject a proposed step or replace the messages that enter it. | — |
+| `agent/request` | ≤ 0.1.0-rc.7 | waterfall | Replace the frozen call configuration. | — |
+| `agent/request-error` | ≤ 0.1.0-rc.7 | waterfall | Handle one failed model-request attempt before the loop retries or closes its step. | — |
+| `agent/status` | ≤ 0.1.0-rc.7 | emit | Agent status changed (`idle` ⇄ `running`). | — |
+| `agent/turn-stopping` | ≤ 0.1.0-rc.7 | serial | The turn is about to close: the model owes no response (no live tool calls, no fresh steering). | — |
+| `api-session/activity` | 0.1.2-alpha.1 | emit | One user-authored durable message advanced Session list activity. | — |
+| `api-session/added` | 0.1.2-alpha.1 | emit | A Session became visible or its Agent was created or disposed. | — |
+| `api-session/error` | 0.1.2-alpha.1 | emit | One Agent failed outside a durable turn position. | — |
+| `api-session/removed` | 0.1.2-alpha.1 | emit | A Session left the live Host registry. | — |
+| `api-session/status` | 0.1.2-alpha.1 | emit | One Agent changed running state. | — |
+| `app-boot/config-reload` | 0.1.7-alpha.1 | emit | Profile patches were reconciled into the running Loader tree: every entry update settled and no new inactive entry was introduced. | — |
+| `approval/request` | ≤ 0.1.0-rc.7 | waterfall | Ask composed answerers for one decision. | — |
+| `authorization/settled` | 0.1.1-rc.1 | emit | One authorization attempt has finished and released its key. | — |
+| `commands/change` | ≤ 0.1.0-rc.7 | emit | A command was registered or unregistered. | — |
+| `compaction/summary-error` | 0.1.6-alpha.1 | waterfall | Recover a failed summary request by synchronously recording a durable change to its selected input. | — |
+| `connection/request` | 0.1.6-alpha.2 | waterfall | Admit or wrap an authenticated shared API request, including body transfer. | — |
+| `credentials/record-updated` | 0.1.1-rc.1 | emit | Committed change to a stored credential record: a `modifyRecord` that wrote, a `deleteRecord` that removed, or an external edit observed in storage. | — |
+| `credentials/reference-updated` | 0.1.1-rc.1 | emit | Committed change to a provider-managed credential source: a `set`, an `unset`, or an external edit observed in storage. | — |
+| `deepseek-account/model-sign-in-required` | 0.1.7-rc.2 | emit | An account model request requires the user to sign in. | — |
+| `deepseek-account/session-expired` | 0.1.7-rc.2 | emit | Server rejection removed the current account credential; this notification is not replayed. | — |
+| `deepseek-account/signed-out` | 0.1.7-rc.2 | emit | Local grant removal has completed. | — |
+| `domain/changed` | ≤ 0.1.0-rc.7 | emit | A domain record or the global singleton changed, emitted once per write strictly after the backend acknowledged durability. | — |
+| `feedback/committed` | 0.1.3-alpha.2 | parallel | Observe a durable cold feedback mutation without publishing a live Session. | — |
+| `fs/edit-intent` | ≤ 0.1.0-rc.7 | waterfall | Single-slot decision for the next FileSystem.editText. | — |
+| `fs/observed` | ≤ 0.1.0-rc.7 | emit | Record an authoritative positive or negative observation. | — |
+| `fs/write-intent` | ≤ 0.1.0-rc.7 | waterfall | Single-slot decision for the next FileSystem.writeText. | — |
+| `goal/activation-changed` | 0.1.5-alpha.1 | emit | Process-local goal activation changed for one session. | — |
+| `goal/changed` | ≤ 0.1.0-rc.7 | emit | Goal mutation accepted by one live agent. | — |
+| `hmr/change` | 0.1.6-alpha.2 | emit | A watched file has no module or configuration handler. | — |
+| `hmr/reload` | 0.1.6-alpha.2 | emit | Module replacements have finished loading. | — |
+| `llm/adapters-updated` | ≤ 0.1.0-rc.7 | emit | The provider topology changed: an adapter registered or unregistered routes, or the configurable-provider directory gained or lost entries. | — |
+| `llm/stream` | ≤ 0.1.0-rc.7 | waterfall | Waterfall around every streaming model call (retry, replay, routing). | — |
+| `permission-presets/catalog-changed` | 0.1.6-alpha.1 | emit | The selectable process catalog changed. | — |
+| `plugin-manager/changed` | 0.1.6-alpha.2 | emit | The profile's plugins, bundles, or composition changed: a manager operation completed. | — |
+| `plugin-manager/install-log` | 0.1.6-alpha.2 | emit | One chunk of a pnpm run's output, streamed as the run produces it. | — |
+| `plugin-manager/install-state` | 0.1.6-alpha.2 | emit | An installation moved between its Host phases. | — |
+| `plugin-market/changed` | 0.2.1-alpha.4 | emit | The configured index sources changed. | — |
+| `schedule/changed` | 0.1.7-rc.2 | emit | Durable task set changed; clients refetch global task and Session-active catalogs. | — |
+| `session-telemetry/record` | ≤ 0.1.0-rc.7 | waterfall | Transform one outbound record before it reaches the backend. | — |
+| `session/created` | ≤ 0.1.0-rc.7 | emit | Creation announcement during session publication. | — |
+| `session/disposed` | ≤ 0.1.0-rc.7 | emit | Emitted once when an announced session leaves the store, including publication rollback, but never for an entry whose creation announcement did not begin. | — |
+| `session/event` | ≤ 0.1.0-rc.7 | emit | Post-commit, fire-and-forget append feed. | — |
+| `session/flush` | ≤ 0.1.0-rc.7 | parallel | Awaited parallel durability checkpoint: every listener runs and the caller awaits all of them, with no waterfall veto. | — |
+| `settings/document-updated` | ≤ 0.1.0-rc.7 | emit | One profile entry's form values, availability, or page policy changed. | — |
+| `skills/change` | ≤ 0.1.0-rc.7 | emit | A skill provider, runtime contribution, or provider-backed catalog may have changed. | — |
+| `subagent/end` | ≤ 0.1.0-rc.7 | emit | A published child settled. | — |
+| `subagent/provider-added` | ≤ 0.1.0-rc.7 | emit | A provider became resolvable in the registry. | — |
+| `subagent/provider-removed` | ≤ 0.1.0-rc.7 | emit | A provider left the registry. | — |
+| `subagent/start` | ≤ 0.1.0-rc.7 | emit | A provider established a published child. | — |
+| `system-prompt/assemble` | ≤ 0.1.0-rc.7 | waterfall | Expert waterfall over the assembled sections, contexts, tools, and variables. | — |
+| `system-prompt/change` | ≤ 0.1.0-rc.7 | emit | Emitted when any prompt provider changes. | — |
+| `tools/change` | ≤ 0.1.0-rc.7 | emit | A tool was registered or unregistered, or a scoped restriction changed (the available tool set changed — possibly for one scope only). | — |
+| `tools/execute` | ≤ 0.1.0-rc.7 | waterfall | Around-dispatch waterfall for timeout, retry, or metrics. | — |
+| `tools/post-execute` | ≤ 0.1.0-rc.7 | waterfall | Accept, replace, enrich, or block a normalized dispatch result. | — |
+| `tools/pre-execute` | ≤ 0.1.0-rc.7 | waterfall | Allow, deny, cancel, or ask before dispatch. | — |
+| `tools/ptc-dispatch-log` | 0.1.2-alpha.1 | waterfall | Allow a listener to replace content in the DURABLE LOG COPY of one `run_code` sub-dispatch outcome before the bridge appends its `tool/ptc-dispatch` event. | — |
+| `tools/result` | ≤ 0.1.0-rc.7 | emit | Observe the frozen, lossless-JSON final outcome. | — |
+| `user-questions/request` | 0.1.2-alpha.1 | waterfall | Ask composed answerers for structured user input. | — |
+| `webserver/index-inject` | 0.1.1-rc.1 | emit | Collect the structured index injection table. | — |
+| `workflow/agent-end` | ≤ 0.1.0-rc.7 | emit | One `agent()` call settled (clean result, child failure, or run cancellation). | — |
+| `workflow/agent-start` | ≤ 0.1.0-rc.7 | emit | One `agent()` call established a published child run. | — |
+| `workflow/end` | ≤ 0.1.0-rc.7 | emit | A workflow run settled (any stop reason). | — |
+| `workflow/log` | ≤ 0.1.0-rc.7 | emit | The script emitted a narration line (a `log(message)` call). | — |
+| `workflow/phase` | ≤ 0.1.0-rc.7 | emit | The script entered a phase (a `phase(title)` call) — progress grouping for observers; no execution semantics. | — |
+| `workflow/start` | ≤ 0.1.0-rc.7 | emit | A workflow run started — the script's meta block validated, the body about to execute. | — |
+| `workspace/session-activity` | 0.1.7-alpha.1 | waterfall | Ask the composed providers what still runs for a session before it is archived. | — |
+| `workspace/session-stop` | 0.1.7-alpha.1 | parallel | Stop a session's running work because the caller archived it with `stopActivity`; the archive set is durable when this dispatches. | — |
 
 ## Client Services
 
@@ -2054,6 +2251,8 @@ async create(agent: Agent, request: CreateWorktreeRequest = {}, signal?: AbortSi
 ### layout
 
 Panel navigation and geometry actions exposed through ctx.layout.
+
+**首次出现**：≤ 0.1.0-rc.7
 
 **在线 Demo**：—
 
@@ -2072,6 +2271,8 @@ closeRightbar(): void
 ### locale
 
 Dictionary registry plus locale preference.
+
+**首次出现**：≤ 0.1.0-rc.7
 
 **在线 Demo**：—
 
@@ -2095,6 +2296,8 @@ bind(ns: string): Translate
 
 The sessions-service face injected as `ctx.sessions`.
 
+**首次出现**：≤ 0.1.0-rc.7
+
 **在线 Demo**：—
 
 <details><summary>方法签名</summary>
@@ -2116,6 +2319,8 @@ binding(id: SessionId): SessionBinding | undefined
 
 cordis Service layer of the slot system; see the module doc for the split with SlotCore.
 
+**首次出现**：≤ 0.1.0-rc.7
+
 **在线 Demo**：—
 
 <details><summary>方法签名</summary>
@@ -2131,6 +2336,8 @@ inject(key: keyof SlotMap & string, callback: () => SlotInjectionEffect): () => 
 ### theme
 
 Theme registry and preference owner.
+
+**首次出现**：≤ 0.1.0-rc.7
 
 **在线 Demo**：—
 
@@ -2150,6 +2357,8 @@ overrideTokens(source: string, tokens: ThemeTokenOverrides): () => void
 
 Disposable timer helpers mixed into Cordis contexts.
 
+**首次出现**：≤ 0.1.0-rc.7
+
 **在线 Demo**：—
 
 <details><summary>方法签名</summary>
@@ -2168,6 +2377,8 @@ debounce<F extends (...args: any[]) => void>(callback: F, delay: number): F & { 
 ### uiWorkspace
 
 Workspace archive and directory operations consumed by Client UI domains.
+
+**首次出现**：0.1.2-alpha.1
 
 **在线 Demo**：—
 
@@ -2192,6 +2403,8 @@ createDirectory(path: string, name: string): Promise<string>
 
 Workspace Controller's Client service face.
 
+**首次出现**：≤ 0.1.0-rc.7
+
 **在线 Demo**：—
 
 <details><summary>方法签名</summary>
@@ -2211,12 +2424,12 @@ insertSessionBefore( workspaceId: WorkspaceId, sessionId: SessionId, beforeSessi
 
 4 个。
 
-| 事件 | 模式 | 说明 | 在线 Demo |
-| --- | --- | --- | --- |
-| `connection/reset` | emit | A connection generation was established. | — |
-| `locale/change` | emit | The active locale switched. | — |
-| `slots/changed` | emit | An ordinary Slot declaration or entry registration set changed. | — |
-| `theme/change` | emit | Theme state changed (preference switched, registry updated, or the OS color scheme changed while the preference is `system`). | — |
+| 事件 | 版本 | 模式 | 说明 | 在线 Demo |
+| --- | --- | --- | --- | --- |
+| `connection/reset` | ≤ 0.1.0-rc.7 | emit | A connection generation was established. | — |
+| `locale/change` | ≤ 0.1.0-rc.7 | emit | The active locale switched. | — |
+| `slots/changed` | ≤ 0.1.0-rc.7 | emit | An ordinary Slot declaration or entry registration set changed. | — |
+| `theme/change` | ≤ 0.1.0-rc.7 | emit | Theme state changed (preference switched, registry updated, or the OS color scheme changed while the preference is `system`). | — |
 
 ## Client Builtins
 
@@ -2232,123 +2445,126 @@ insertSessionBefore( workspaceId: WorkspaceId, sessionId: SessionId, beforeSessi
 
 ## Slots
 
-100 个 Slot、6 个 Factory。`replaceRisk: shadows-shipped-ui` 表示复用内置 id 会替换内置 UI；新 id 通常是增量注册。
+103 个 Slot、6 个 Factory。`replaceRisk: shadows-shipped-ui` 表示复用内置 id 会替换内置 UI；新 id 通常是增量注册。
 
-| Slot | 类型 | 作用域 | 父节点 | 用途 | 在线 Demo |
-| --- | --- | --- | --- | --- | --- |
-| `root` | single | root | — | The built-in render-tree root hole (seeded by SlotCore): the one slot the shell itself renders, and the ancestor of every other seat. | — |
-| `shell.overlay` | list | root | root | Frame-wide floating layer, above every column and outside their scroll containers. | 详情弹层 / Toast |
-| `shell.quota-notice` | chain | root | shell.overlay | Frame-wide quota notice chain. | — |
-| `workspace.toast` | keyed | root | shell.overlay | Workspace notices selected by their existing business discriminator. | — |
-| `sidebar` | single | root | root | The whole left column. | — |
-| `sidebar.brand.mark` | single | root | sidebar | Brand mark rendered in the expanded brand row and collapsed rail. | — |
-| `sidebar.toggle.badge` | single | root | sidebar | Non-interactive notification inside the collapsed sidebar expand button. | — |
-| `sidebar.settings` | single | root | sidebar | The settings seat at the sidebar foot. | — |
-| `settings.section` | list | root | sidebar.settings | One settings page per list entry. | Settings 整页 |
-| `settings.general.item` | list | root | settings.section | One preference row inside the General section — the additive seat for a single setting that needs no page of its own (a whole page is `settings.section`), contributed by the feature plugin that owns the preference (locale → Language, ui-theme → Appearance, ui-conversation → Composer Enter). | General 偏好行 |
-| `settings.plugins.tab` | list | root | settings.section | One page inside the Plugins settings section. | Plugins 设置 tab |
-| `settings.models.provider-card` | keyed | root | settings.section | One provider card's adapter extension area, dispatched with `entryKey = settingsNs` on every card that renders a directory row: a saved row's card (its first-run setup posture included) and the add-provider draft card. | — |
-| `settings.models.footer` | list | root | settings.section | Ordered extension area after the provider rows and the add controls. | — |
-| `settings.trigger` | single | root | sidebar.settings | The sidebar-foot trigger row content: icon + label, supplied as slot content (the accessible name comes from the content — rail state renders the label visually hidden). | — |
-| `settings.header` | single | root | sidebar.settings | The panel title text seat. | — |
-| `settings.action` | list | root | sidebar.settings | Optional actions rendered in the content-column header before Close. | — |
-| `settings.close` | single | root | sidebar.settings | The close button's visually-hidden label text (the button itself — icon, geometry, focus — is shell chrome). | — |
-| `settings.onboarding` | list | root | sidebar.settings | Root-scoped onboarding steps contributed by settings features. | — |
-| `settings.models.sign-in` | single | root | settings.onboarding | Optional account login choice before the credential editor. | — |
-| `settings.launcher` | single | root | sidebar.settings | Optional sidebar account launcher; opens the shell-owned settings panel. | — |
-| `sidebar.footer.action` | list | root | sidebar | Optional actions beside Settings at the sidebar foot. | 侧栏底部动作 |
-| `sidebar.panellist` | list | root | sidebar | Global panel icons. | — |
-| `sidebar.workspaces` | single | root | sidebar | The workspace/session browsing region: section header, search, the grouped/flat session list, and every workspace dialog. | — |
-| `sidebar.workspaces.session.menu.item` | list | root | sidebar.workspaces | The rows of one Session's "..." menu, in ascending `order`. | — |
-| `sidebar.workspaces.session.row.action` | list | root | sidebar.workspaces | The hover buttons at the end of one Session row, in ascending `order`, after the "..." menu trigger. | — |
-| `sidebar.workspaces.directoryFlow` | single | root | sidebar.workspaces | Directory-flow hole under the sidebar browsing region (declared by the WorkspaceBrowser entry). | — |
-| `sidebar.session.row.leading` | list | root | sidebar.workspaces | Leading decoration of one Session row, in the 16px cell before the title that the row's own state dot otherwise occupies. | Session 行前徽标 |
-| `sidebar.session.row.hover` | list | root | sidebar.workspaces | Section of the Session row's hover card between its relative time and its trailing status line. | — |
-| `sidebar.brand.name` | single | root | sidebar | Brand name rendered beside the expanded mark. | — |
-| `main` | keyed | root | root | Central panel selected by sidebar entry id. | — |
-| `plugins.bundle.config` | keyed | root | main | A bundle's own configuration, keyed by the bundle's package name and rendered on the bundle's page between its description and its rows (`view: 'page'` only). | — |
-| `plugins.add.actions` | list | root | main | Additional MenuItemButton rows after installation: 72px high, with a title and a description capped at two lines. | — |
-| `plugins.tab` | list | root | main | Tabs after the page's own Installed tab, such as Discover: `label` names the tab and `order` places it. | — |
-| `plugins.item` | list | root | main | One official plugin the Plugins page lists in its Official group after the official bundles: `label` is the card's title and `order` its place. | — |
-| `plugins.bundle.activation` | keyed | root | main | Optional guidance after the user enables a bundle from the list, keyed by npm package name. | — |
-| `plugins.row.config` | keyed | root | main | The configuration of one row a bundle declares, keyed by `<package name>#<row id>` with the row id as the bundle's patch declares it: the row on the bundle's page gains a configure control that opens the entry's page, headed by the plugin's display title and description. | — |
-| `plugins.detail.actions` | list | root | main | Controls at the head of a detail page, before the page's own switch and uninstall, rendered with the page's subject. | — |
-| `plugins.detail.badge` | list | root | main | Tags beside a detail page's title, after the version, beta, and problem tags the page draws itself, rendered with the page's subject. | — |
-| `plugins.detail.section` | list | root | main | Sections under a detail page's own content: after the rows on a bundle's page, after the configuration on a row's or an official plugin's page. | — |
-| `main.conversation` | single | session-maybe | main | Conversation shell beneath its root-scoped main-panel entry. | — |
-| `conversation.header` | single | session-maybe | main.conversation | Resident navigation container, including when no Session is selected. | — |
-| `conversation.header.leading` | single | root | conversation.header | Global navigation before the Session title, available without a Session. | — |
-| `conversation.session.header` | single | session | conversation.header | Strict per-Session title, actions, and View navigation. | — |
-| `conversation.session.header.utilities` | list | session | conversation.session.header | Right-aligned Session utilities in ascending order. | 会话右上角按钮 |
-| `conversation.session.header.corner` | single | session | conversation.session.header | The header's far-right corner, past the utilities' edge and into the header's own padding, for one control. | — |
-| `conversation.session.header.actions` | list | session | conversation.session.header | Title-adjacent Session actions in ascending order. | — |
-| `conversation.session.header.lineage` | single | session | conversation.session.header | Optional replacement for one Session breadcrumb title. | — |
-| `rightbar` | single | root | root | The right column: a track the centre makes room for, or nothing. | — |
-| `rightbar.session` | single | session | rightbar | Session content selected by the root-scoped right Sidebar controller. | — |
-| `sidebar.right.pane.tab` | keyed | session | rightbar.session | One tab's body, dispatched with the `id` of the type in force for `tab.kind`. | — |
-| `sidebar.right.tab.files.actions` | list | session | sidebar.right.pane.tab | Workspace directory actions after the file tree's reload control. | — |
-| `sidebar.right.tab.document.actions` | list | session | sidebar.right.pane.tab | Header toolbar contributions acting on the previewed file, rendered after the preview's own controls once the file's Host path is known. | — |
-| `sidebar.right.tab.document.unpreviewable` | list | session | sidebar.right.pane.tab | Empty-state contributions for a file this preview cannot render, offered where Retry would stand once the file's Host path is known. | — |
-| `deliverables.review.file.actions` | list | session | sidebar.right.pane.tab | The same file actions owned by a changed-file review tab. | — |
-| `sidebar.right.tab.guide.entry` | keyed | session | sidebar.right.pane.tab | One provider's guide card, with the standard card as the owner's fallback. | — |
-| `sidebar.right.tab.guide` | chain | session | sidebar.right.pane.tab | The guide tab's body. | — |
-| `sidebar.chat.conversation` | single | session | sidebar.right.pane.tab | Session-scoped Conversation occurrence hosted by one Sidebar chat tab. | — |
-| `sidebar.right.tab.document` | keyed | session | sidebar.right.pane.tab | Document body selected by a registered implementation id. | — |
-| `sidebar.right.tab.document.office.pdf` | keyed | session | sidebar.right.tab.document | PDF presentation supplied with Office-owned converted bytes. | — |
-| `sidebar.right.tab.document.action` | keyed | session | sidebar.right.pane.tab | Renderer-specific controls before the document toolbar's reload button. | — |
-| `sidebar.right.pane.tab.title` | keyed | session | rightbar.session | A tab's title as its chip (and a floating panel's header) shows it, dispatched with the same key and information hook as the body. | — |
-| `sidebar.right.tab.menu.item` | list | session | rightbar.session | Extra items at the end of one tab's actions menu, in registration order. | — |
-| `shell.bottom` | single | root | root | Full-width bottom content below all three columns. | — |
-| `shell.leading` | single | root | root | Window-chrome seat at the frame's top-left, over every main panel. | — |
-| `conversation.user.text.node` | keyed | session | conversation.user.text | One business-owned inline renderer for a pure JSON text node. | — |
-| `conversation.composer` | chain | session | conversation.content | Selector-routed replacements for the current Session's resident composer. | — |
-| `conversation.approval.detail` | single | session | conversation.composer | Optional detail for the Tool call correlated with an approval request. | — |
-| `conversation.plan-review.actions` | list | session | conversation.composer | Actions for the exact plan under review; approval remains with the question composer. | — |
-| `conversation.hero.workspace` | single | root | conversation.content | Workspace picker shown by the blank-session Hero. | — |
-| `conversation.hero.workspace.directoryFlow` | single | root | conversation.hero.workspace | Directory-flow hole under the conversation empty-state picker (declared by the WorkspacePicker entry). | — |
-| `conversation.session` | single | session | conversation.content | Strict per-Session Conversation body. | — |
-| `conversation.view` | list | session | conversation.session | Registered Conversation target Views, rendered one at a time. | 会话 View 标签栏 tab |
-| `conversation.trajectory.images` | single | session | conversation.view | Renderer for one group of durable record images in the Trajectory ledger. | — |
-| `conversation.chat.flow` | single | session | conversation.view | Ordered Chat rows and local echoes with viewport-bound visibility hooks. | — |
-| `conversation.chat.node` | keyed | session | conversation.chat.flow | Final Chat node renderer, keyed by `ChatNodeKind`. | — |
-| `tool.call.toolview` | keyed | session | conversation.chat.node | Keyed Tool call view dispatched by wire Tool name. | — |
-| `tool.call.images` | single | session | tool.call.toolview | Durable images of a settled image-bearing Tool call, rendered through the attachment presentation plugin. | — |
-| `tool.view.cordis` | keyed | session | tool.call.toolview | Interactive Package-owned region rendered inside the latest eligible `cordis_run` card in the conversation flow. | — |
-| `conversation.chat.message.images` | single | session | conversation.chat.node | Renderer for one consecutive group of durable message images. | — |
-| `conversation.chat.assistant-actions` | list | session | conversation.chat.node | Ordered actions for one finalized assistant message. | assistant 消息动作 |
-| `conversation.chat.reasoning.body` | single | session | conversation.chat.node | Expanded reasoning body with the unchanged model text. | — |
-| `conversation.chat.commandview` | keyed | session | conversation.chat.node | Command row keyed by the command name. | — |
-| `conversation.chat.turnTail` | list | session | conversation.chat.node | Ordered feature contributions before a completed Turn's action row. | Turn 结束行 |
-| `deliverables.file.actions` | list | session | conversation.chat.turnTail | Open one file through its authorized Session event coordinates. | — |
-| `conversation.composer.bar` | single | session-maybe | conversation.content | Resident composer body, including the no-Session inert state. | — |
-| `conversation.input.attachments` | single | session-maybe | conversation.composer.bar | Optional draft-attachment rail and drop target. | — |
-| `conversation.input.overlay` | list | session | conversation.composer.bar | Floating entries rendered inside the resident composer card. | — |
-| `conversation.input.permission` | single | session | conversation.composer.bar | Current-session permission control inside the composer tool row. | — |
-| `conversation.input.model` | single | session | conversation.composer.bar | Model selector inside the composer tool row. | — |
-| `conversation.input.model.label` | single | session | conversation.input.model | Non-interactive inline model label; selection controls remain owner-managed. | — |
-| `conversation.input.left` | list | session | conversation.composer.bar | Compact controls at the left of the composer tool row. | composer 左侧按钮 |
-| `conversation.input.plan` | single | session | conversation.composer.bar | Plan control inside the composer tool row. | — |
-| `conversation.input.right` | list | session | conversation.composer.bar | Compact controls before the composer submit action. | composer 右侧按钮 |
-| `conversation.input.activity` | single | session | conversation.composer.bar | Compact action after the model selector; it can expand across the toolbar while retaining the editor and submit action. | — |
-| `conversation.composer.dock` | list | session | conversation.composer.bar | Ambient entries below the composer card. | 输入框下方 chip |
-| `conversation.input.dock` | list | session | conversation.content | Full-width entries above the composer card. | — |
-| `conversation.hero.brand.mark` | single | root | conversation.content | Brand mark shown before the blank-session headline. | — |
-| `conversation.hero.agentPreset` | single | session-maybe | conversation.content | Agent-preset control staged for a New Session. | — |
-| `conversation.hero.options` | list | session | conversation.content | Compact options right-aligned in the New Session row after the workspace and preset controls; rendered only with a Session. | New Session Hero 选项 |
-| `conversation.chat.user.images` | single | session | conversation.chat.user.content | User-message images, including pending and local-echo previews, independently replaceable from output images. | — |
+| Slot | 版本 | 类型 | 作用域 | 父节点 | 用途 | 在线 Demo |
+| --- | --- | --- | --- | --- | --- | --- |
+| `root` | ≤ 0.1.0-rc.7 | single | root | — | The built-in render-tree root hole (seeded by SlotCore): the one slot the shell itself renders, and the ancestor of every other seat. | — |
+| `shell.overlay` | ≤ 0.1.0-rc.7 | list | root | root | Frame-wide floating layer, above every column and outside their scroll containers. | 详情弹层 / Toast |
+| `shell.quota-notice` | 0.1.7-rc.2 | chain | root | shell.overlay | Frame-wide quota notice chain. | — |
+| `workspace.toast` | 0.2.1-alpha.3 | keyed | root | shell.overlay | Workspace notices selected by their existing business discriminator. | — |
+| `main` | 0.1.5-alpha.2 | keyed | root | root | Central panel selected by sidebar entry id. | — |
+| `plugins.item` | 0.1.6-alpha.2 | list | root | main | One official plugin the Plugins page lists in its Official group after the official bundles: `label` is the card's title and `order` its place. | — |
+| `plugins.detail.actions` | 0.1.7-alpha.1 | list | root | main | Controls at the head of a detail page, before the page's own switch and uninstall, rendered with the page's subject. | — |
+| `plugins.detail.badge` | 0.1.7-alpha.1 | list | root | main | Tags beside a detail page's title, after the version, beta, and problem tags the page draws itself, rendered with the page's subject. | — |
+| `plugins.add.actions` | 0.2.1-alpha.1 | list | root | main | Additional MenuItemButton rows after installation: 72px high, with a title and a description capped at two lines. | — |
+| `plugins.tab` | 0.2.1-alpha.4 | list | root | main | Tabs after the page's own Installed tab, such as Discover: `label` names the tab and `order` places it. | — |
+| `plugins.detail.section` | 0.1.7-alpha.1 | list | root | main | Sections under a detail page's own content: after the rows on a bundle's page, after the configuration on a row's or an official plugin's page. | — |
+| `plugins.bundle.activation` | 0.1.7-alpha.1 | keyed | root | main | Optional guidance after the user enables a bundle from the list, keyed by npm package name. | — |
+| `plugins.bundle.config` | 0.1.6-alpha.2 | keyed | root | main | A bundle's own configuration, keyed by the bundle's package name and rendered on the bundle's page between its description and its rows (`view: 'page'` only). | — |
+| `plugins.row.config` | 0.1.6-alpha.2 | keyed | root | main | The configuration of one row a bundle declares, keyed by `<package name>#<row id>` with the row id as the bundle's patch declares it: the row on the bundle's page gains a configure control that opens the entry's page, headed by the plugin's display title and description. | — |
+| `main.conversation` | 0.1.5-alpha.2 | single | session-maybe | main | Conversation shell beneath its root-scoped main-panel entry. | — |
+| `conversation.header` | 0.1.7-alpha.1 | single | session-maybe | main.conversation | Resident navigation container, including when no Session is selected. | — |
+| `conversation.header.leading` | 0.1.7-alpha.1 | single | root | conversation.header | Global navigation before the Session title, available without a Session. | — |
+| `conversation.session.header` | ≤ 0.1.0-rc.7 | single | session | conversation.header | Strict per-Session title, actions, and View navigation. | — |
+| `conversation.session.header.utilities` | ≤ 0.1.0-rc.7 | list | session | conversation.session.header | Right-aligned Session utilities in ascending order. | 会话右上角按钮 |
+| `conversation.session.header.actions` | ≤ 0.1.0-rc.7 | list | session | conversation.session.header | Title-adjacent Session actions in ascending order. | — |
+| `conversation.session.header.corner` | 0.1.5-alpha.1 | single | session | conversation.session.header | The header's far-right corner, past the utilities' edge and into the header's own padding, for one control. | — |
+| `conversation.session.header.lineage` | 0.1.1-rc.1 | single | session | conversation.session.header | Optional replacement for one Session breadcrumb title. | — |
+| `conversation.session.header.views.actions` | 0.2.1-rc.3 | list | root | conversation.session.header | Rows of the View tab row's More menu; the header shows More only while this list has registrations. | 会话头部 View「更多」菜单行（0.2.1-rc.3） |
+| `sidebar` | ≤ 0.1.0-rc.7 | single | root | root | The whole left column. | — |
+| `sidebar.footer.action` | ≤ 0.1.0-rc.7 | list | root | sidebar | Optional actions beside Settings at the sidebar foot. | 侧栏底部动作 |
+| `sidebar.panellist` | 0.1.5-alpha.2 | list | root | sidebar | Global panel icons. | — |
+| `sidebar.brand.mark` | 0.1.0-rc.8 | single | root | sidebar | Brand mark rendered in the expanded brand row and collapsed rail. | — |
+| `sidebar.toggle.badge` | 0.1.6-alpha.2 | single | root | sidebar | Non-interactive notification inside the collapsed sidebar expand button. | — |
+| `sidebar.settings` | ≤ 0.1.0-rc.7 | single | root | sidebar | The settings seat at the sidebar foot. | — |
+| `settings.section` | ≤ 0.1.0-rc.7 | list | root | sidebar.settings | One settings page per list entry. | Settings 整页 |
+| `settings.general.item` | ≤ 0.1.0-rc.7 | list | root | settings.section | One preference row inside the General section — the additive seat for a single setting that needs no page of its own (a whole page is `settings.section`), contributed by the feature plugin that owns the preference (locale → Language, ui-theme → Appearance, ui-conversation → Composer Enter). | General 偏好行 |
+| `settings.plugins.tab` | ≤ 0.1.0-rc.7 | list | root | settings.section | One page inside the Plugins settings section. | Plugins 设置 tab |
+| `settings.models.footer` | 0.1.2-alpha.1 | list | root | settings.section | Ordered extension area after the provider rows and the add controls. | — |
+| `settings.models.provider-card` | 0.1.2-alpha.1 | keyed | root | settings.section | One provider card's adapter extension area, dispatched with `entryKey = settingsNs` on every card that renders a directory row: a saved row's card (its first-run setup posture included) and the add-provider draft card. | — |
+| `settings.action` | ≤ 0.1.0-rc.7 | list | root | sidebar.settings | Optional actions rendered in the content-column header before Close. | — |
+| `settings.onboarding` | ≤ 0.1.0-rc.7 | list | root | sidebar.settings | Root-scoped onboarding steps contributed by settings features. | — |
+| `settings.models.sign-in` | 0.1.7-alpha.1 | single | root | settings.onboarding | Optional account login choice before the credential editor. | — |
+| `settings.trigger` | ≤ 0.1.0-rc.7 | single | root | sidebar.settings | The sidebar-foot trigger row content: icon + label, supplied as slot content (the accessible name comes from the content — rail state renders the label visually hidden). | — |
+| `settings.header` | ≤ 0.1.0-rc.7 | single | root | sidebar.settings | The panel title text seat. | — |
+| `settings.close` | ≤ 0.1.0-rc.7 | single | root | sidebar.settings | The close button's visually-hidden label text (the button itself — icon, geometry, focus — is shell chrome). | — |
+| `settings.launcher` | 0.1.7-alpha.1 | single | root | sidebar.settings | Optional sidebar account launcher; opens the shell-owned settings panel. | — |
+| `sidebar.workspaces` | ≤ 0.1.0-rc.7 | single | root | sidebar | The workspace/session browsing region: section header, search, the grouped/flat session list, and every workspace dialog. | — |
+| `sidebar.session.row.leading` | 0.1.7-rc.2 | list | root | sidebar.workspaces | Leading decoration of one Session row, in the 16px cell before the title that the row's own state dot otherwise occupies. | Session 行前徽标 |
+| `sidebar.workspaces.session.menu.item` | 0.1.7-alpha.1 | list | root | sidebar.workspaces | The rows of one Session's "..." menu, in ascending `order`. | — |
+| `sidebar.workspaces.session.row.action` | 0.1.7-alpha.1 | list | root | sidebar.workspaces | The hover buttons at the end of one Session row, in ascending `order`, after the "..." menu trigger. | — |
+| `sidebar.session.row.hover` | 0.1.7-rc.2 | list | root | sidebar.workspaces | Section of the Session row's hover card between its relative time and its trailing status line. | — |
+| `sidebar.workspaces.directoryFlow` | ≤ 0.1.0-rc.7 | single | root | sidebar.workspaces | Directory-flow hole under the sidebar browsing region (declared by the WorkspaceBrowser entry). | — |
+| `sidebar.brand.name` | 0.1.0-rc.8 | single | root | sidebar | Brand name rendered beside the expanded mark. | — |
+| `sidebar.panellist.actions` | 0.2.1-rc.3 | list | root | sidebar | Rows of the panel list's More menu; the sidebar shows More only while this list has registrations. | 左侧栏「更多」菜单行（0.2.1-rc.3） |
+| `rightbar` | 0.1.5-alpha.1 | single | root | root | The right column: a track the centre makes room for, or nothing. | — |
+| `rightbar.session` | 0.1.5-alpha.2 | single | session | rightbar | Session content selected by the root-scoped right Sidebar controller. | — |
+| `sidebar.right.tab.menu.item` | 0.1.5-alpha.1 | list | session | rightbar.session | Extra items at the end of one tab's actions menu, in registration order. | — |
+| `sidebar.right.pane.tab` | 0.1.5-alpha.1 | keyed | session | rightbar.session | One tab's body, dispatched with the `id` of the type in force for `tab.kind`. | — |
+| `sidebar.right.tab.files.actions` | 0.2.0-rc.2 | list | session | sidebar.right.pane.tab | Workspace directory actions after the file tree's reload control. | — |
+| `sidebar.right.tab.document.actions` | 0.1.7-alpha.1 | list | session | sidebar.right.pane.tab | Header toolbar contributions acting on the previewed file, rendered after the preview's own controls once the file's Host path is known. | — |
+| `sidebar.right.tab.document.unpreviewable` | 0.1.7-alpha.1 | list | session | sidebar.right.pane.tab | Empty-state contributions for a file this preview cannot render, offered where Retry would stand once the file's Host path is known. | — |
+| `deliverables.review.file.actions` | 0.1.7-alpha.1 | list | session | sidebar.right.pane.tab | The same file actions owned by a changed-file review tab. | — |
+| `sidebar.right.tab.guide.actions` | 0.2.1-rc.3 | list | root | sidebar.right.pane.tab | Rows of the guide's More menu; the guide shows More only while this list has registrations. | 右侧栏起始页「更多」菜单行（0.2.1-rc.3） |
+| `sidebar.right.tab.guide.entry` | 0.1.6-alpha.1 | keyed | session | sidebar.right.pane.tab | One provider's guide card, with the standard card as the owner's fallback. | — |
+| `sidebar.right.tab.guide` | 0.1.5-alpha.1 | chain | session | sidebar.right.pane.tab | The guide tab's body. | — |
+| `sidebar.chat.conversation` | 0.1.6-alpha.2 | single | session | sidebar.right.pane.tab | Session-scoped Conversation occurrence hosted by one Sidebar chat tab. | — |
+| `sidebar.right.tab.document` | 0.1.5-alpha.2 | keyed | session | sidebar.right.pane.tab | Document body selected by a registered implementation id. | — |
+| `sidebar.right.tab.document.office.pdf` | 0.1.6-alpha.2 | keyed | session | sidebar.right.tab.document | PDF presentation supplied with Office-owned converted bytes. | — |
+| `sidebar.right.tab.document.action` | 0.1.7-alpha.1 | keyed | session | sidebar.right.pane.tab | Renderer-specific controls before the document toolbar's reload button. | — |
+| `sidebar.right.pane.tab.title` | 0.1.5-alpha.1 | keyed | session | rightbar.session | A tab's title as its chip (and a floating panel's header) shows it, dispatched with the same key and information hook as the body. | — |
+| `shell.bottom` | 0.2.1-alpha.1 | single | root | root | Full-width bottom content below all three columns. | — |
+| `shell.leading` | 0.1.7-alpha.1 | single | root | root | Window-chrome seat at the frame's top-left, over every main panel. | — |
+| `conversation.user.text.node` | 0.2.1-alpha.3 | keyed | session | conversation.user.text | One business-owned inline renderer for a pure JSON text node. | — |
+| `conversation.hero.options` | 0.2.1-alpha.3 | list | session | conversation.content | Compact options right-aligned in the New Session row after the workspace and preset controls; rendered only with a Session. | New Session Hero 选项 |
+| `conversation.input.dock` | ≤ 0.1.0-rc.7 | list | session | conversation.content | Full-width entries above the composer card. | — |
+| `conversation.composer` | ≤ 0.1.0-rc.7 | chain | session | conversation.content | Selector-routed replacements for the current Session's resident composer. | — |
+| `conversation.plan-review.actions` | 0.1.6-alpha.2 | list | session | conversation.composer | Actions for the exact plan under review; approval remains with the question composer. | — |
+| `conversation.approval.detail` | 0.1.2-alpha.1 | single | session | conversation.composer | Optional detail for the Tool call correlated with an approval request. | — |
+| `conversation.hero.workspace` | ≤ 0.1.0-rc.7 | single | root | conversation.content | Workspace picker shown by the blank-session Hero. | — |
+| `conversation.hero.workspace.directoryFlow` | ≤ 0.1.0-rc.7 | single | root | conversation.hero.workspace | Directory-flow hole under the conversation empty-state picker (declared by the WorkspacePicker entry). | — |
+| `conversation.session` | ≤ 0.1.0-rc.7 | single | session | conversation.content | Strict per-Session Conversation body. | — |
+| `conversation.view` | ≤ 0.1.0-rc.7 | list | session | conversation.session | Registered Conversation target Views, rendered one at a time. | 会话 View 标签栏 tab |
+| `conversation.trajectory.images` | 0.1.2-alpha.1 | single | session | conversation.view | Renderer for one group of durable record images in the Trajectory ledger. | — |
+| `conversation.chat.flow` | 0.2.1-alpha.2 | single | session | conversation.view | Ordered Chat rows and local echoes with viewport-bound visibility hooks. | — |
+| `conversation.chat.node` | ≤ 0.1.0-rc.7 | keyed | session | conversation.chat.flow | Final Chat node renderer, keyed by `ChatNodeKind`. | — |
+| `conversation.chat.assistant-actions` | ≤ 0.1.0-rc.7 | list | session | conversation.chat.node | Ordered actions for one finalized assistant message. | assistant 消息动作 |
+| `conversation.chat.turnTail` | ≤ 0.1.0-rc.7 | list | session | conversation.chat.node | Ordered feature contributions before a completed Turn's action row. | Turn 结束行 |
+| `deliverables.file.actions` | 0.1.7-alpha.1 | list | session | conversation.chat.turnTail | Open one file through its authorized Session event coordinates. | — |
+| `tool.call.toolview` | ≤ 0.1.0-rc.7 | keyed | session | conversation.chat.node | Keyed Tool call view dispatched by wire Tool name. | — |
+| `tool.call.images` | 0.1.3-alpha.1 | single | session | tool.call.toolview | Durable images of a settled image-bearing Tool call, rendered through the attachment presentation plugin. | — |
+| `tool.view.cordis` | ≤ 0.1.0-rc.7 | keyed | session | tool.call.toolview | Interactive Package-owned region rendered inside the latest eligible `cordis_run` card in the conversation flow. | — |
+| `conversation.chat.commandview` | ≤ 0.1.0-rc.7 | keyed | session | conversation.chat.node | Command row keyed by the command name. | — |
+| `conversation.chat.message.images` | 0.2.1-alpha.3 | single | session | conversation.chat.node | Renderer for one consecutive group of durable message images. | — |
+| `conversation.chat.reasoning.body` | 0.2.1-alpha.2 | single | session | conversation.chat.node | Expanded reasoning body with the unchanged model text. | — |
+| `conversation.composer.bar` | ≤ 0.1.0-rc.7 | single | session-maybe | conversation.content | Resident composer body, including the no-Session inert state. | — |
+| `conversation.composer.dock` | ≤ 0.1.0-rc.7 | list | session | conversation.composer.bar | Ambient entries below the composer card. | 输入框下方 chip |
+| `conversation.input.left` | ≤ 0.1.0-rc.7 | list | session | conversation.composer.bar | Compact controls at the left of the composer tool row. | composer 左侧按钮 |
+| `conversation.input.right` | ≤ 0.1.0-rc.7 | list | session | conversation.composer.bar | Compact controls before the composer submit action. | composer 右侧按钮 |
+| `conversation.input.overlay` | ≤ 0.1.0-rc.7 | list | session | conversation.composer.bar | Floating entries rendered inside the resident composer card. | — |
+| `conversation.input.attachments` | 0.1.0-rc.8 | single | session-maybe | conversation.composer.bar | Optional draft-attachment rail and drop target. | — |
+| `conversation.input.permission` | 0.1.6-alpha.1 | single | session | conversation.composer.bar | Current-session permission control inside the composer tool row. | — |
+| `conversation.input.model` | ≤ 0.1.0-rc.7 | single | session | conversation.composer.bar | Model selector inside the composer tool row. | — |
+| `conversation.input.model.label` | 0.2.1-alpha.5 | single | session | conversation.input.model | Non-interactive inline model label; selection controls remain owner-managed. | — |
+| `conversation.input.plan` | ≤ 0.1.0-rc.7 | single | session | conversation.composer.bar | Plan control inside the composer tool row. | — |
+| `conversation.input.activity` | 0.1.7-alpha.1 | single | session | conversation.composer.bar | Compact action after the model selector; it can expand across the toolbar while retaining the editor and submit action. | — |
+| `conversation.hero.brand.mark` | 0.1.0-rc.8 | single | root | conversation.content | Brand mark shown before the blank-session headline. | — |
+| `conversation.hero.agentPreset` | ≤ 0.1.0-rc.7 | single | session-maybe | conversation.content | Agent-preset control staged for a New Session. | — |
+| `conversation.chat.user.images` | 0.2.1-alpha.3 | single | session | conversation.chat.user.content | User-message images, including pending and local-echo previews, independently replaceable from output images. | — |
 
 ## Factories
 
 Factory 是拥有者渲染的子界面，不是插件注册点；通常注册它下面声明的 Slot。
 
-| Factory | 作用域 | 说明 |
-| --- | --- | --- |
-| `conversation.images.content` | root |  |
-| `workspace.toast.content` | root |  |
-| `conversation.user.text` | session |  |
-| `conversation.content` | session-maybe |  |
-| `conversation.chat.reasoning.content` | root |  |
-| `conversation.chat.user.content` | session |  |
+| Factory | 版本 | 作用域 | 说明 |
+| --- | --- | --- | --- |
+| `conversation.images.content` | ≤ 0.2.1-alpha.3 | root |  |
+| `workspace.toast.content` | ≤ 0.2.1-alpha.3 | root |  |
+| `conversation.user.text` | ≤ 0.2.1-alpha.3 | session |  |
+| `conversation.content` | ≤ 0.1.6-alpha.2 | session-maybe |  |
+| `conversation.chat.reasoning.content` | ≤ 0.2.1-alpha.2 | root |  |
+| `conversation.chat.user.content` | ≤ 0.2.1-alpha.3 | session |  |
 
 ## Theme tokens
 
@@ -2373,7 +2589,7 @@ Factory 是拥有者渲染的子界面，不是插件注册点；通常注册它
 
 ## 分布式 Demo 对照
 
-本轮不是总览页，而是把 demo 放进 Slot 的真实位置；43 个可增量 Slot（15 原有 + 18 A + 10 C）已全部实现，入口标题统一为 `图鉴demo · <slot-key>`。下表只列 15 个核心入口，完整 43 项矩阵见 `docs/slot-demos.md`。
+本轮不是总览页，而是把 demo 放进 Slot 的真实位置；46 个可增量 Slot（15 原有 + 18 A + 10 C + 0.2.1-rc.3 新增 3 个 actions slot）已全部实现，入口标题统一为 `图鉴demo · <slot-key>`。下表只列核心入口，完整 46 项矩阵见 `docs/slot-demos.md`。
 
 | Slot | demo 落点 | 注册方式 |
 | --- | --- | --- |
@@ -2392,6 +2608,9 @@ Factory 是拥有者渲染的子界面，不是插件注册点；通常注册它
 | `settings.plugins.tab` | Plugins 设置 tab | list + 新 id |
 | `shell.overlay` | 详情弹层 / Toast | list + 新 id |
 | `conversation.hero.options` | New Session Hero 选项 | list + 新 id |
+| `sidebar.panellist.actions` | 左侧栏「更多」菜单行 | list + 新 id（0.2.1-rc.3） |
+| `conversation.session.header.views.actions` | 会话头部 View「更多」菜单行 | list + 新 id（0.2.1-rc.3） |
+| `sidebar.right.tab.guide.actions` | 右侧栏起始页「更多」菜单行 | list + 新 id（0.2.1-rc.3） |
 
 小入口（header、input、session row、footer）用紧凑标签 + 完整 `title`/`aria-label`；tab/页面/列表项直接显示完整 `图鉴demo · <slot>`。所有小入口的详情由 `shell.overlay` 弹层展示。
 
@@ -2410,14 +2629,17 @@ cordis_inspect_query { platform: "client", provider: "Theme" }
 把结果写回 `.scan/`，然后：
 
 ```sh
+node scripts/build-versions.cjs
 node scripts/build-catalog.cjs
 node scripts/build-docs.cjs
+node scripts/build-interfaces.cjs
+node scripts/build-non-ui.cjs
 ```
 
 ## 已知边界
 
 - 目录是静态快照；运行时 `ctx.get("service")` 可能返回 `undefined`，必须判空。
-- 43 个可增量 Slot（15 原有 + 18 A + 10 C）已全部实现；B 类 57 + Factory 6 属于不可增量/不可见，不注册。
+- 46 个可增量 Slot（15 原有 + 18 A + 10 C + rc.3 新增 3）已全部实现；B 类 57 + Factory 6 属于不可增量/不可见，不注册。
 - Inspect 的 Client Service 目录是 “catalogued” 子集：`ctx.commandUi`（ui-commands）、`ctx.sidebarRight` / `ctx.sidebarRightTabs`（ui-sidebar-right）等服务不在快照里，但包内确实提供；本项目直接消费了它们。
 - 不是每个 Slot 都适合直接塞 demo：`main`、`sidebar`、`rightbar.session` 等 single/replace 型 Slot 会替换内置 UI，本示例不占用。
 - 原生右侧栏的 tab 列表是 registry，不是 Slot；`sidebar.right.pane.tab` 只渲染 body。加列表项必须用 `ctx.sidebarRightTabs.register`。

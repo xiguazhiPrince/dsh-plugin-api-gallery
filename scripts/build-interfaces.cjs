@@ -16,6 +16,21 @@ const path = require('node:path');
 
 const ROOT = path.resolve(__dirname, '..');
 const catalog = JSON.parse(fs.readFileSync(path.join(ROOT, 'catalog.json'), 'utf8'));
+const VERSIONS = JSON.parse(fs.readFileSync(path.join(ROOT, 'version-since.json'), 'utf8'));
+
+/** First DSH release that listed this interface, from version-since.json. */
+function versionSince(pathParts, name) {
+  let bucket = VERSIONS;
+  for (const part of pathParts) bucket = bucket && bucket[part];
+  const entry = bucket && bucket[name];
+  if (!entry) return null;
+  return entry.base ? { since: entry.since, sinceBase: true } : { since: entry.since };
+}
+
+function withSince(entry, pathParts, name) {
+  const since = versionSince(pathParts, name);
+  return since === null ? entry : { ...entry, ...since };
+}
 
 const HOST_USED = new Set([
   'webServer', 'tools', 'commands', 'agents', 'sessions', 'workingDirectory', 'goals', 'schedule', 'webApp',
@@ -62,29 +77,38 @@ function useSnippet(scope, key) {
     : `const service = ctx.get('${key}');\nif (service !== undefined) {\n  // service.<method>\n}`;
 }
 
-function events(list) {
-  return list.map((event) => ({
+function events(list, pathParts) {
+  return list.map((event) => withSince({
     name: event.name,
     mode: event.mode,
     description: event.description,
     signature: event.signature,
     observe: observeSnippet(event),
-  }));
+  }, pathParts, event.name));
 }
 
-function services(list, scope, usedSet) {
-  return list.map((service) => ({
+function services(list, scope, usedSet, pathParts) {
+  return list.map((service) => withSince({
     key: service.key,
     description: service.description,
     methods: service.methods,
     used: usedSet.has(service.key),
     use: useSnippet(scope, service.key),
-  }));
+  }, pathParts, service.key));
 }
 
+// The four source-verified client services are not in the Inspect catalog, so
+// the release-tag catalogs cannot date them; mark them explicitly.
+const EXTRA_CLIENT_SERVICES_VERSIONED = EXTRA_CLIENT_SERVICES.map((service) => ({
+  ...service,
+  since: null,
+  sinceNote: '源码可见：Inspect 目录未收录，暂无版本追踪',
+}));
+
 const output = {
-  generatedAt: '2026-10-23',
+  generatedAt: catalog.meta.scannedAt,
   dshVersion: catalog.meta.dshVersion,
+  versionSource: catalog.meta.versionSource,
   counts: {
     hostEvents: catalog.host.events.length,
     clientEvents: catalog.client.events.length,
@@ -95,13 +119,13 @@ const output = {
     themeTokens: catalog.client.themeTokens.length,
   },
   events: {
-    host: events(catalog.host.events),
-    client: events(catalog.client.events),
+    host: events(catalog.host.events, ['host', 'events']),
+    client: events(catalog.client.events, ['client', 'events']),
   },
   services: {
-    host: services(catalog.host.services, 'host', HOST_USED),
-    client: services(catalog.client.services, 'client', CLIENT_USED),
-    extraClient: EXTRA_CLIENT_SERVICES,
+    host: services(catalog.host.services, 'host', HOST_USED, ['host', 'services']),
+    client: services(catalog.client.services, 'client', CLIENT_USED, ['client', 'services']),
+    extraClient: EXTRA_CLIENT_SERVICES_VERSIONED,
   },
   builtins: catalog.client.builtins.map((builtin) => ({
     name: builtin.name,
